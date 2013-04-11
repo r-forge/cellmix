@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>convertIDs. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Converting Gene or Probeset IDs</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre>convertIDs(object, to, from, ...)
+
+<span class="label label-important">S4</span> (list,GeneIdentifierType,GeneIdentifierType)
+`mapIdentifiers`(what, to, from, ..., verbose = FALSE)
+
+<span class="label label-important">S4</span> (MarkerList,GeneIdentifierType,GeneIdentifierType)
+`convertIDs`(object, to, from, verbose = FALSE, nodups = NULL, unlist = TRUE, 
+  ...)
+
+<span class="label label-important">S4</span> (character,GeneIdentifierType,GeneIdentifierType)
+`convertIDs`(object, to, from, method = "auto", unlist = TRUE, ...)
+
+<span class="label label-important">S4</span> (matrix,GeneIdentifierType,GeneIdentifierType)
+`convertIDs`(object, to, from, ..., unlist = TRUE, rm.duplicates = NULL)
+
+<span class="label label-important">S4</span> (ExpressionSet,GeneIdentifierType,GeneIdentifierType)
+`convertIDs`(object, to, from, ..., unlist = TRUE, rm.duplicates = NULL)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>object</dt>
+      <dd>object whose identifiers are converted.</dd>
+      <dt>to</dt>
+      <dd>specification of the type of identifiers to
+  convert to.</dd>
+      <dt>from</dt>
+      <dd>specification of the type of identifiers of
+  <code>object</code>. This is only neeeded when the source type
+  cannot be inferred from <code>object</code> itself.</dd>
+      <dt>...</dt>
+      <dd>extra arguments to allow extension, which are
+  passed down to the workhorse method
+  <code>convertIDs,character,GeneIdentifierType,GeneIdentifierType</code>.
+  See each method's description for more details.</dd>
+      <dt>what</dt>
+      <dd>identifiers to map</dd>
+      <dt>verbose</dt>
+      <dd>a logical or integer that sets the
+  vverbosity level.</dd>
+      <dt>nodups</dt>
+      <dd>specifies if marker identifiers that are
+  duplicated across cell types in the result should be
+  removed (<code>TRUE</code>) or not (<code>FALSE</code>). If
+  <code>NULL</code>, then duplicates are removed only if there
+  were no duplicates in the source object.</dd>
+      <dt>method</dt>
+      <dd>mapping method, passed to
+  <code><a href='mapIDs.html'>mapIDs</a></code>, that indicates how to carry the
+  mapping between the original and final identifier type.</dd>
+      <dt>unlist</dt>
+      <dd>logical that indicates if the result should
+  be flatten, i.e. turned into a vector rather than a list
+  -- using <code><a href='http://www.inside-r.org/r-doc/AnnotationDbi/unlist2'>unlist2</a></code>. In this case, the
+  vector's name then correspond to the source identifiers.</dd>
+      <dt>rm.duplicates</dt>
+      <dd>logical that how duplicated should
+  be treated. <code>rm.duplicates=FALSE</code> does not allow any
+  duplicated match and throws an error if any is present.
+  If <code>TRUE</code> or <code>NULL</code> duplicates only the first
+  match is kept, but a warning is thrown only when
+  <code>NULL</code>.</dd>
+    </dl>
+    
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>The <span class = "pkg">CellMix</span> package implements methods for
+  converting markers identifiers cross-platform and
+  cross-organism, to facilitate deconvolution analysis to
+  be carried out using multiple independent sources of
+  data, e.g., use a marker gene list obtained from data on
+  one platform to deconvolve gene expression data generated
+  on another platform.</p>
+  
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p>The function <code>convertIDs</code> provides the main
+  interface to convert genes/probeset ids into IDs
+  compatible with another given data. It is typically
+  useful to convert built-in marker gene lists (see
+  <code>link{cellMarkers}</code>).</p>
+  
+      <p>The identifier conversion functions and methods defined
+  in the <span class = "pkg">CellMix</span> package can be seen as extending the
+  existing framework defined in the <span class = "pkg">GSEABase</span> package,
+  with the generic <code><a href='http://www.inside-r.org/r-doc/GSEABase/mapIdentifiers-methods'>mapIdentifiers</a></code>.</p>
+  
+    </div>
+
+    <div class="Methods">
+      <h2>Methods</h2>
+      
+      <p><ol>
+<li>convertIDs<code>signature(object = "list", to =
+  "GeneIdentifierType", from = "GeneIdentifierType")</code>:
+  Apply the conversion to each element of the list.</p>
+  
+      <p></li>
+<li>convertIDs<code>signature(object = "MarkerList",
+  to = "GeneIdentifierType", from = "GeneIdentifierType")</code>:
+  Convert IDs from a MarkerList object.</p>
+  
+      <p>In this case, argument <code>unlist</code> indicates if the
+  result should be a simple list containing the mapping (a
+  list) for each cell type or a
+  <code><a href='markers.html'>MarkerList-class</a></code> object (default).</p>
+  
+      <p></li>
+<li>convertIDs<code>signature(object = "character",
+  to = "GeneIdentifierType", from = "GeneIdentifierType")</code>:
+  This is the workhorse method that is eventually called by
+  all other <code>convertIDs</code> methods. The actual
+  conversions are perforemd by <code><a href='mapIDs.html'>mapIDs</a></code>, to
+  which are passed all arguments in <code>...</code>, in
+  particular, arguments <code>verbose</code> and <code>method</code>.</p>
+  
+      <p></li>
+<li>convertIDs<code>signature(object = "matrix", to =
+  "GeneIdentifierType", from = "GeneIdentifierType")</code>:
+  Convert the row names of a matrix into other identifiers.</p>
+  
+      <p>In this case, argument <code>unlist</code> indicates if the
+  converted ids should be used to subset the original
+  <code>matrix</code> object, or returned directly returned as a
+  list.</p>
+  
+      <p></li>
+<li>convertIDs<code>signature(object =
+  "ExpressionSet", to = "GeneIdentifierType", from =
+  "GeneIdentifierType")</code>: Convert the feature names of an
+  ExpressionSet into other identifiers.</p>
+  
+      <p>In this case, argument <code>unlist</code> indicates if the
+  converted ids should be used to subset the original
+  <code>ExpressionSet</code> object, or returned directly
+  returned as a list.</p>
+  
+      <p></li>
+<li>convertIDs<code>signature(object = "ANY", to =
+  "ANY", from = "NullIdentifier")</code>: Convert identifiers,
+  inferring the type of origin from the object itself, but
+  keep the annotation specification embedded in
+  <code>from</code>.</p>
+  
+      <p></li>
+<li>convertIDs<code>signature(object = "ANY", to =
+  "ANY", from = "ANY")</code>: Convert identifiers, inferring the
+  type from the specifications in <code>to</code> and
+  <code>from</code>, eg., <code>to='ENTREZID'</code>, or
+  <code>'UNIGENE'</code>. If not specified in either <code>to</code> or
+  <code>from</code>, the annotation is taken from <code>object</code>.
+  If <code>from</code> is missing, the source type is infered
+  from <code>object</code> itself.</p>
+  
+      <p></li>
+<li>convertIDs<code>signature(object = "ANY", to =
+  "list", from = "missing")</code>: Convert identifiers using a
+  given map or list of maps.</p>
+  
+      <p></li>
+<li>mapIdentifiers<code>signature(what = "list", to =
+  "GeneIdentifierType", from = "GeneIdentifierType")</code>:
+  Applies <code>mapIdentifier</code> to each element in a list.</p>
+  
+      <p>All arguments in <code>...</code> are passed to the subsequent
+  calls to <code><a href='http://www.inside-r.org/r-doc/GSEABase/mapIdentifiers-methods'>mapIdentifiers</a></code>.</p>
+  
+      <p></li>
+</ol></p>
+  
+      <p></p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'># load a marker list from the registry</div><div class='input'>m <- MarkerList('IRIS')
+</div><div class='input'>summary(m)
+</div>
+<div class='output'><object of class MarkerList>
+Types: 9 ['B', 'T', ..., 'Multiple'] 
+Mode: numeric
+Markers: 2270 
+IDtype: .Affymetrix ['205267_at', '211048_s_at', ..., '229026_at'] 
+Values: [6.8842, 5.2979, ..., 0.0298]
+Source: hgu133a.db, hgu133b.db 
+Breakdown:
+         B          T         NK  Dendritic   Monocyte Neutrophil   Lymphoid 
+       121         94         24         86        103         54        302 
+   Myeloid   Multiple 
+       449       1037 
+</div><div class='input'>head(m[[1]])
+</div>
+<div class='output'>  205267_at 211048_s_at 206398_s_at 217823_s_at 217825_s_at 217826_s_at 
+     6.8842      5.2979      4.6785      4.4810      4.3739      4.2061 
+</div><div class='input'></div><div class='input'># convert Entrez gene ids to Affy probeset ids chip hgu133b</div><div class='input'>m2 <- convertIDs(m, 'hgu133b.db', verbose=2)
+</div>
+<div class='output'> # Converting 2270 markers from Annotation (hgu133a.db, hgu133b.db) to Annotation (hgu133b.db) ...  OK [1409/2270 (1:1)]
+ # Processing 2270 markers from Annotation (hgu133a.db, hgu133b.db) to Annotation (hgu133b.db) ... 
+  ** Processing ids for 'B' ...   OK [69/121 (1:1)]
+  ** Processing ids for 'T' ...   OK [44/94 (1:1)]
+  ** Processing ids for 'NK' ...   OK [8/24 (1:1)]
+  ** Processing ids for 'Dendritic' ...   OK [43/86 (1:1)]
+  ** Processing ids for 'Monocyte' ...   OK [43/103 (1:1)]
+  ** Processing ids for 'Neutrophil' ...   OK [21/54 (1:1)]
+  ** Processing ids for 'Lymphoid' ...   OK [168/302 (1:1)]
+  ** Processing ids for 'Myeloid' ...   OK [240/449 (1:1)]
+  ** Processing ids for 'Multiple' ...   OK [640/1037 (1:1)]
+ # Checking for duplicated marker(s) across cell-types ...  OK [dropped 87/1276]
+ OK [1189/2270 (1:1)]
+</div><div class='input'>summary(m2)
+</div>
+<div class='output'><object of class MarkerList>
+Types: 9 ['B', 'T', ..., 'Multiple'] 
+Mode: numeric
+Markers: 1189 
+IDtype: .Affymetrix ['222435_s_at', '230232_at', ..., '229026_at'] 
+Values: [4.481, 3.5788, ..., 0.0298]
+Source: hgu133b.db 
+Breakdown:
+         B          T         NK  Dendritic   Monocyte Neutrophil   Lymphoid 
+        66         40          6         41         41         17        150 
+   Myeloid   Multiple 
+       220        608 
+</div><div class='input'>#----------------------------------------------</div><div class='input'># 1. Conversion from biological IDs</div><div class='input'>#----------------------------------------------</div><div class='input'># For this kind of IDs, a source annotation package can often be inferred</div><div class='input'># from the ID type, using regular expression patterns (e.g. "^ENS[0-9]+$"</div><div class='input'># identifies Ensembl gene IDs)</div><div class='input'></div><div class='input'>ids <- c("Hs.1", "Hs.2", "Hs.3")
+</div><div class='input'># get Entrez gene IDs (based on annotation from the org.Hs.gene.eg package)</div><div class='input'>convertIDs(ids, 'ENTREZID', 'org.Hs.eg.db', verbose=TRUE)
+</div>
+<div class='output'>  # Converting from Unigene (org.Hs.eg.db) to EntrezId (org.Hs.eg.db) ...   OK [1/3 mapped (1:1)]
+</div>
+<div class='output'>Hs.1 Hs.2 Hs.3 
+  NA "10"   NA 
+attr(,"from")
+geneIdType: Unigene (org.Hs.eg.db)
+attr(,"to")
+geneIdType: EntrezId (org.Hs.eg.db)
+</div><div class='input'></div><div class='input'># map to other IDs</div><div class='input'>convertIDs(ids, 'REFSEQ')
+</div>
+<div class='output'>       Hs.1        Hs.2        Hs.3 
+         NA "NM_000015"          NA 
+attr(,"from")
+geneIdType: Unigene (org.Hs.eg.db)
+attr(,"to")
+geneIdType: Refseq (org.Hs.eg.db)
+</div><div class='input'>convertIDs(ids, 'ENSEMBL')
+</div>
+<div class='output'>             Hs.1              Hs.2              Hs.3 
+               NA "ENSG00000156006"                NA 
+attr(,"from")
+geneIdType: Unigene (org.Hs.eg.db)
+attr(,"to")
+geneIdType: ENSEMBL (org.Hs.eg.db)
+</div><div class='input'># convert across ogranism</div><div class='input'>convertIDs(ids, 'rat2302.db')
+</div>
+<strong class='warning'>Warning message:
+An error occured when converting ids cross-species from Homo sapiens to Rattus norvegicus:
+  Error in names(destIDs) = dnames : attempt to set an attribute on NULL
+</strong>
+<div class='output'>Hs.1 Hs.2 Hs.3 
+  NA   NA   NA 
+attr(,"from")
+geneIdType: Unigene (org.Hs.eg.db)
+attr(,"to")
+geneIdType: Annotation (rat2302.db)
+</div><div class='input'># get Affy probeset IDs for chip hgu133a</div><div class='input'>affy <- convertIDs(ids, 'hgu133a.db')
+</div><div class='input'></div><div class='input'># assume we have a vector of IDs, e.g. Entrez gene ids</div><div class='input'>id <- c("673", "725", "10115")
+</div><div class='input'># get associated probesets on chip hgu133a</div><div class='input'>convertIDs(id, 'hgu133a.db')
+</div>
+<div class='output'>          673           725         10115 
+"206044_s_at" "208209_s_at"            NA 
+attr(,"from")
+geneIdType: EntrezId (hgu133a.db)
+attr(,"to")
+geneIdType: Annotation (hgu133a.db)
+</div><div class='input'># get all associated probesets on chip hgu133a</div><div class='input'>convertIDs(id, 'hgu133a.db', method='all')
+</div>
+<div class='output'>          673           725         10115 
+"206044_s_at" "208209_s_at"            NA 
+attr(,"from")
+geneIdType: EntrezId (hgu133a.db)
+attr(,"to")
+geneIdType: Annotation (hgu133a.db)
+</div><div class='input'># same as a vector with duplicated names</div><div class='input'>convertIDs(id, 'hgu133a.db', method='all', unlist=FALSE)
+</div>
+<div class='output'>$`673`
+          673 
+"206044_s_at" 
+
+$`725`
+          725 
+"208209_s_at" 
+
+$`10115`
+[1] NA
+
+attr(,"from")
+geneIdType: EntrezId (hgu133a.db)
+attr(,"to")
+geneIdType: Annotation (hgu133a.db)
+</div><div class='input'># specification using ProbeAnnDbBimap objects</div><div class='input'>library(hgu133b.db)
+</div><div class='input'>convertIDs(id, 'hgu133a.db', hgu133bENTREZID, verbose=2)
+</div>
+<div class='output'>  # Converting from EntrezId (hgu133b.db) to Annotation (hgu133a.db) ... 
+  # Limiting query to EntrezId (hgu133b.db) ...   [3 -> 1 id(s)]
+ # Loading map(s) from EntrezId (hgu133b.db) to Annotation (hgu133a.db)  [x-platform /x-id] ...  OK [1 step(s)]
+   # Mapping from EntrezId (hgu133a.db) to Annotation (hgu133a.db) [43059 entries] ...    [1/1 mapped (1:1)]
+   # Applying filtering strategy 'auto' ... (kept 1 2nd-affy probes)    [1/1 passed (1:1)]
+  OK [1/3 mapped (1:1)]
+</div>
+<div class='output'>          673           725         10115 
+"206044_s_at"            NA            NA 
+attr(,"from")
+geneIdType: EntrezId (hgu133b.db)
+attr(,"to")
+geneIdType: Annotation (hgu133a.db)
+</div><div class='input'></div><div class='input'>#----------------------------------------------</div><div class='input'># 2. Conversion from probeset IDs</div><div class='input'>#----------------------------------------------</div><div class='input'># For this kind of IDs, a source annotation package is required, because it</div><div class='input'># cannot be easily inferred from the ID type.</div><div class='input'></div><div class='input'># get Affy probeset IDs for chip hgu133b from ids for hgu133b</div><div class='input'>convertIDs(affy, 'hgu133a.db', 'hgu133b.db')
+</div>
+<div class='output'>     <NA> 206797_at      <NA> 
+       NA        NA        NA 
+attr(,"from")
+geneIdType: Annotation (hgu133b.db)
+attr(,"to")
+geneIdType: Annotation (hgu133a.db)
+</div><div class='input'># across organism</div><div class='input'>convertIDs(affy, 'hgu133a.db', 'rat2302.db')
+</div>
+<div class='output'>     <NA> 206797_at      <NA> 
+       NA        NA        NA 
+attr(,"from")
+geneIdType: Annotation (rat2302.db)
+attr(,"to")
+geneIdType: Annotation (hgu133a.db)
+</div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>convertIDs</li><li>convertIDs,ANY,ANY,ANY-method</li><li>convertIDs,ANY,ANY,NullIdentifier-method</li><li>convertIDs,ANY,list,missing-method</li><li>convertIDs,character,GeneIdentifierType,GeneIdentifierType-method</li><li>convertIDs,ExpressionSet,GeneIdentifierType,GeneIdentifierType-method</li><li>convertIDs,list,GeneIdentifierType,GeneIdentifierType-method</li><li>convertIDs,MarkerList,GeneIdentifierType,GeneIdentifierType-method</li><li>convertIDs,matrix,GeneIdentifierType,GeneIdentifierType-method</li><li>convertIDs-methods</li><li>mapIdentifiers,list,GeneIdentifierType,GeneIdentifierType-method</li>
+    </ul>
+    <ul>
+      <li>methods</li>
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

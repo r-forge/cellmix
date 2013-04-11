@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>nuIDdecode. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="
+  Pan Du
+
+  Adaptation for CellMix: Renaud Gaujoux
+">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Convert nuID to Nucleotide Sequence</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre>nuIDdecode(id, error = TRUE)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>id</dt>
+      <dd>nuID character vector</dd>
+      <dt>error</dt>
+      <dd>a logical indicating whether an error should
+  be thrown in case of invalid input nuID (default) or only
+  a warning, as in the original function
+  <code>lumi::id2seq</code>.</dd>
+    </dl>
+    
+    <div class="Source">
+      <h2>Source</h2>
+      
+      <p>function <code>lumi::id2seq</code> in the <span class = "pkg">lumi</span> package</p>
+  
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>The function <code>nuIDdecode</code> converts a nuID string
+  back to the nucleotide sequence it encodes. nuIDs are
+  identifiers used as primary keys in some Illumina
+  annotation packages, and are based on a hash of the probe
+  sequence itself.</p>
+  
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p>This function is an adapted version of the
+  <code>lumi::id2seq</code> from the <span class = "pkg">lumi</span> package, so that
+  it can throws errors instead of warnings. It is used in
+  <code><a href='idtype.html'>idtype</a></code> to infer the type of nuID vectors.</p>
+  
+    </div>
+
+    <div class="References">
+      <h2>References</h2>
+      
+      <p>Du P, Kibbe Wa and Lin SM (2007). "nuID: a universal
+  naming scheme of oligonucleotides for illumina,
+  affymetrix, and other microarrays." _Biology direct_,
+  *2*, pp. 16. ISSN 1745-6150, <URL:
+  http://dx.doi.org/10.1186/1745-6150-2-16>, <URL:
+  http://www.pubmedcentral.nih.gov/articlerender.fcgi?artid=1891274\&tool=pmcentrez\&rendertype=abstract>.</p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'>nuIDdecode('XERDqYYc2A')
+</div>
+<div class='output'>[1] "ACACACAATGGGCGACGACTATCGA"
+</div><div class='input'>try(nuIDdecode('XERDqYYc2F'))
+</div><div class='input'>nuIDdecode('XERDqYYc2F', error=FALSE)
+</div>
+<strong class='warning'>Warning message:
+Coding error or not a nuID!</strong>
+<div class='output'>[1] "ACACACAATGGGCGACGACTATCGA"
+</div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>nuIDdecode</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+    
+    <h2>Author</h2>
+    
+  Pan Du
+
+  Adaptation for CellMix: Renaud Gaujoux
+
+    
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

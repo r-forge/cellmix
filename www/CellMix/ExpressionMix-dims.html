@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>dim,ExpressionMix-method. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Dimensions in ExpressionMix Objects</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><span class="label label-important">S4</span> (ExpressionMix)
+`dim`(x)
+
+<span class="label label-important">S4</span> (ExpressionMix)
+`dimnames`(x)
+
+<span class="label label-important">S4</span> (ExpressionMix)
+`dimnames`(x) <- value
+
+<span class="label label-important">S4</span> (ExpressionMix)
+`featureNames`(object) <- value
+
+<span class="label label-important">S4</span> (ExpressionMix)
+`sampleNames`(object) <- value</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>x</dt>
+      <dd>an <code>ExpressionMix</code> object</dd>
+      <dt>value</dt>
+      <dd>replacement value</dd>
+      <dt>object</dt>
+      <dd>Object, possibly derived from class
+  <code>eSet</code>.</dd>
+    </dl>
+    
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>Similarly to <code><a href='http://www.inside-r.org/r-doc/NMF/NMF-class'>NMF-class</a></code> objects,
+  <code>ExpressionMix</code> objects have a "third" dimension,
+  the number of underlying cell types, inherited from the
+  embedded <code>NMF</code> model.</p>
+  
+      <p><code>dim</code> returns the dimensions of an ExpressionMix
+  object. It returns a 3-length integer vector, containing
+  the number of features, samples and components
+  respectively.</p>
+  
+    </div>
+
+    <div class="Methods">
+      <h2>Methods</h2>
+      
+      <p><ol>
+<li>dimnames<code>signature(x = "ExpressionMix")</code>:
+  <code>dimnames</code> returns the dimension names of an
+  ExpressionMix object. It returns a list with 3 elements:
+  the feature names, sample names and the constituent
+  cell/tissue names (i.e. the basis names of the underlying
+  NMF model).</p>
+  
+      <p></li>
+<li>dimnames<-<code>signature(x = "ExpressionMix")</code>:
+  <code>dimnames<-</code> Sets the dimension names of an
+  ExpressionMix object. The replacement value must be a
+  list containing the feature names, the samples names
+  (optional), and the constituent cell/tissue names
+  (optional), all as character vectors of correct
+  dimensions (i.e. compatible with the number of features,
+  samples and constituents).</p>
+  
+      <p></li>
+<li>featureNames<-<code>signature(object =
+  "ExpressionMix")</code>: Sets the feature names on both the
+  <code>ExpressionSet</code> and <code>NMF</code> objects.</p>
+  
+      <p></li>
+<li>sampleNames<-<code>signature(object =
+  "ExpressionMix")</code>: Sets the sample names on both the
+  <code>ExpressionSet</code> and <code>NMF</code> objects.</p>
+  
+      <p></li>
+</ol></p>
+  
+      <p></p>
+  
+    </div>
+      </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>dim,ExpressionMix-method</li><li>dimnames&lt;-,ExpressionMix-method</li><li>dimnames,ExpressionMix-method</li><li>featureNames&lt;-,ExpressionMix-method</li><li>sampleNames&lt;-,ExpressionMix,ANY-method</li><li>sampleNames&lt;-,ExpressionMix-method</li>
+    </ul>
+    <ul>
+      <li>methods</li>
+    </ul> -->
+      
+    <h2>See also</h2>
+    
+  <code><a href='Bioc-generics.html'>featureNames</a></code>, <code><a href='Bioc-generics.html'>sampleNames</a></code>,
+  <code><a href='http://www.inside-r.org/r-doc/NMF/dimnames'>basisnames</a></code>
+
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

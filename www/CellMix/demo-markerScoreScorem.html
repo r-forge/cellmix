@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>Data-driven marker selection (experimental). CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_DEMOS.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Data-driven marker selection (experimental)</h1><br />
+
+<div class="row"><div class="span8">
+  <pre>
+  <div class='input'># Using the SCOREM approach one can filter marker genes that have consisten</div><div class='input'># whose expression values in a given datasets.</div><div class='input'># This is because the notion of marker can be very dependent on the data, biological</div><div class='input'># conditions or platform used to define them.</div><div class='input'></div><div class='input'># load kidney transplant dataset from Shen-Orr et al. (2010)</div><div class='input'>eset <- ExpressionMix('GSE20300', verbose=TRUE)
+</div>
+<div class='output'>Loading dataset 'GSE20300' ... OK
+</div><div class='input'></div><div class='input'># load HaemAtlas marker gene list (on Illumina)</div><div class='input'>ml <- MarkerList('HaemAtlas')
+</div><div class='input'>ml
+</div>
+<div class='output'><object of class: MarkerList>
+Types: B-CD19, Erythroblast, ..., T-CD8 (total: 8)
+Mode: character
+setName: HaemAtlas 
+geneIds: ILMN_1793637, ILMN_1663575, ..., ILMN_1815673 (total: 2069)
+geneIdType: Annotation (illuminaHumanv2.db)
+collectionType: Null 
+geneValues: NA 
+details: use 'details(object)'
+</div><div class='input'># convert marker IDs to Affy IDs from dataset</div><div class='input'># using stringent one to one mapping</div><div class='input'>mla <- convertIDs(ml, eset, method='1:1', verbose=TRUE)
+</div>
+<div class='output'># Converting 2069 markers from Annotation (illuminaHumanv2.db) to Annotation (hgu133plus2.db) ... OK [649/2069 (1:1)]
+# Processing 2069 markers from Annotation (illuminaHumanv2.db) to Annotation (hgu133plus2.db) ... OK [638/2069 (1:1)]
+</div><div class='input'>summary(mla)
+</div>
+<div class='output'><object of class MarkerList>
+Types: 8 ['B-CD19', 'Erythroblast', ..., 'T-CD8'] 
+Mode: character
+Markers: 638 
+IDtype: .Affymetrix ['206513_at', '207655_s_at', ..., '219025_at'] 
+Source: hgu133plus2.db 
+Breakdown:
+           B-CD19      Erythroblast Granulocyte-CD66b     Megakaryocyte 
+               53               114               235               107 
+    Monocyte-CD14           NK-CD56             T-CD4             T-CD8 
+               81                28                18                 2 
+</div><div class='input'></div><div class='input'># plot expression profile of each set of markers (only the first 10)</div><div class='input'>profplot(mla[, 1:10], eset, split=TRUE, lab='')
+</div><p><img src='markerScoreScorem-demo1.png' alt='' width='400' height='400' /></p><div class='input'></div><div class='input'># filter out using SCOREM</div><div class='input'>sml <- extractMarkers(mla, eset, method='scorem', alpha=.005)
+</div><div class='input'># plot selected markers</div><div class='input'>profplot(sml, eset, split=TRUE, lab='')</div><p><img src='markerScoreScorem-demo2.png' alt='' width='400' height='400' /></p>
+  </pre>
+</div></div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

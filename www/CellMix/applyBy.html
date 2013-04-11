@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>applyBy. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Group Apply</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre>applyBy(x, BY, MARGIN, FUN, W = NULL, ..., DROP = FALSE)
+
+rowApplyBy(x, BY, FUN, ...)
+
+colApplyBy(x, BY, FUN, ...)
+
+colSumsBy(x, BY, ...)
+
+rowSumsBy(x, BY, ...)
+
+rowMeansBy(x, BY, ...)
+
+colMeansBy(x, BY, ...)
+
+rowMediansBy(x, BY, ...)
+
+colMediansBy(x, BY, ...)
+
+rowMaxsBy(x, BY, ...)
+
+colMaxsBy(x, BY, ...)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>x</dt>
+      <dd>matrix-like object on which <code><a href='http://www.inside-r.org/r-doc/base/apply'>apply</a></code>
+  can be called.</dd>
+      <dt>BY</dt>
+      <dd>factor or object coerced to a factor, that
+  defines the groups within which the function <code>FUN</code>
+  is applied.</dd>
+      <dt>MARGIN</dt>
+      <dd>margin along which the function <code>FUN</code>
+  is applied: 1L for rows, 2L for columns.</dd>
+      <dt>FUN</dt>
+      <dd>function to apply to each sub-matrix that
+  contains the rows/columns defined by each level of
+  argument <code>BY</code>. It must be a function that takes a
+  matrix as its first argument and returns a vector of
+  length the dimension of margin <code>MARGIN</code> of
+  <code>x</code>.</dd>
+      <dt>...</dt>
+      <dd>extra parameters passed to <code>FUN</code>.</dd>
+      <dt>DROP</dt>
+      <dd>logical that indicates if absent levels
+  should be removed from the result matrix, or appear as
+  0-filled rows/columns.</dd>
+      <dt>W</dt>
+      <dd>An optional <code><a href='http://www.inside-r.org/r-doc/base/numeric'>numeric</a></code> NxM
+  <code><a href='http://www.inside-r.org/r-doc/base/matrix'>matrix</a></code> of weights.</dd>
+    </dl>
+    
+    <div class="Value">
+      <h2>Value</h2>
+      
+      <p>The result is a matrix whose margin's dimension
+  <code>MARGIN</code> is equal the same margin's dimension in
+  <code>x</code>, and the other to the number of levels in
+  <code>BY</code>.</p>
+  
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>Applies a function to rows or columns of a matrix-like
+  object, separately within groups defined by a factor.</p>
+  
+      <p><code>rowApplyBy</code> applies a function to rows of
+  sub-matrices whose columns are defined by a factor.</p>
+  
+      <p><code>rowApplyBy</code> applies a function to columns of
+  sub-matrices whose rows are defined by a factor.</p>
+  
+      <p><code>col<STAT>By</code> computes for each column a given
+  statistic within separate groups of rows, which are
+  defined by a factor.</p>
+  
+      <p><code>row<STAT>By</code> computes for each row a given
+  statistic within separate groups of columns, which are
+  defined by a factor.</p>
+  
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p><code>applyBy</code> is the work horse function that is called
+  by other more user-friendly functions.</p>
+  
+      <p><code>applyBy</code> is a wrapper around
+  <code><a href='http://www.inside-r.org/r-doc/matrixStats/rowAvgsPerColSet.matrix'>colAvgsPerRowSet</a></code>, which make
+  the computation really fast, but requires somehow
+  cumbersome matrix specifications for the groups of
+  columns or rows. The wrapper builds the arguments for the
+  particular case where the groups are defined by a factor.</p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'># random data matrix</div><div class='input'>x <- rmatrix(12, 6)
+</div><div class='input'></div><div class='input'># by groups of columns</div><div class='input'>fc <- gl(2, 3)
+</div><div class='input'>b <- applyBy(x, fc, 1L, rowSums)
+</div><div class='input'>b
+</div>
+<div class='output'>             1         2
+ [1,] 1.128947 1.6702637
+ [2,] 1.448162 2.1900103
+ [3,] 1.536033 1.1535277
+ [4,] 1.205556 2.3665224
+ [5,] 1.567208 0.3289842
+ [6,] 1.417626 1.2329996
+ [7,] 1.460712 1.1498039
+ [8,] 1.638283 1.2267020
+ [9,] 1.929241 1.7474233
+[10,] 1.168765 1.5865691
+[11,] 1.532594 1.6474817
+[12,] 2.277984 2.1582314
+</div><div class='input'># or</div><div class='input'>balt <- rowApplyBy(x, fc, rowSums)
+</div><div class='input'>identical(b, balt)
+</div>
+<div class='output'>[1] TRUE
+</div><div class='input'></div><div class='input'># by groups of rows</div><div class='input'>fr <- gl(3, 4)
+</div><div class='input'>b <- applyBy(x, fr, 2L, colSums)
+</div><div class='input'># or</div><div class='input'>balt <- colApplyBy(x, fr, colSums)
+</div><div class='input'>identical(b, balt)
+</div>
+<div class='output'>[1] TRUE
+</div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>applyBy</li><li>colApplyBy</li><li>colMaxsBy</li><li>colMeansBy</li><li>colMediansBy</li><li>colSumsBy</li><li>rowApplyBy</li><li>rowMaxsBy</li><li>rowMeansBy</li><li>rowMediansBy</li><li>rowSumsBy</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

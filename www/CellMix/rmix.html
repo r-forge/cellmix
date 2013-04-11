@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>rmix. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Generating Random Global Mixed Gene Expression Data</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre>rmix(x, n = 100, p = 20, markers = ceiling(nrow(x)/20), min = 0, max = 20, mfold = 2, 
+  alpha = 1, snoise = list(mean = 0, sd = 0.05), gnoise = list(shape = 5, scale = 1), 
+      ...)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>x</dt>
+      <dd>number of true underlying cell types or a matrix
+  containing the signatures themselves, i.e. cell-specific
+  expression values for each feature. For convenience, it
+  may also specify the markers to enforce on the
+  signatures, as a vector or list of length > 1, in which
+  case argument <code>markers</code> must be missing.</dd>
+      <dt>n</dt>
+      <dd>number of features, i.e. genes. The argument is
+  required if <code>x</code> specifies the number of signatures.
+  If <code>x</code> is provided as a matrix, then <code>n</code> is
+  used to subset it (<code>x[n, ]</code>) before simulating the
+  global expression data.</dd>
+      <dt>p</dt>
+      <dd>number of samples</dd>
+      <dt>markers</dt>
+      <dd>specification of the number of markers to
+  enforce on each cell type signature. This should be a
+  value supported by <code><a href='enforceMarkers.html'>enforceMarkers</a></code>. Markers
+  enforcement may be disabled with <code>markers=NA</code>.</dd>
+      <dt>min</dt>
+      <dd>minimum cell-specific expression value before
+  adding noise and marker differential.</dd>
+      <dt>max</dt>
+      <dd>maximum cell-specific expression value before
+  adding noise and marker differential.</dd>
+      <dt>mfold</dt>
+      <dd>fold change expected on cell-specific
+  expression for marker genes</dd>
+      <dt>alpha</dt>
+      <dd>parameter for the dirichlet distribution
+  from which are drawn the mixture proportions, using
+  <code><a href='http://www.inside-r.org/r-doc/gtools/dirichlet'>rdirichlet</a></code>.</dd>
+      <dt>snoise</dt>
+      <dd>parameters for the normal noise added to
+  each true underlying signatures as <code class = 'eq'>x + N(\mu,
+  \sigma)</code>.</dd>
+      <dt>gnoise</dt>
+      <dd>parameters for the normal noise with
+  inverse gamma variance added to each feature global
+  expression profile as <code class = 'eq'>e_{ij} + N(0, 1/\gamma_i)</code>.</dd>
+      <dt>...</dt>
+      <dd>extra arguments currently not used.</dd>
+    </dl>
+    
+    <div class="Value">
+      <h2>Value</h2>
+      
+      <p>an <code><a href='ExpressionMix-class.html'>ExpressionMix-class</a></code> object, that
+  contains the true underlying signatures and proportions
+  stored as an NMF model.</p>
+  
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>The function <code>rmix</code> generates an
+  <code><a href='ExpressionMix-class.html'>ExpressionMix-class</a></code> object, composed of a
+  given number of underlying cell types. The amount of
+  noise added to both the cell-specific signatures and the
+  global expression values is customisable.</p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'># 3 cell types, 100 features, 20 samples</div><div class='input'>rmix(3, 100, 20)
+</div>
+<div class='output'>ExpressionMix (storageMode: lockedEnvironment)
+assayData: 100 features, 20 samples 
+  element names: exprs 
+protocolData: none
+phenoData: none
+featureData: none
+experimentData: use 'experimentData(object)'
+Annotation:  
+Composition: 'CL_1', 'CL_2', 'CL_3' (3 total)
+</div><div class='input'></div><div class='input'># from known signature matrix</div><div class='input'>s <- rmatrix(100, 5)
+</div><div class='input'>x <- rmix(s, p=20)
+</div><div class='input'>dim(x)
+</div>
+<div class='output'>  Features    Samples Components 
+       100         20          5 
+</div><div class='input'>if( !isCRAN_timing() ){
+aheatmap(x)
+}
+</div><p><img src='rmix-ex1.png' alt='' width='400' height='400' /></p><div class='input'></div><div class='input'># markers are enforced on each true signature</div><div class='input'>x <- rmix(4, 50, 20, markers=6)
+</div><div class='input'>if( !isCRAN_timing() ){
+basismap(x, Rowv=NA)
+}
+</div><p><img src='rmix-ex2.png' alt='' width='400' height='400' /></p><div class='input'># or also</div><div class='input'>x <- rmix(1:4, 50, 20)
+</div><div class='input'>if( !isCRAN_timing() ){
+basismap(x, Rowv=NA)
+}
+</div><p><img src='rmix-ex3.png' alt='' width='400' height='400' /></p></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>rmix</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

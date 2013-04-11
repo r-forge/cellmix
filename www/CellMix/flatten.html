@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>flatten. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Flattening Marker Lists</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre>flatten(object, ...)
+
+<span class="label label-important">S4</span> (list)
+`flatten`(object, use.names = FALSE)
+
+<span class="label label-important">S4</span> (MarkerList)
+`flatten`(object, use.names = FALSE, size = NA)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>object</dt>
+      <dd>the object to be flattened</dd>
+      <dt>...</dt>
+      <dd>extra arguments to allow extension. See each
+  method's description for more details.</dd>
+      <dt>use.names</dt>
+      <dd>logical that indicates if the top level
+  names, i.e. the names of list (e.g., the cell types)
+  should be used instead of the names of each vector
+  element.</dd>
+      <dt>size</dt>
+      <dd>an integer that specifies the desired size of
+  the result vector, which is used only if the marker are
+  identified by their index. It is useful if one wants to
+  use the result with data of known -- greater --
+  dimension.</dd>
+    </dl>
+    
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p><code>flatten</code> is an S4 generic function that flattens
+  objects by unfolding their inner levels, like what
+  <code><a href='http://www.inside-r.org/r-doc/base/unlist'>unlist</a></code> does for <code><a href='http://www.inside-r.org/r-doc/base/list'>list</a></code> objects.</p>
+  
+    </div>
+
+    <div class="Methods">
+      <h2>Methods</h2>
+      
+      <p><ol>
+<li>flatten<code>signature(object = "list")</code>: For
+  <code><a href='http://www.inside-r.org/r-doc/base/list'>list</a></code> objects this is equivalent to
+  <code><a href='http://www.inside-r.org/r-doc/AnnotationDbi/unlist2'>unlist2</a></code>.</p>
+  
+      <p></li>
+<li>flatten<code>signature(object = "MarkerList")</code>:
+  For <code><a href='MarkerList.html'>MarkerList</a></code> objects the conversion is
+  similar to what <code><a href='http://www.inside-r.org/r-doc/base/unlist'>unlist</a></code> would do, but
+  argument <code>use.names</code> is used slightly differently.</p>
+  
+      <p>Secondly, the names of the main elements are append to
+  the marker names (like <code>unlist</code> does if
+  <code>use.names=TRUE</code>) only for marker lists that contain
+  numeric values (e.g. specificity scores). In the other
+  cases, they are used either as values for character
+  marker lists or as duplicated names for integer marker
+  lists.</p>
+  
+      <p></li>
+</ol></p>
+  
+      <p></p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'>l <- list(1,2,3,c(4,5,6))
+</div><div class='input'>flatten(l)
+</div>
+<div class='output'>[1] 1 2 3 4 5 6
+</div><div class='input'>nl <- setNames(l, letters[1:length(l)])
+</div><div class='input'>flatten(nl)
+</div>
+<div class='output'>[1] 1 2 3 4 5 6
+</div><div class='input'>flatten(nl, use.names=TRUE)
+</div>
+<div class='output'>a b c d d d 
+1 2 3 4 5 6 
+</div><div class='input'>ml <- rMarkerList(3, names=TRUE)
+</div><div class='input'>flatten(ml)
+</div>
+<div class='output'> [1] "Marker.3"  "Marker.1"  "Marker.2"  "Marker.8"  "Marker.9"  "Marker.6" 
+ [7] "Marker.5"  "Marker.4"  "Marker.7"  "Marker.18" "Marker.13" "Marker.16"
+[13] "Marker.11" "Marker.15" "Marker.14" "Marker.17" "Marker.10" "Marker.12"
+</div><div class='input'>flatten(ml, use.names=TRUE)
+</div>
+<div class='output'> Marker.3  Marker.1  Marker.2  Marker.8  Marker.9  Marker.6  Marker.5  Marker.4 
+  "Type1"   "Type1"   "Type1"   "Type2"   "Type2"   "Type2"   "Type2"   "Type2" 
+ Marker.7 Marker.18 Marker.13 Marker.16 Marker.11 Marker.15 Marker.14 Marker.17 
+  "Type2"   "Type3"   "Type3"   "Type3"   "Type3"   "Type3"   "Type3"   "Type3" 
+Marker.10 Marker.12 
+  "Type3"   "Type3" 
+</div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>flatten</li><li>flatten,list-method</li><li>flatten,MarkerList-method</li><li>flatten-methods</li>
+    </ul>
+    <ul>
+      <li>methods</li>
+    </ul> -->
+      
+    <h2>See also</h2>
+    
+  <code><a href='http://www.inside-r.org/r-doc/base/unlist'>unlist</a></code>
+
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

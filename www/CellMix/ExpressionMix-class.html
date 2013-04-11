@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>ExpressionMix-class. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Class for Gene Expression Deconvolution Benchmark Datasets</h1>
+
+<div class="row">
+  <div class="span8">
+        
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>Class for Gene Expression Deconvolution Benchmark
+  Datasets</p>
+  
+    </div>
+
+    <div class="Slots">
+      <h2>Slots</h2>
+      
+      <p><ol>
+<li>purelogical vector that indicates which samples
+  are pure.</p>
+  
+      <p></li>
+</ol></p>
+  
+      <p></p>
+  
+    </div>
+
+    <div class="Methods">
+      <h2>Methods</h2>
+      
+      <p><ol>
+<li>dim<code>signature(x = "ExpressionMix")</code>:
+  Similarly to <code><a href='http://www.inside-r.org/r-doc/NMF/NMF-class'>NMF-class</a></code> objects,
+  <code>ExpressionMix</code> objects have a "third" dimension,
+  the number of underlying cell types, inherited from the
+  embedded <code>NMF</code> model.</p>
+  
+      <p><code>dim</code> returns the dimensions of an ExpressionMix
+  object. It returns a 3-length integer vector, containing
+  the number of features, samples and components
+  respectively.</p>
+  
+      <p></li>
+<li>dimnames<code>signature(x = "ExpressionMix")</code>:
+  <code>dimnames</code> returns the dimension names of an
+  ExpressionMix object. It returns a list with 3 elements:
+  the feature names, sample names and the constituent
+  cell/tissue names (i.e. the basis names of the underlying
+  NMF model).</p>
+  
+      <p></li>
+<li>dimnames<-<code>signature(x = "ExpressionMix")</code>:
+  <code>dimnames<-</code> Sets the dimension names of an
+  ExpressionMix object. The replacement value must be a
+  list containing the feature names, the samples names
+  (optional), and the constituent cell/tissue names
+  (optional), all as character vectors of correct
+  dimensions (i.e. compatible with the number of features,
+  samples and constituents).</p>
+  
+      <p></li>
+<li>.DollarNames<code>signature(x =
+  "ExpressionMix")</code>: Auto-completion for
+  <code><a href='ExpressionMix-class.html'>ExpressionMix-class</a></code> objects</p>
+  
+      <p></li>
+<li>eset<code>signature(object = "ExpressionMix")</code>:
+  Extracts an ExpressionSet object from an
+  <code>ExpressionMix</code> object.</p>
+  
+      <p>Because <code><a href='ExpressionMix-class.html'>ExpressionMix-class</a></code> inherits from
+  <code><a href='http://www.inside-r.org/r-doc/Biobase/class.ExpressionSet'>ExpressionSet-class</a></code>, this methods simply
+  returns the object coerced as an <code>ExpressionSet</code>
+  object.</p>
+  
+      <p></li>
+<li>featureNames<-<code>signature(object =
+  "ExpressionMix")</code>: Sets the feature names on both the
+  <code>ExpressionSet</code> and <code>NMF</code> objects.</p>
+  
+      <p></li>
+<li>initialize<code>signature(.Object =
+  "ExpressionMix")</code>: Initialize method for ExpressionMix
+  object</p>
+  
+      <p></li>
+<li>mixData<code>signature(object =
+  "ExpressionMix")</code>: Extracts mixture data from an
+  <code>ExpressionMix</code> object.</p>
+  
+      <p>Because <code><a href='ExpressionMix-class.html'>ExpressionMix-class</a></code> inherits from
+  <code>linkS4class{NMFstd}</code>, this methods simply returns
+  the the object coerced as an <code>NMFstd</code> object.</p>
+  
+      <p></li>
+<li>mixData<-<code>signature(object =
+  "ExpressionMix", value = "NMFstd")</code>: Sets mixture data in
+  an ExpressionMix object.</p>
+  
+      <p>Because <code><a href='ExpressionMix-class.html'>ExpressionMix-class</a></code> inherits from
+  <code>linkS4class{NMFstd}</code>, this method simply copies all
+  slots in <code>value</code> in into the corresponding slots in
+  <code>object</code>, and then checks that the result object is
+  valid.</p>
+  
+      <p></li>
+<li>sampleNames<-<code>signature(object =
+  "ExpressionMix")</code>: Sets the sample names on both the
+  <code>ExpressionSet</code> and <code>NMF</code> objects.</p>
+  
+      <p></li>
+<li>showData<code>signature(object =
+  "ExpressionMix")</code>: Shows which data is available in an
+  <code>ExpressionMix</code> object.</p>
+  
+      <p>This method invisibly returns a 3-length logical that
+  indicates if expression, signature and proportion data
+  are available in <code>object</code>.</p>
+  
+      <p></li>
+</ol></p>
+  
+      <p></p>
+  
+    </div>
+      </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>ExpressionMix-class</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

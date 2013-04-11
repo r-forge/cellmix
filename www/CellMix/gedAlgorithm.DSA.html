@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>gedAlgorithm.DSA. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Complete Deconvolution using Digital Sorting Algorithm (DSA)</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre>gedAlgorithm.DSA(..., data = NULL, exact = TRUE, log = NULL)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>...</dt>
+      <dd>extra parameters passed to
+  <code><a href='mlsei.html'>mlsei</a></code>.</dd>
+      <dt>data</dt>
+      <dd>markers as <code><a href='MarkerList.html'>MarkerList</a></code> object.</dd>
+      <dt>exact</dt>
+      <dd>logical that specifies if one should impose
+  a sum-to-one (<code>TRUE</code>) or sum-to-less-than-one
+  (<code>FALSE</code>) constraint on the proportions.</dd>
+      <dt>log</dt>
+      <dd>indicates if the data should be converted to
+  linear scale (not log-trasnformed). If <code>TRUE</code> the
+  data is exponentialised (using base 2). If <code>FALSE</code>
+  the data is left unchanged (the detected log scale is
+  displayed in verbose mode). If a number, then it is used
+  as the base to exponentialise the data.</dd>
+    </dl>
+    
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>The method &#147;DSA&#148; implements the Digital Sorting
+  Algorithm (DSA) proposed by <cite>Zhong et al. (2013)</cite>,
+  which performs complete gene expression deconvolution
+  using a set of marker genes only.</p>
+  
+    </div>
+
+    <div class="References">
+      <h2>References</h2>
+      
+      <p>Zhong Y, Wan Y, Pang K, Chow LM and Liu Z (2013).
+  "Digital sorting of complex tissues for cell
+  type-specific gene expression profiles." _BMC
+  Bioinformatics_, *14*(1), pp. 89. ISSN 1471-2105, <URL:
+  http://dx.doi.org/10.1186/1471-2105-14-89>, <URL:
+  http://www.biomedcentral.com/1471-2105/14/89>.</p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'>## Example on dummy/random data</div><div class='input'>x <- rmix(3, 100, 20)
+</div><div class='input'># markers</div><div class='input'>ml <- getMarkers(x)
+</div><div class='input'></div><div class='input'># deconvolve using DSA (quadratic programming)</div><div class='input'>res <- ged(x, ml, 'DSA', verbose=TRUE, log=FALSE)
+</div>
+<div class='output'>  Using ged algorithm: “DSA”
+</div>
+<strong class='message'>Note: Method with signature ‘MatrixData#MarkerList#ANY’ chosen for function ‘nmf’,
+ target signature ‘ExpressionMix#MarkerList#character’.
+ "ExpressionSet#ANY#ANY" would also be valid</strong>
+<div class='output'>    Estimating basis and mixture coefficients matrices from marker features [DSA]
+    Using 15/15 markers to estimate cell proportions: 
+ CL_1 CL_2 CL_3 
+    5    5    5 
+    Checking data scale ...     NOTE [log]
+     Estimating basis matrix from mixture coefficients [qprog]
+     Not using any marker constraints
+</div>
+<strong class='message'>Loading required package: quadprog</strong>
+<strong class='message'>Loading required package: lpSolve</strong>
+<strong class='message'>Loading required package: MASS</strong>
+<strong class='message'>
+Attaching package: ‘MASS’
+</strong>
+<strong class='message'>The following object(s) are masked from ‘package:AnnotationDbi’:
+
+    select
+</strong>
+<div class='output'>  Timing:
+   user  system elapsed 
+  1.076   0.036   1.112 
+  GED final wrap up ...   OK
+</div><div class='input'># plot against true data</div><div class='input'>profplot(x, res)
+</div><p><img src='gedAlgorithm.DSA-ex1.png' alt='' width='400' height='400' /></p><div class='input'>profplot(t(basis(x)), t(basis(res)), legend=FALSE)
+</div><p><img src='gedAlgorithm.DSA-ex2.png' alt='' width='400' height='400' /></p><div class='input'></div><div class='input'></div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>DSA-ged</li><li>gedAlgorithm.DSA</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

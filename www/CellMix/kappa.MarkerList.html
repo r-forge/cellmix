@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>kappa.MarkerList. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Condition Number of a Marker List</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><span class="label label-success">S3</span> (MarkerList)
+`kappa`(z, data, n = 0, ...)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>z</dt>
+      <dd>a <code><a href='markers.html'>MarkerList-class</a></code> object</dd>
+      <dt>data</dt>
+      <dd>reference data matrix or <code>ExpressionSet</code>
+  object, from which is extracted the sub-matrix of
+  markers.</dd>
+      <dt>n</dt>
+      <dd>specifies the range of total number of markers
+  that compose the matrix whose condition number is
+  computed: <ul>
+<li> The default (<code>0</code>) is to
+  compute using all makers in <var>z</var> that can be found in
+  the data. </li>
+<li> A single positive value indicates the
+  exact number of such markers to use. A warning is thrown
+  if this number is greater than the number of markers
+  present in the data. </li>
+<li> A single negative value does
+  the same as a positive value, but no warning is thrown if
+  it exceeds the actual number of markers in the data.
+  </li>
+<li> <code>NULL</code> indicates a full range of number of
+  markers, i.e. the computation is performed including for
+  matrices composed of <code>length(z)</code> to <var>n</var> markers.
+  </li>
+<li> A numeric vector completely specifies the range of
+  number of markers over which to perform the computation.
+  </li>
+</ul>
+</dd>
+      <dt>...</dt>
+      <dd>extra arguments passed to
+  <code><a href='http://www.inside-r.org/r-doc/base/kappa'>kappa</a></code>.</dd>
+    </dl>
+    
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>The S3 method <code>kappa</code> for <code>MarkerList</code> objects
+  returns the condition number of a data (sub-)matrix
+  limited to markers in the list.</p>
+  
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p>This method typically is used to predict/optimise the
+  deconvolution power of a set of cell-specific signatures,
+  as proposed by <cite>Abbas et al. (2009)</cite>.</p>
+  
+    </div>
+
+    <div class="References">
+      <h2>References</h2>
+      
+      <p>Abbas AR, Wolslegel K, Seshasayee D, Modrusan Z and Clark
+  HF (2009). "Deconvolution of blood microarray data
+  identifies cellular activation patterns in systemic lupus
+  erythematosus." _PloS one_, *4*(7), pp. e6098. ISSN
+  1932-6203, <URL:
+  http://dx.doi.org/10.1371/journal.pone.0006098>, <URL:
+  http://www.ncbi.nlm.nih.gov/pubmed/19568420>.</p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'># random data and markers</div><div class='input'>d <- rmatrix(20, 10)
+</div><div class='input'>x <- rMarkerList(4, 5)
+</div><div class='input'>summary(x)
+</div>
+<div class='output'><object of class MarkerList>
+Types: 4 ['Type1', 'Type2', ..., 'Type4'] 
+Mode: integer
+Markers: 20 
+IDtype: _INDEX_ [2L, 12L, ..., 18L] 
+Breakdown:
+Type1 Type2 Type3 Type4 
+    5     5     5     5 
+</div><div class='input'>kappa(x, d)
+</div>
+<div class='output'>[1] 13.68829
+</div><div class='input'></div><div class='input'># over a specifc or range of total number of markers</div><div class='input'>kappa(x, d, 6)
+</div>
+<div class='output'>       6 
+9.192732 
+</div><div class='input'>kappa(x, d, 1:20)
+</div>
+<div class='output'>        4         5         6         7         8         9        10        11 
+ 8.128683  9.129466  9.192732  9.304547 11.843412 18.388396 81.701867 41.195696 
+       12        13        14        15        16        17        18        19 
+39.736723 40.316886 28.722295 16.100111 14.131391 13.092833 13.909967 14.171698 
+       20 
+13.688289 
+attr(,"mins")
+       4 
+8.128683 
+attr(,"n")
+[1] 4
+</div><div class='input'></div><div class='input'># condition number is Inf if no markers are found</div><div class='input'># NB: throws a warning</div><div class='input'>rownames(d) <- as.character(1:nrow(d))
+</div><div class='input'>x <- rMarkerList(4, 5, names=TRUE)
+</div><div class='input'>kappa(x, d)
+</div>
+<strong class='warning'>Warning message:
+Could not find any markers in data</strong>
+<div class='output'>[1] Inf
+</div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>kappa.MarkerList</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+    <h2>See also</h2>
+    
+  <code><a href='http://www.inside-r.org/r-doc/base/kappa'>kappa</a></code>
+
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

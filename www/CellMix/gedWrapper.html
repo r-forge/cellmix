@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>gedWrapper. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Wrapping GED Algorithms</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre>gedWrapper(key)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>key</dt>
+      <dd>Name of the GED algorithm to be wrapped. It
+  should be the name of a registered algorithm as returned
+  by <code><a href='gedAlgorithm.html'>gedAlgorithm</a></code>, or a GED algorithm object
+  (i.e. an instance of <code><a href='GEDStrategy-class.html'>GEDStrategy-class</a></code>).</dd>
+    </dl>
+    
+    <div class="Value">
+      <h2>Value</h2>
+      
+      <p>a function with attribute <code>'algorithm'</code> set to the
+  value of <code>key</code></p>
+  
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>This function creates a wrapper function for calling the
+  function <code><a href='ged.html'>ged</a></code> with a given GED algorithm.</p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'># wrap 'qprog' algorithm from Gong et al. (2011)</div><div class='input'>qp <- nmfWrapper('qprog')
+</div><div class='input'>qp
+</div>
+<div class='output'>function (..., data = NULL, exact = TRUE, log = NULL) 
+{
+    ca <- match.call()
+    args <- formals()
+    .call <- .checkArgs(ca, args)
+    e <- parent.frame()
+    eval(.call, envir = e)
+}
+<environment: 0x13f44124>
+</div><div class='input'></div><div class='input'># test on random data</div><div class='input'>x <- rmatrix(100,20)
+</div><div class='input'>sig <- rmatrix(100,3)
+</div><div class='input'>res <- ged(x, sig, 'qprog', seed=12345)
+</div><div class='input'>res2 <- qp(x, sig, seed=12345)
+</div><div class='input'>nmf.equal(res, res2)
+</div>
+<div class='output'>[1] TRUE
+</div><div class='input'></div><div class='input'></div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>gedWrapper</li>
+    </ul>
+    <ul>
+      <li>internal</li>
+    </ul> -->
+      
+    <h2>See also</h2>
+    
+  <code><a href='gedAlgorithm.html'>gedAlgorithm</a></code>, <code><a href='ged.html'>ged</a></code>
+
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

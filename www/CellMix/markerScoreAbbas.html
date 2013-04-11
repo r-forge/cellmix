@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>markerScoreAbbas. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Marker Scoring Method: Abbas et al. (2009)</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre>markerScoreAbbas(object, data, statistic = "p.value", ntop = 2, log = !is_logscale(object), 
+  lbase = 2, vsall = FALSE)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>statistic</dt>
+      <dd>statistic to use as a score. The method
+  computes the following quantities for each comparison
+  between the most expressing cell type (highest
+  within-group mean) with the i-th most expressing other
+  cell type: <ol>
+<li>p.value<i>p-value
+  (t-test). </li>
+<li>dm<i>difference in means.
+  </li>
+<li>statistic<i>statistic value (t statistic).
+  </li>
+<li>dmM<i>minimum difference = min(top) -
+  max(top<i>). </li>
+<li>fold<i>fold change in means.
+  </li>
+<li>mMfold<i>minimum fold change =
+  min(top)/max(top<i>). </li>
+<li>top<i>group index of the
+  i-th most expressing cell type. It is relative to the
+  levels of <code>data</code>. </li>
+</ol>
+</dd>
+      <dt>ntop</dt>
+      <dd>the number of groups for which statistics
+  should be computed (>= 2). If <code>ntop=2</code>, only
+  statistics between the highest and second-highest
+  expressing cell-type are computed. If <code>ntop=3</code>,
+  statistics between the highest and third-highest are also
+  computed, and so on. Use <code>ntop=Inf</code> to compare the
+  highest-expressing group to all other groups.</dd>
+      <dt>log</dt>
+      <dd>a logical specifying if the should the data be
+  log-transformed before computing the p-values. Default is
+  to log-transform the data if is not already in log-scale,
+  which is determined by the function
+  <code><a href='is_logscale.html'>is_logscale</a></code>.</dd>
+      <dt>lbase</dt>
+      <dd>log base to used if the data is
+  log-transformed.</dd>
+      <dt>vsall</dt>
+      <dd>logical used when <code>ntop=2</code> that
+  indicates if the comparison should be carried out between
+  the highest-expressing cell-type and the rest of all
+  other cell-types.</dd>
+      <dt>object</dt>
+      <dd>A numeric <code>matrix</code>, an object of class
+  <code><a href='http://www.inside-r.org/r-doc/Biobase/class.ExpressionSet'>ExpressionSet</a></code>, or a
+  <code><a href='markers.html'>MarkerList-class</a></code> object.</dd>
+      <dt>data</dt>
+      <dd>main extra data used by the scoring and
+  selection methods.
+
+  If <var>object</var> is a matrix-like object, <var>data</var> is
+  generally a factor or grouping variable, as a vector,
+  that defines the cell-type for each -- pure -- sample. If
+  a vector, this argument is converted into a factor with
+  the levels in their order of appearance in <code>data</code>,
+  by <code>factor(data, levels=unique(data))</code>. This is to
+  obtain levels in an order that is consistent with the
+  samples' order.
+
+  If <var>object</var> is a <code>MarkerList</code> object, then
+  <var>data</var> is generally a matrix-like object that
+  contains expression data.</dd>
+    </dl>
+    
+    <div class="Value">
+      <h2>Value</h2>
+      
+      <p>extractMarkersa numeric matrix with the following
+  named columns: <ul>
+<li>topthe index of the
+  highest-expressing cell-type, as defined by the levels of
+  the <code>factor</code> derived from argument <code>group</code>.
+  </li>
+<li>p.value2 p-value from the comparison between the
+  highest-expressing (top) and second highest-expressing
+  (second top) cell-type. </li>
+<li>dm2difference in mean
+  expression between the top and second top cell-type
+  </li>
+<li>dmM2minimum difference of expression between the
+  top and second top cell-type </li>
+<li>fold2fold change
+  mean expression between the top and second top cell-type
+  </li>
+<li>mMfold2minimum fold change expression between the
+  top and second top cell-type </li>
+<li>dm3, mdM3, fold3,
+  mMfold3 same quantitities computes between the top and
+  third-top cell-type. </li>
+</ul></p>
+  
+      <p>The result matrix has an attribute <code>'types'</code> that
+  contains the levels of the original (or converted) factor
+  <code>group</code>.</p>
+  
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p><code>markerScoreAbbas</code> implements the scoring/selection
+  method proposed by <cite>Abbas et al. (2009)</cite>, to select
+  marker genes from pure cell type samples.</p>
+  
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p>The method &#145;Abbas&#146; uses a t-test approach, so that
+  the data is assumed to contain at least 2 pure samples
+  per cell-type. It implements the method from <cite>Abbas
+  et al. (2009)</cite>:</p>
+  
+      <p>"[...] top differentially expressed (based on 95
+  change confidence intervals from Student's T-test)
+  probesets were determined by comparing each probe's
+  highest-expressed group with the next highest-expressed
+  group in order to find probesets that are good markers
+  for each cell population. This step was repeated with
+  comparison between the top group and the third-highest
+  group in order to also include probesets that were strong
+  markers for two cell populations."</p>
+  
+      <p>For each gene, the highest-expressing cell type is
+  determined by ordering them by mean expression.
+  Comparisons and p-value computations are performed using
+  the fast t-test implementation from
+  <code>rowttests</code> in the <span class = "pkg">genefilter</span> package.</p>
+  
+    </div>
+
+    <div class="References">
+      <h2>References</h2>
+      
+      <p>Abbas AR, Wolslegel K, Seshasayee D, Modrusan Z and Clark
+  HF (2009). "Deconvolution of blood microarray data
+  identifies cellular activation patterns in systemic lupus
+  erythematosus." _PloS one_, *4*(7), pp. e6098. ISSN
+  1932-6203, <URL:
+  http://dx.doi.org/10.1371/journal.pone.0006098>, <URL:
+  http://www.ncbi.nlm.nih.gov/pubmed/19568420>.</p>
+  
+    </div>
+      </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>markerScoreAbbas</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+    <h2>See also</h2>
+    
+  Other markerScore: <code><a href='extractMarkers.html'>extractMarkers</a></code>,
+  <code><a href='markerScoreHSD.html'>markerScoreHSD</a></code>,
+  <code><a href='markerScoreMaxcol.html'>markerScoreMaxcol</a></code>,
+  <code><a href='extractMarkers.html'>markerScoreMethod</a></code>,
+  <code><a href='markerScoreScorem.html'>markerScoreScorem</a></code>,
+  <code><a href='extractMarkers.html'>scoreMarkers</a></code>,
+  <code><a href='markerScoreHSD.html'>selectMarkers.markerScore_HSD</a></code>,
+  <code><a href='markerScoreScorem.html'>selectMarkers.markerScore_scorem</a></code>
+
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

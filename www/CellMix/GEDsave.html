@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>GEDsave. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Internal Functions for CellMix Data Registry</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre>GEDsave(x, force = FALSE)
+
+GEDpath(..., create = TRUE, reset = NULL)
+
+GEDtmp(..., create = TRUE)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>x</dt>
+      <dd>GEDdata_entry object or list of GEDdata_entry
+  objects. If missing then all entries are used.</dd>
+      <dt>force</dt>
+      <dd>logical to force saving dataset(s)</dd>
+      <dt>reset</dt>
+      <dd>new value for the local directory</dd>
+      <dt>...</dt>
+      <dd>path parts passed to <code><a href='http://www.inside-r.org/r-doc/base/file.path'>file.path</a></code>
+  to be appended to the main path.</dd>
+      <dt>create</dt>
+      <dd>logical that indicates if the directory
+  should be created if it does not exists.</dd>
+    </dl>
+    
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>These functions are used internally to work with the gene
+  expression dataset registry within the CellMix package.</p>
+  
+      <p><code>GEDpath</code> returns/sets the path to the local
+  directory where CellMix data (e.g., cache) are stored.</p>
+  
+      <p><code>GEDtmp</code> returns the path to the local directory
+  where downloaded data from GEO are stored.</p>
+  
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p><code>GEDsave</code> saves the primary dataset loaded in the
+  registry on disk.</p>
+  
+    </div>
+      </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>GEDpath</li><li>GEDsave</li><li>GEDtmp</li>
+    </ul>
+    <ul>
+      <li>internal</li>
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

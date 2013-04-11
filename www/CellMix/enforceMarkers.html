@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>enforceMarkers. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="
+  Renaud Gaujoux
+">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Enforcing Marker Block Patterns</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre>enforceMarkers(object, markers, ...)
+
+<span class="label label-important">S4</span> (matrix,list)
+`enforceMarkers`(object, markers, ratio = NULL, value = NULL, eps = NULL, 
+  attach = FALSE)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>object</dt>
+      <dd>a numeric matrix or an
+  <code><a href='http://www.inside-r.org/r-doc/NMF/NMF-class'>NMF-class</a></code> object</dd>
+      <dt>markers</dt>
+      <dd>a numeric vector or the list of markers to
+  enforce. This is usually an <code>MarkerList</code> object, but
+  can be any list, as long as it contains markers that can
+  matched to rows in <code>object</code>. If <code>markers</code> is a
+  single numeric, then it specifies the number of markers
+  to enforce in each cell-type. The markers are enforced on
+  the top -- basis -- rows of <code>object</code>. If
+  <code>markers</code> is a numeric vector, then its length must
+  be the number of columns (basis) in <code>object</code>.</dd>
+      <dt>ratio</dt>
+      <dd>a single numeric value specifying the
+  minimum expression fold change to enforce. If <code>NULL</code>
+  or zero, then the expression values of each marker are
+  forced to 0 on non-related cell types. Default is
+  <code>NULL</code>.</dd>
+      <dt>value</dt>
+      <dd>a single numeric value specifying the
+  expression value to enforce on the cell-type related to
+  each marker. If <code>NULL</code> this value is left unchanged.
+  Default is <code>NULL</code>.</dd>
+      <dt>eps</dt>
+      <dd>minimum value imposed for null entries.</dd>
+      <dt>attach</dt>
+      <dd>logical that indicates if the markers
+  should be attached to the matrix data, as attibute
+  <code>'markers'</code>.</dd>
+      <dt>...</dt>
+      <dd>extra arguments to allow extension, and passed
+  down to the workhorse method
+  <code>enforceMarkers,matrix,list</code>.</dd>
+    </dl>
+    
+    <div class="Value">
+      <h2>Value</h2>
+      
+      <p>the input object with the marker block patterns enforced</p>
+  
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>This method enforces marker block patterns on a numeric
+  matrix, which typically is the basis matrix of the NMF
+  model being estimated.</p>
+  
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p>The block patterns are defined by a list of markers whose
+  expression is cell-type specific. The expression value
+  <code class = 'eq'>e_ij</code> for a given marker <code class = 'eq'>i</code>, on its
+  respective cell-type <code class = 'eq'>j</code> is forced to a given value;
+  while its expression <code class = 'eq'>e_ik</code> on any other
+  cell-type <code class = 'eq'>k</code> is forced to 0 or to be a certain times
+  lower than <code class = 'eq'>e_ij</code>: <code class = 'eq'>e_ik =
+  min(e_ij/f - EPS, e_ik)</code>.</p>
+  
+    </div>
+
+    <div class="Methods">
+      <h2>Methods</h2>
+      
+      <p><ol>
+<li>enforceMarkers<code>signature(object = "matrix",
+  markers = "list")</code>: Enforce marker patterns specified as
+  a list.</p>
+  
+      <p>This is the workhorse method that is eventually called by
+  all other methods.</p>
+  
+      <p></li>
+<li>enforceMarkers<code>signature(object = "matrix",
+  markers = "numeric")</code>: Enforce a given number of marker
+  patterns</p>
+  
+      <p></li>
+<li>enforceMarkers<code>signature(object = "NMF",
+  markers = "ANY")</code>: The method for an <code>NMF</code> object
+  enforces the markers on its basis matrix and sets its
+  basis names to the marker list's names, if none were
+  already defined.</p>
+  
+      <p></li>
+</ol></p>
+  
+      <p></p>
+  
+    </div>
+      </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>enforceMarkers</li><li>enforceMarkers,matrix,list-method</li><li>enforceMarkers,matrix,numeric-method</li><li>enforceMarkers-methods</li><li>enforceMarkers,NMF,ANY-method</li>
+    </ul>
+    <ul>
+      <li>methods</li>
+    </ul> -->
+      
+    
+    <h2>Author</h2>
+    
+  Renaud Gaujoux
+
+    
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

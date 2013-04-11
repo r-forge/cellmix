@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>log,ExpressionSet-method. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Numeric Computations on ExpressionSet objects</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><span class="label label-important">S4</span> (ExpressionSet)
+`log`(x, ...)
+
+expb(x, ...)
+
+<span class="label label-important">S4</span> (matrix)
+`expb`(x, base = exp(1))
+
+<span class="label label-important">S4</span> (ExpressionSet)
+`exp`(x)
+
+<span class="label label-important">S4</span> (ExpressionSet)
+`range`(x, ..., na.rm = FALSE)
+
+<span class="label label-success">S3</span> (ExpressionSet)
+`quantile`(x, ...)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>x</dt>
+      <dd>an <code>ExpressionSet</code> object.</dd>
+      <dt>...</dt>
+      <dd>extra arguments passed to subsequent calls,
+  usually of the corresponding method in the <span class = "pkg">stats</span>
+  package.</dd>
+      <dt>base</dt>
+      <dd>log base to use.</dd>
+      <dt>na.rm</dt>
+      <dd>logical, indicating if <code><a href='http://www.inside-r.org/r-doc/base/NA'>NA</a></code>'s
+  should be omitted.</dd>
+    </dl>
+    
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>The <span class = "pkg">CellMix</span> defines some generics and methods to
+  apply numeric transformations to <code>ExpressionSet</code>
+  objects, which is convenient when working on gene
+  expression deconvolution algorithms, where scale
+  (log/linear) may matter.</p>
+  
+      <p><code>log</code> log-transforms the expression matrix of
+  <code><a href='http://www.inside-r.org/r-doc/Biobase/class.ExpressionSet'>ExpressionSet</a></code> objects.</p>
+  
+      <p><code>expb</code> applies an entry-wise exponential
+  transformation to the expression matrix of
+  <code><a href='http://www.inside-r.org/r-doc/Biobase/class.ExpressionSet'>ExpressionSet</a></code>, in a specific base.</p>
+  
+      <p><code>quantile</code> computes the range of expression values
+  in <code><a href='http://www.inside-r.org/r-doc/Biobase/class.ExpressionSet'>ExpressionSet</a></code> objects.</p>
+  
+    </div>
+
+    <div class="Methods">
+      <h2>Methods</h2>
+      
+      <p><ol>
+<li>exp<code>signature(x = "ExpressionSet")</code>:
+  <code>exp</code> is equivalent to <code>expb(x, 1)</code>.</p>
+  
+      <p></li>
+<li>range<code>signature(x = "ExpressionSet")</code>:
+  <code>range</code> computes the range of expression values from
+  <code><a href='http://www.inside-r.org/r-doc/Biobase/class.ExpressionSet'>ExpressionSet</a></code> objects.</p>
+  
+      <p></li>
+</ol></p>
+  
+      <p></p>
+  
+    </div>
+      </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>expb</li><li>expb,ExpressionSet-method</li><li>expb,matrix-method</li><li>expb-methods</li><li>exp,ExpressionSet-method</li><li>log,ExpressionSet-method</li><li>quantile.ExpressionSet</li><li>range,ExpressionSet-method</li>
+    </ul>
+    <ul>
+      <li>methods</li>
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

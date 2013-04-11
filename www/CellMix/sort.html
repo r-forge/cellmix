@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>reorder,MarkerList-method. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Reordering Marker Lists</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><span class="label label-important">S4</span> (MarkerList)
+`reorder`(x, data, by = NULL, fun = max, by.fun = rowMins, decreasing = !missing(data))
+
+<span class="label label-success">S3</span> (MarkerList)
+`sort`(x, decreasing = FALSE, ...)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>x</dt>
+      <dd>a <code>MarkerList</code> object</dd>
+      <dt>data</dt>
+      <dd>reference data as a numeric vector, a matrix,
+  or an <code>ExpressionSet</code> object. These data must have
+  names or rownames against which markers can be match.</dd>
+      <dt>by</dt>
+      <dd>optional <code>factor</code> only used when
+  <code>data</code> is a matrix-like object, to</dd>
+      <dt>fun</dt>
+      <dd>function to perform the second step in the
+  computation of scores (cf. argument <code>by</code>).</dd>
+      <dt>by.fun</dt>
+      <dd>function to perform the first step in the
+  computation of scores (cf. argument <code>by</code>).</dd>
+      <dt>decreasing</dt>
+      <dd>logical that indicates how the markers
+  should be ordered according to their score.</dd>
+      <dt>...</dt>
+      <dd> optional: extra arguments supplied to
+  <code>FUN</code></dd>
+    </dl>
+    
+    <div class="Value">
+      <h2>Value</h2>
+      
+      <p>a <code>MarkerList</code> object that also contain the computed
+  scores.</p>
+  
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>The method <code>reorder</code> for <code>MarkerList</code> objects
+  allows to reorder each set of markers according to some
+  auxiliary reference data, e.g, their gene expression in
+  different cell types.</p>
+  
+      <p><code>sort</code> sorts each element of a marker list.</p>
+  
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p>When <code>data</code> is a matrix-like object, a score is
+  computed for each marker in two steps: the first step
+  computes scores for each marker within each group of
+  columns defined by the levels of <code>by</code> (function
+  <code>rowMins</code>); the second step aggregates these scores
+  into a single value for each marker (function
+  <code>fun</code>).</p>
+  
+      <p>The markers are then ordered wihtin their respective set,
+  according to the score and argument <code>decreasing</code>.</p>
+  
+    </div>
+      </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>reorder,MarkerList-method</li><li>sort.MarkerList</li>
+    </ul>
+    <ul>
+      <li>methods</li>
+    </ul> -->
+      
+    <h2>See also</h2>
+    
+  <code><a href='utils-MarkerList.html'>reverse,MarkerList-method</a></code>
+
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

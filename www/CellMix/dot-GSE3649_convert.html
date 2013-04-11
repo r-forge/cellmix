@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>.GSE3649_convert. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Processing of Feature Annotation for Dataset GSE3649</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre>.GSE3649_convert(eset, file, mode = c("out", "in"))</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>eset</dt>
+      <dd>ExpressionSet object from GSE3649 [GPL3121]</dd>
+      <dt>file</dt>
+      <dd>source file</dd>
+      <dt>mode</dt>
+      <dd>usage mode: 'out' for writing out GenBank
+  ids, 'in' for reading in the result file from
+  IDconverter.</dd>
+    </dl>
+    
+    <div class="Source">
+      <h2>Source</h2>
+      
+      <p><a href = 'http://idconverter.bioinfo.cnio.es/'>http://idconverter.bioinfo.cnio.es/</a></p>
+  
+    </div>
+
+    <div class="Value">
+      <h2>Value</h2>
+      
+      <p>a data.frame</p>
+  
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>Function used to create the additional feature annotation
+  data <code><a href='GSE3649_fdata.html'>GSE3649_fdata</a></code> for the <code>GSE3649</code>
+  expression data.</p>
+  
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p>The function was used twice: <ul>
+<li> once to
+  extract and save in a file the GenBank accession numbers
+  from the feature annotation data of the original
+  ExpressionSet object -- created with
+  <code><a href='http://www.inside-r.org/r-doc/GEOquery/getGEO'>getGEO</a></code>. The content of the file
+  (a list of GenBank IDs, one per line) is passed to
+  IDconverter (see Reference) to obtain further annotation
+  (ENTREZID, UNIGENE, ...). We used this online service
+  because no annotation were available for these accession
+  numbers in the organism annotation package
+  <code>org.Hs.eb</code>. </li>
+<li> once to load the annotation back
+  from IDconverter result file (a tab delimited text file).
+  </li>
+</ul></p>
+  
+      <p></p>
+  
+    </div>
+      </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>.GSE3649_convert</li>
+    </ul>
+    <ul>
+      <li>internal</li>
+    </ul> -->
+      
+    <h2>See also</h2>
+    
+  Other Whitney: <code><a href='dot-GSE3649_pdata.html'>.GSE3649_pdata</a></code>
+
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>extractMarkers. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Extract Markers from Pure Samples.</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre>extractMarkers(object, ...)
+
+<span class="label label-important">S4</span> (ANY)
+`extractMarkers`(object, data = NULL, method = "Abbas", threshold = NA, 
+  decreasing = FALSE, ..., format = c("list", "raw"))
+
+scoreMarkers(...)
+
+markerScoreMethod(method, object, ...)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>object</dt>
+      <dd>A numeric <code>matrix</code>, an object of class
+  <code><a href='http://www.inside-r.org/r-doc/Biobase/class.ExpressionSet'>ExpressionSet</a></code>, or a
+  <code><a href='markers.html'>MarkerList-class</a></code> object.</dd>
+      <dt>data</dt>
+      <dd>main extra data used by the scoring and
+  selection methods.
+
+  If <var>object</var> is a matrix-like object, <var>data</var> is
+  generally a factor or grouping variable, as a vector,
+  that defines the cell-type for each -- pure -- sample. If
+  a vector, this argument is converted into a factor with
+  the levels in their order of appearance in <code>data</code>,
+  by <code>factor(data, levels=unique(data))</code>. This is to
+  obtain levels in an order that is consistent with the
+  samples' order.
+
+  If <var>object</var> is a <code>MarkerList</code> object, then
+  <var>data</var> is generally a matrix-like object that
+  contains expression data.</dd>
+      <dt>method</dt>
+      <dd>accession key of the method either used to
+  compute marker scores in <code>extractMarkers</code>, or to
+  define/retrieve scoring methods in
+  <code>markerScoreMethod</code>.
+
+  All available methods can be retrieved via
+  <code>markerScoreMethod()</code>.
+
+  A custom scoring method can also be passed as a
+  function.</dd>
+      <dt>...</dt>
+      <dd>other parameters passed to the scoring method
+  in <code>extractMarkers</code> <strong>and</strong>
+  <code><a href='selectMarkers.html'>selectMarkers</a></code>, or that define default
+  arguments when defining a scoring method with
+  <code>markerScoreMethod</code>.</dd>
+      <dt>format</dt>
+      <dd>specifies the output format: &#145;list&#146;
+  returns a <code><a href='markers.html'>MarkerList-class</a></code> object and
+  &#145;raw&#146; directly returns the result of the scoring
+  method -- which can be useful for lengthy computations.</dd>
+      <dt>threshold</dt>
+      <dd>threshold that is applied to filter
+  markers based on their respective statistic/score: Genes
+  with <code>statistic >= threshold</code> are selected if
+  <code>decreasing=TRUE</code>. Otherwise, if
+  <code>decreasing=FALSE</code> or <code>NA</code>, the selected genes
+  are those with <code>statistic <= threshold</code>.
+
+  Filtering is disabled if <code>threshold=NA</code>.</dd>
+      <dt>decreasing</dt>
+      <dd>logical that indicates how the
+  statistic/score should be ordered: <code>TRUE</code> orders by
+  decreasing value (i.e. the greater the score the better),
+  while <code>FALSE</code> orders by increasing value (i.e. the
+  lower the score the better). The value of this argument
+  also affects the way the filtering is performed (see
+  argument <code>threshold</code>).
+
+  Ordering is disabled if <code>decreasing=NA</code>.</dd>
+    </dl>
+    
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>When expression data from pure samples are available, it
+  is possible to select genes for their ability to
+  discriminate between the different cell-types. The
+  function <code>extractMarkers</code> provides an interface to
+  compute scores or statistics using different methods, and
+  select the ones that pass a given threshold.</p>
+  
+      <p>For long-runnning scoring methods, the marker selection
+  process could be performed manually, by separating the
+  scoring and selections steps, e.g.: <span class = "samp"> sc <-
+  scoreMarkers(eset, data=groups, method='HSD')
+  selectMarkers(sc, threshold=10^-3) </span></p>
+  
+      <p><code>markerScoreMethod</code> defines/retrieves marker scoring
+  methods.</p>
+  
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p>To see all available methods use
+  <code>markerScoreMethod()</code>.</p>
+  
+    </div>
+
+    <div class="Methods">
+      <h2>Methods</h2>
+      
+      <p><ol>
+<li>extractMarkers<code>signature(object =
+  "ExpressionSet")</code>: The method <code>extractMarkers</code> for
+  <code>ExpressionSet</code> objects calls <code>extractMarkers</code>
+  on the expression matrix <code>exprs(object)</code>.</p>
+  
+      <p></li>
+</ol></p>
+  
+      <p></p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'># see available scoring methods</div><div class='input'>markerScoreMethod()
+</div>
+<div class='output'>[1] "Abbas"  "maxcol" "scorem" "HSD"   
+</div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>extractMarkers</li><li>extractMarkers,ANY-method</li><li>extractMarkers,ExpressionSet-method</li><li>extractMarkers-methods</li><li>markerScoreMethod</li><li>scoreMarkers</li>
+    </ul>
+    <ul>
+      <li>methods</li>
+    </ul> -->
+      
+    <h2>See also</h2>
+    
+  Other markerScore: <code><a href='markerScoreAbbas.html'>markerScoreAbbas</a></code>,
+  <code><a href='markerScoreHSD.html'>markerScoreHSD</a></code>,
+  <code><a href='markerScoreMaxcol.html'>markerScoreMaxcol</a></code>,
+  <code><a href='markerScoreScorem.html'>markerScoreScorem</a></code>,
+  <code><a href='markerScoreHSD.html'>selectMarkers.markerScore_HSD</a></code>,
+  <code><a href='markerScoreScorem.html'>selectMarkers.markerScore_scorem</a></code>
+
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>featureNames. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Extracting Feature Names</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre>featureNames(object)
+
+featureNames(object) <- value
+
+sampleNames(object)
+
+sampleNames(object) <- value
+
+exprs(object)
+
+<span class="label label-important">S4</span> (matrix)
+`exprs`(object)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>object</dt>
+      <dd>Object, possibly derived from class
+  <code>eSet</code>.</dd>
+      <dt>value</dt>
+      <dd>Character vector containing feature or
+  sample names.</dd>
+    </dl>
+    
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>The <span class = "pkg">CellMix</span> package provides extra methods for the
+  generic <code><a href='http://www.inside-r.org/r-doc/Biobase/featureNames'>featureNames</a></code> and
+  <code><a href='http://www.inside-r.org/r-doc/Biobase/featureNames'>sampleNames</a></code>, that complete the
+  original Bioconductor interface.</p>
+  
+    </div>
+
+    <div class="Methods">
+      <h2>Methods</h2>
+      
+      <p><ol>
+<li>exprs<code>signature(object = "matrix")</code>: Simply
+  returns <code>object</code>. This method is defined so that
+  function can seamlessly handle both matrix and
+  <code>ExpressionSet</code> objects.</p>
+  
+      <p></li>
+<li>featureNames<code>signature(object = "matrix")</code>:
+  Returns the row names of <code>object</code>.</p>
+  
+      <p></li>
+<li>featureNames<code>signature(object =
+  "MarkerList")</code>: Returns the character vector of all
+  marker names in the list.</p>
+  
+      <p></li>
+<li>sampleNames<code>signature(object = "matrix")</code>:
+  Returns the column names of <code>object</code>.</p>
+  
+      <p></li>
+</ol></p>
+  
+      <p></p>
+  
+    </div>
+      </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>exprs</li><li>exprs,matrix-method</li><li>exprs-methods</li><li>featureNames</li><li>featureNames&lt;-</li><li>featureNames,MarkerList-method</li><li>featureNames,matrix-method</li><li>featureNames&lt;--methods</li><li>featureNames-methods</li><li>sampleNames</li><li>sampleNames&lt;-</li><li>sampleNames,matrix-method</li><li>sampleNames&lt;--methods</li><li>sampleNames-methods</li>
+    </ul>
+    <ul>
+      <li>methods</li>
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

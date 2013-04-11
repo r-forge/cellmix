@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>GEDStrategy. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Factory Methods for GEDStrategy Objects</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre>GEDStrategy(object, ...)
+
+<span class="label label-important">S4</span> (GEDStrategy)
+`GEDStrategy`(object, key, ...)
+
+<span class="label label-important">S4</span> (function)
+`GEDStrategy`(object, ..., name = NULL)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>object</dt>
+      <dd>object from which of a <code>GEDalgorithm</code>
+  is created</dd>
+      <dt>...</dt>
+      <dd>extra arguments to allow extension</dd>
+      <dt>key</dt>
+      <dd>if not missing, it must be a character string,
+  which is used as unique key for the new GED algorithm
+  object. In particular, it cannot be a key already used by
+  one of the registered algorithms, except if <code>object</code>
+  and <code>key</code> are the only arguments and if the key
+  matches the key of <code>object</code> itself, which simply
+  returns the object unchanged -- and is somehow not a very
+  useful call. If missing, a unique key is generated using
+  a digest hash of the result from
+  <code><a href='http://www.inside-r.org/r-doc/base/tempfile'>tempfile</a>()</code>.</dd>
+      <dt>name</dt>
+      <dd>descriptive name of the algorithm. A
+  temporary name is generated if missing.</dd>
+    </dl>
+    
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>Factory Methods for GEDStrategy Objects</p>
+  
+    </div>
+
+    <div class="Methods">
+      <h2>Methods</h2>
+      
+      <p><ol>
+<li>GEDStrategy<code>signature(object = "missing")</code>:
+  This method serves as a standard constructor and is
+  equivalent to <code>new('GEDalgorithm', ...)</code>, meaning
+  that all arguments must be named and correspond to slots
+  in <code><a href='GEDStrategy-class.html'>GEDStrategy-class</a></code>.</p>
+  
+      <p></li>
+<li>GEDStrategy<code>signature(object =
+  "GEDalgorithm_entry")</code>: Method to create a
+  <code>GEDalgorithm</code> object from its entry in the internal
+  registry.</p>
+  
+      <p></li>
+<li>GEDStrategy<code>signature(object =
+  "GEDStrategy")</code>: Constructor-Copy method, which creates
+  an <code>GEDalgorithm</code> object from a template and ensure
+  that the object has a key that does not conflict with
+  registered algorithms.</p>
+  
+      <p></li>
+<li>GEDStrategy<code>signature(object =
+  "character")</code>: This method creates a <code>GEDalgorithm</code>
+  object from an access key, which allows to make objects
+  using any registered algorithm as a template.</p>
+  
+      <p>The access key must be valid, i.e. that it must
+  correspond exactly to a registered algorithm. If other
+  arguments are passed, these must correspond to slots in
+  <code><a href='GEDStrategy-class.html'>GEDStrategy-class</a></code>, and will overwrite the
+  values defined by the registered algorithm.</p>
+  
+      <p></li>
+<li>GEDStrategy<code>signature(object = "function")</code>:
+  This method creates a <code>GEDalgorithm</code> object from a
+  plain R function.</p>
+  
+      <p></li>
+</ol></p>
+  
+      <p></p>
+  
+    </div>
+      </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>GEDStrategy</li><li>GEDStrategy,character-method</li><li>GEDStrategy,function-method</li><li>GEDStrategy,GEDalgorithm_entry-method</li><li>GEDStrategy,GEDStrategy-method</li><li>GEDStrategy-methods</li><li>GEDStrategy,missing-method</li>
+    </ul>
+    <ul>
+      <li>methods</li>
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

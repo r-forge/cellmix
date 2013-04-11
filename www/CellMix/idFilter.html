@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>idFilter. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Gene Identifier Filtering Strategies</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre>idFilter(name, ..., .wrap = FALSE)
+
+idFilterAll(map, ...)
+
+idFilterFirstN(map, n = 1L, exact.first = TRUE, ...)
+
+idFilterOneToOne(map, ...)
+
+idFilterInjective(map, strict = TRUE, ..., .last)
+
+idFilterOneToMany(map, ..., .last)
+
+idFilterAffy(map, secondary = NULL, ...)
+
+idFilterAuto(map, ..., .last)
+
+idFilterMAuto(map, ..., .last)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>name</dt>
+      <dd>name of the strategy</dd>
+      <dt>...</dt>
+      <dd>in <code>idFilter</code>, these are extra arguments
+  that are used to pre-build a call to the strategy, which
+  is wrapped into a function. These arguments are only used
+  when <code>.wrap=TRUE</code>.
+
+  For the different filtering stratgies, e.g.,
+  idFilterAuto, these arguments are either passed to
+  internal calls to other strategies, or not used, but
+  required so that filters can be composed.</dd>
+      <dt>.wrap</dt>
+      <dd>logical that indicates if the function call
+  should be build and wrapped into a caller function, which
+  takes only two arguments, <code>map</code> and <code>.last</code>,
+  that will receive the current mapping and a logical that
+  is <code>TRUE</code> only when <code>map</code> is the last mapping
+  in the whole sequence of mappings.
+
+  The value of <code>.last</code> will only be passed to the
+  original filter function if this one has an argument of
+  the same name.</dd>
+      <dt>map</dt>
+      <dd>mapping <code>list</code> object that maps source
+  identifiers to another type of identifier.</dd>
+      <dt>n</dt>
+      <dd>maximum number of matches to keep. The default
+  is 1, which only keeps the first match</dd>
+      <dt>exact.first</dt>
+      <dd>logical that indicates if exact
+  matches should be prioritized, and appear as first
+  match.</dd>
+      <dt>strict</dt>
+      <dd>logical that indicates if all intermediate
+  mappings are required to be <em>injective</em> one to one,
+  or only the last mapping step.</dd>
+      <dt>.last</dt>
+      <dd>logical that indicates if <code>map</code>
+  constitutes the last mapping or an intermediate mapping.</dd>
+      <dt>secondary</dt>
+      <dd>specifies what should be done with
+  secondary probes. If <code>secondary=TRUE</code> then secondary
+  probes are kept in the mapping but primary probes are
+  prioritized, in the sense that they will appear in front
+  of secondary probes in each element of the mapping. If
+  <code>secondary=FALSE</code> then secondary probes are removed
+  from the mapping, meaning that identifiers that only
+  mapped to secondary probes are then unmapped. If
+  <code>secondary=NULL</code> (default), then the filter is
+  applied as when <code>secondary=TRUE</code>, <strong>except</strong>
+  when source identifiers are also Affymetrix probes and do
+  not contain any secondary probes, in which case the the
+  filters is applied as when <code>secondary=FALSE</code>.
+
+  Any other value for <code>secondary</code> makes the filter to
+  behave as a pass through, i.e. the map is returned
+  unchanged.</dd>
+    </dl>
+    
+    <div class="Value">
+      <h2>Value</h2>
+      
+      <p>a function</p>
+  
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p><code>idFilter</code> provides access to a small registry that
+  contains a set of filtering strategy functions, which can
+  be used in calls to the <code><a href='mapIDs.html'>mapIDs</a></code> function.</p>
+  
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p>Filter strategies are functions that take a mapping as
+  its first argument and returns it after performing some
+  filtering. They should always also have argument
+  <code>...</code>, so that they can be combined in sequences.
+  Filter strategies may optionally have an argument
+  <code>.last</code>, whose value will be filled by
+  <code>mapIDs</code>: <code>TRUE</code> if and only if the mapping
+  constitutes the last step in the identifier conversion.</p>
+  
+      <p>The following filter strategies are currently defined:</p>
+  
+      <p><code>idFilterAll</code> [key &#145;all&#146;]: does not filter at
+  all, and simply return the input map unchanged.</p>
+  
+      <p><code>idFilterFirstN</code> [key &#145;firstN&#146;]: keeps the
+  first <code>n</code> matches.</p>
+  
+      <p><code>idFilterOneToOne</code> [key &#145;1:1&#146;]: only keeps
+  single matches.</p>
+  
+      <p><code>idFilterBiOnetoOne</code> [key &#145;1:1&#146;]: only keeps
+  bidirectional one to one mapping, i.e. that the reverse
+  mapping is also one to one. In other words it return the
+  largest injective mapping.</p>
+  
+      <p><code>idFilterOneToMany</code> [key &#145;1:*&#146;]: only keeps
+  single matches for intermediate mappings, but keeps all
+  matches (i.e. single and multiple) when mapping to the
+  last identifier type.</p>
+  
+      <p><code>idFilterAffy</code> [key &#145;affy&#146;]: enables to
+  filter out secondary affy probes, i.e., that do not match
+  the primary pattern "^[0-9]+_at$". This filter only
+  applies when the destination identifiers are suitable
+  Affymetrix probes.</p>
+  
+      <p><code>idFilterAuto</code> [key &#145;auto&#146;]: this filter is a
+  composed filter, that successively applies filters
+  &#145;affy&#146; and &#145;firstN&#146;. It is suitable when
+  one wants to map 1 to 1 as many identifiers as possible.</p>
+  
+      <p><code>idFilterMAuto</code> [key &#145;mauto&#146;]: this filter is
+  a composed filter, that successively applies filters
+  &#145;affy&#146; and &#145;1:*&#146;.</p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'># list of all available filters</div><div class='input'>idFilter()
+</div>
+<div class='output'>[1] "all"    "firstN" "1:1"    "1-1"    "1:*"    "affy"   "auto"   "mauto" 
+</div><div class='input'></div><div class='input'># show a given filter function</div><div class='input'>idFilter('1:1')
+</div>
+<div class='output'>function(map, ...){
+	if( !length(map) ) return(map) 
+	l <- sapply(map, length)
+	ok <- l==1L
+	if( (n <- length(l) - sum(ok)) ){
+		log_append('(dropped ', n, ' 1:2+ maps) ')
+	}
+	map[ok]
+}
+<environment: namespace:CellMix>
+</div><div class='input'></div><div class='input'># composed filter</div><div class='input'>f <- idFilter(c('1:1', 'affy'))
+</div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>idFilter</li><li>idFilterAffy</li><li>idFilterAll</li><li>idFilterAuto</li><li>idFilterFirstN</li><li>idFilterInjective</li><li>idFilterMAuto</li><li>idFilterOneToMany</li><li>idFilterOneToOne</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

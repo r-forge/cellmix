@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>gedAlgorithm.qprog. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Partial Gene Expression Deconvolution by Quadratic Programming</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre>gedAlgorithm.qprog(..., data = NULL, exact = TRUE, log = NULL)
+
+gedAlgorithm.cs_qprog(..., data = NULL, exact = TRUE, log = NULL)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>...</dt>
+      <dd>extra parameters passed to
+  <code><a href='mlsei.html'>mlsei</a></code>.</dd>
+      <dt>data</dt>
+      <dd>markers as <code><a href='MarkerList.html'>MarkerList</a></code> object.</dd>
+      <dt>exact</dt>
+      <dd>logical that specifies if one should impose
+  a sum-to-one (<code>TRUE</code>) or sum-to-less-than-one
+  (<code>FALSE</code>) constraint on the proportions.</dd>
+      <dt>log</dt>
+      <dd>indicates if the data should be converted to
+  linear scale (not log-trasnformed). If <code>TRUE</code> the
+  data is exponentialised (using base 2). If <code>FALSE</code>
+  the data is left unchanged (the detected log scale is
+  displayed in verbose mode). If a number, then it is used
+  as the base to exponentialise the data.</dd>
+    </dl>
+    
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>The GED method &#147;qprog&#148; estimates cell/tissue
+  proportions given a known set of cell/tissue-specific
+  expression signatures, using quadratic programming
+  techniques as proposed by <cite>Gong et al. (2011)</cite>.</p>
+  
+      <p>The GED method &#147;cs-qprog&#148; is an
+  <strong>experimental</strong> method that estimates
+  cell/tissue-specific expression signatures given
+  cell/tissue proportions, using quadratic programming
+  techniques, which can optionally impose marker
+  constraints on the signatures.</p>
+  
+    </div>
+
+    <div class="References">
+      <h2>References</h2>
+      
+      <p>Gong T, Hartmann N, Kohane IS, Brinkmann V, Staedtler F,
+  Letzkus M, Bongiovanni S and Szustakowski JD (2011).
+  "Optimal deconvolution of transcriptional profiling data
+  using quadratic programming with application to complex
+  clinical blood samples." _PloS one_, *6*(11), pp. e27156.
+  ISSN 1932-6203, <URL:
+  http://dx.doi.org/10.1371/journal.pone.0027156>, <URL:
+  http://www.pubmedcentral.nih.gov/articlerender.fcgi?artid=3217948\&tool=pmcentrez\&rendertype=abstract>.</p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'>## Example on dummy/random data</div><div class='input'>x <- rmix(3, 100, 20)
+</div><div class='input'># true cell signatures</div><div class='input'>s <- basis(x)
+</div><div class='input'></div><div class='input'># deconvolve using quadratic programming</div><div class='input'>res <- ged(x, s, 'qprog')
+</div><div class='input'>profplot(x, res)
+</div><p><img src='gedAlgorithm.qprog-ex1.png' alt='' width='400' height='400' /></p><div class='input'># signatures are not updated</div><div class='input'>identical(basis(res), s)
+</div>
+<div class='output'>[1] TRUE
+</div><div class='input'></div><div class='input'>### CS-QPROG</div><div class='input'>## Example on dummy/random data</div><div class='input'># random target matrix</div><div class='input'>x <- rmix(3, 100, 20)
+</div><div class='input'># true cell proportions</div><div class='input'>p <- coef(x)
+</div><div class='input'></div><div class='input'># deconvolve using quadratic programming</div><div class='input'>res <- ged(x, p, 'cs-qprog')
+</div><div class='input'>profplot(basis(x), basis(res))
+</div><p><img src='gedAlgorithm.qprog-ex2.png' alt='' width='400' height='400' /></p><div class='input'></div><div class='input'># signatures are not updated</div><div class='input'>identical(coef(res), p)
+</div>
+<div class='output'>[1] TRUE
+</div><div class='input'></div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>cs-qprog-ged</li><li>gedAlgorithm.cs_qprog</li><li>gedAlgorithm.qprog</li><li>qprog-ged</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

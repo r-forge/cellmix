@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>ged. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Main Interface for Gene Expression Deconvolution Methods</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre>ged(object, x, method, ...)
+
+<span class="label label-important">S4</span> (MatrixData,ANY,GEDStrategy)
+`ged`(object, x, method, data = NULL, maxIter = 1, ..., verbose = cellmix.getOption("verbose"), 
+  wrap = TRUE, dryrun = FALSE)
+
+<span class="label label-important">S4</span> (ANY,ANY,function)
+`ged`(object, x, method, ..., name = NULL)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>object</dt>
+      <dd>global gene expression matrix-like data
+  object (e.g., <code>matrix</code> or <code>ExpressionSet</code>)</dd>
+      <dt>x</dt>
+      <dd>input data used by the algorithm to deconvolve
+  global gene expression.</dd>
+      <dt>method</dt>
+      <dd>specification of a gene expression
+  deconvolution method. If missing, a default suitable
+  algorithm is selected, based on the type and/or
+  dimensions of <var>x</var> and <var>data</var>.</dd>
+      <dt>...</dt>
+      <dd>extra arguments to allow extension, most of
+  which are passed down to the deconvolution algorithm
+  itself.</dd>
+      <dt>data</dt>
+      <dd>optional data, typically a marker list,
+  specified in a format that is supported by the factory
+  function <code><a href='MarkerList.html'>MarkerList</a></code>.</dd>
+      <dt>maxIter</dt>
+      <dd>maximum number of iterations to perform.
+  If <code>method</code> is missing, the value of this argument
+  can influence which method is selected. See section
+  <em>Details</em>.</dd>
+      <dt>verbose</dt>
+      <dd>logical that toggles verbosity. A number
+  (integer) can be passed to specify the verbosity level
+  (the higher the more messages are output). Passing
+  <code>verbose=Inf</code> toggles debug mode (all messages).
+  Note that because it appears after <code>...</code> it must be
+  fully named.</dd>
+      <dt>wrap</dt>
+      <dd>logical that indicates the result returned by
+  the method should be wrapped into an NMF object. If
+  <code>FALSE</code>, it is returned as is. Note that because it
+  appears after <code>...</code> it must be fully named.</dd>
+      <dt>dryrun</dt>
+      <dd>logical that indicates if one should make a
+  fake run, i.e., without fitting any data, but showing as
+  much details about the run as possible (used or inferred
+  parameters, etc..). Note that because it appears after
+  <code>...</code> it must be fully named.</dd>
+      <dt>name</dt>
+      <dd>optional name for the custom algorithm.</dd>
+    </dl>
+    
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>Main Interface for Gene Expression Deconvolution Methods</p>
+  
+    </div>
+
+    <div class="Methods">
+      <h2>Methods</h2>
+      
+      <p><ol>
+<li>ged<code>signature(object = "MatrixData", x =
+  "ANY", method = "GEDStrategy")</code>: Default <code>ged</code>
+  method apply the auto-selection scheme for determining
+  which method is suitable for the type of input data.</p>
+  
+      <p></li>
+<li>ged<code>signature(object = "MatrixData", x =
+  "ANY", method = "ANY")</code>: Applies a deconvolution
+  algorithm registered in the <span class = "pkg">CellMix</span> registry.</p>
+  
+      <p></li>
+<li>ged<code>signature(object = "MatrixData", x =
+  "ANY", method = "missing")</code>: This method deconvolves the
+  target expression matrix using the algorithm selected by
+  the automatic selection strategy implemented by
+  <code><a href='selectGEDMethod.html'>selectGEDMethod</a></code>, which choose a suitable
+  algorithm whose data requirements match the provided
+  input data (i.e. arguments <code>x</code> and optionally
+  <code>data</code>). See some more details in the
+  <code><a href='selectGEDMethod.html'>selectGEDMethod</a></code> man page.</p>
+  
+      <p></li>
+<li>ged<code>signature(object = "ANY", x = "ANY",
+  method = "function")</code>: Applies a custom gene expression
+  algorithm.</p>
+  
+      <p></li>
+</ol></p>
+  
+      <p></p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'># random global expression data: 3 cell types, 20 samples, 100 features</div><div class='input'>X <- rmix(3, 100, 20, markers=5)
+</div><div class='input'>dim(X)
+</div>
+<div class='output'>  Features    Samples Components 
+       100         20          3 
+</div><div class='input'># extract signature/proportion/markers</div><div class='input'>sig <- basis(X)
+</div><div class='input'>prop <- coef(X)
+</div><div class='input'>m <- getMarkers(X)
+</div><div class='input'>summary(m)
+</div>
+<div class='output'><object of class MarkerList>
+Types: 3 ['CL_1', 'CL_2', 'CL_3'] 
+Mode: integer
+Markers: 15 
+IDtype: _INDEX_ [1L, 2L, ..., 15L] 
+Breakdown:
+CL_1 CL_2 CL_3 
+   5    5    5 
+</div><div class='input'>#--------------------------------------------</div><div class='input'># Automatic selection of a suitable algorithm</div><div class='input'>#--------------------------------------------</div><div class='input'># expression data only: fastdeconf</div><div class='input'>res <- ged(X, 3)
+</div><div class='input'># with markers only, non iterative: qprog</div><div class='input'>res <- ged(X, m)
+</div><div class='input'># with markers only, iterative: ssKL</div><div class='input'>res <- ged(X, m, maxIter=5)
+</div><div class='input'># with signatures: lsfit</div><div class='input'>res <- ged(X, sig)
+</div><div class='input'># with proportions: csSAM</div><div class='input'>res <- ged(X, prop)
+</div><div class='input'># with proportions, iterative: DSection</div><div class='input'>if( require.quiet(RcppOctave) ){
+	res <- ged(X, prop, maxIter=5)
+}
+</div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>ged</li><li>ged,ANY,ANY,function-method</li><li>ged,MatrixData,ANY,ANY-method</li><li>ged,MatrixData,ANY,GEDStrategy-method</li><li>ged,MatrixData,ANY,missing-method</li><li>ged-methods</li>
+    </ul>
+    <ul>
+      <li>methods</li>
+    </ul> -->
+      
+    <h2>See also</h2>
+    
+  <code><a href='selectGEDMethod.html'>selectGEDMethod</a></code>
+
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

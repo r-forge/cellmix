@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>geneValues. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Accessing Data in Marker Lists</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre>geneValues(object, ...)
+
+geneValues(object, ...) <- value
+
+geneIds(object, ...)
+
+geneIds(object) <- value
+
+geneIdType(object)
+
+geneIdType(object, verbose = FALSE) <- value
+
+annotation(object, ...)
+
+annotation(object, ...) <- value
+
+details(object)
+
+nmf(x, rank, method, ...)
+
+<span class="label label-important">S4</span> (MarkerList)
+`show`(object)
+
+<span class="label label-important">S4</span> (MarkerList)
+`details`(object)
+
+<span class="label label-important">S4</span> (MarkerList)
+`geneValues`(object, unlist = FALSE)
+
+hasValues(object, ...)
+
+marknames(object, ...)
+
+<span class="label label-important">S4</span> (vector)
+`marknames`(object, simplify = TRUE)
+
+<span class="label label-important">S4</span> (list)
+`marknames`(object, unlist = TRUE, ...)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>object</dt>
+      <dd>an object from/which to get/set data</dd>
+      <dt>value</dt>
+      <dd>replacement value</dd>
+      <dt>...</dt>
+      <dd>extra arguments to allow extension. See each
+  method's description for more details.</dd>
+      <dt>verbose</dt>
+      <dd>logical not used.</dd>
+      <dt>unlist</dt>
+      <dd>a logical that indicates if the values
+  should be returned as a list (<code>FALSE</code>) or as a
+  vector.</dd>
+      <dt>simplify</dt>
+      <dd>logical that is use when for logical
+  marker lists only, and indicates if all marker names
+  should be returned (<code>simplify=FALSE</code>), or only the
+  ones associated with a <code>TRUE</code> value.</dd>
+      <dt>x</dt>
+      <dd>target data to fit, i.e. a matrix-like object</dd>
+      <dt>rank</dt>
+      <dd>specification of the factorization rank. It
+  is usually a single numeric value, but other type of
+  values are possible (e.g. matrix), for which specific
+  methods are implemented. See for example methods
+  <code>nmf,matrix,matrix,ANY</code>.
+
+  If <code>rank</code> is a numeric vector with more than one
+  element, e.g. a range of ranks, then <code><a href='MarkerList-data.html'>nmf</a></code>
+  performs the estimation procedure described in
+  <code><a href='http://www.inside-r.org/r-doc/NMF/nmfEstimateRank'>nmfEstimateRank</a></code>.</dd>
+      <dt>method</dt>
+      <dd>specification of the NMF algorithm. The
+  most common way of specifying the algorithm is to pass
+  the access key (i.e. a character string) of an algorithm
+  stored in the package's dedicated registry, but methods
+  exists that handle other types of values, such as
+  <code>function</code> or <code>list</code> object. See their
+  descriptions in section <em>Methods</em>.
+
+  If <code>method</code> is missing the algorithm to use is
+  obtained from the option
+  <code>nmf.getOption('default.algorithm')</code>, unless it can
+  be infer from the type of NMF model to fit, if this later
+  is available from other arguments. Factory fresh default
+  value is &#145;brunet&#146;, which corresponds to the
+  standard NMF algorithm from <cite>Brunet2004</cite> (see
+  section <em>Algorithms</em>).
+
+  Cases where the algorithm is inferred from the call are
+  when an NMF model is passed in arguments <code>rank</code> or
+  <code>seed</code> (see description for
+  <code>nmf,matrix,numeric,NULL</code> in section
+  <em>Methods</em>).</dd>
+    </dl>
+    
+    <div class="Value">
+      <h2>Value</h2>
+      
+      <p>a character vector, usually of length 1 but possibly
+  longer.</p>
+  
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>The S4 generics <code>geneValues</code> and <code>geneValues<-</code>
+  respectively return and set the values associated with
+  each gene in a gene set.</p>
+  
+      <p><code>geneIds</code> returns all gene identifiers in a
+  <code>MarkerList</code> object as a standard list.</p>
+  
+      <p><code>annotation</code> and <code>annotation<-</code> respectively
+  extract and set the annotation string from a
+  <code><a href='MarkerList.html'>MarkerList</a></code> object, i.e. the name of
+  Bioconductor annotation package(s) relevant to convert
+  marker identifiers into other IDs.</p>
+  
+      <p><code>hasValues</code> tells if a marker list contains numeric
+  values, e.g. specificity scores.</p>
+  
+      <p><code>marknames</code> is similar to <code>geneIds</code> but by
+  default returns the all marker names unlisted, i.e. as a
+  character vector.</p>
+  
+    </div>
+
+    <div class="Methods">
+      <h2>Methods</h2>
+      
+      <p><ol>
+<li>annotation<code>signature(object =
+  "MarkerList")</code>: Extract name of the annotation package
+  from a marker list.</p>
+  
+      <p></li>
+<li>annotation<code>signature(object =
+  "GEDdata_entry")</code>: <code>annotation</code> gets the name of the
+  annotation package(s) relevant for the data.</p>
+  
+      <p></li>
+<li>annotation<-<code>signature(object =
+  "MarkerList", value = "character")</code>: Sets the name of the
+  annotation package associated to a marker list.</p>
+  
+      <p></li>
+<li>annotation<-<code>signature(object =
+  "MarkerList", value = "NULL")</code>: Reset the annotation
+  package associated to a marker list</p>
+  
+      <p></li>
+<li>details<code>signature(object = "MarkerList")</code>:
+  Shows more details than the regular <code>show</code> method.</p>
+  
+      <p></li>
+<li>geneIdType<code>signature(object =
+  "MarkerList")</code>: Returns the type of gene identifier used
+  in a marker list.</p>
+  
+      <p></li>
+<li>geneIdType<-<code>signature(object =
+  "MarkerList", value = "NULL")</code>: Sets the type of gene
+  identifier used in a marker list to
+  <code><a href='http://www.inside-r.org/r-doc/GSEABase/GeneIdentifierType-constructors'>NullIdentifier</a>()</code>.</p>
+  
+      <p></li>
+<li>geneIdType<-<code>signature(object =
+  "MarkerList", value = "character")</code>: Sets the type of
+  gene identifier used in a marker list to a given value.</p>
+  
+      <p></li>
+<li>geneIdType<-<code>signature(object =
+  "MarkerList", value = "GeneIdentifierType")</code>: Sets the
+  type of gene identifier associated with a marker list to
+  a given <code><a href='http://www.inside-r.org/r-doc/GSEABase/GeneIdentifierType-class'>GeneIdentifierType-class</a></code> object.</p>
+  
+      <p></li>
+<li>geneValues<code>signature(object =
+  "MarkerList")</code>: Returns the values embedded in a
+  <code>MarkerList</code> object.</p>
+  
+      <p></li>
+<li>nmf<code>signature(x = "MatrixData", rank =
+  "MarkerList", method = "ANY")</code>: Calls an NMF algorithm
+  using a MarkerList object, whose length defines the
+  factorization rank. The actual MarkerList object is
+  passed down in argument <code>data</code>.</p>
+  
+      <p></li>
+</ol></p>
+  
+      <p></p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'># get marker Ids</div><div class='input'>m <- rMarkerList(3, names=TRUE)
+</div><div class='input'>geneIds(m)
+</div>
+<div class='output'>$Type1
+[1] "Marker.1" "Marker.3" "Marker.2"
+
+$Type2
+[1] "Marker.9" "Marker.5" "Marker.7" "Marker.4" "Marker.8" "Marker.6"
+
+$Type3
+[1] "Marker.12" "Marker.18" "Marker.16" "Marker.17" "Marker.11" "Marker.15"
+[7] "Marker.13" "Marker.14" "Marker.10"
+
+</div><div class='input'># get attached values</div><div class='input'>m <- rMarkerList(3, values=TRUE)
+</div><div class='input'>geneValues(m)
+</div>
+<div class='output'>$Type1
+ Marker.1  Marker.2  Marker.3 
+0.8380698 0.1450309 0.9227744 
+
+$Type2
+  Marker.4   Marker.5   Marker.6   Marker.7   Marker.8   Marker.9 
+0.08689466 0.68606624 0.96765137 0.63654410 0.42051527 0.80513973 
+
+$Type3
+ Marker.10  Marker.11  Marker.12  Marker.13  Marker.14  Marker.15  Marker.16 
+0.26038751 0.65711832 0.58254836 0.64320725 0.02520756 0.06435620 0.98084656 
+ Marker.17  Marker.18 
+0.93940564 0.19708425 
+
+</div><div class='input'>marknames( rMarkerList(3) )
+</div>
+<div class='output'>Type1 Type1 Type1 Type2 Type2 Type2 Type2 Type2 Type2 Type3 Type3 Type3 Type3 
+    4    13    17     2     7     9    10    14    16     1     3     5     6 
+Type3 Type3 Type3 Type3 Type3 
+    8    11    12    15    18 
+</div><div class='input'>marknames( rMarkerList(3, names=TRUE) )
+</div>
+<div class='output'>      Type1       Type1       Type1       Type2       Type2       Type2 
+ "Marker.1"  "Marker.3"  "Marker.2"  "Marker.7"  "Marker.8"  "Marker.4" 
+      Type2       Type2       Type2       Type3       Type3       Type3 
+ "Marker.5"  "Marker.6"  "Marker.9" "Marker.13" "Marker.15" "Marker.12" 
+      Type3       Type3       Type3       Type3       Type3       Type3 
+"Marker.11" "Marker.16" "Marker.17" "Marker.14" "Marker.10" "Marker.18" 
+</div><div class='input'>marknames( rMarkerList(3, values=TRUE) )
+</div>
+<div class='output'>      Type1       Type1       Type1       Type2       Type2       Type2 
+ "Marker.1"  "Marker.2"  "Marker.3"  "Marker.4"  "Marker.5"  "Marker.6" 
+      Type2       Type2       Type2       Type3       Type3       Type3 
+ "Marker.7"  "Marker.8"  "Marker.9" "Marker.10" "Marker.11" "Marker.12" 
+      Type3       Type3       Type3       Type3       Type3       Type3 
+"Marker.13" "Marker.14" "Marker.15" "Marker.16" "Marker.17" "Marker.18" 
+</div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>annotation</li><li>annotation&lt;-</li><li>annotation,GEDdata_entry-method</li><li>annotation&lt;-,MarkerList,character-method</li><li>annotation,MarkerList-method</li><li>annotation&lt;-,MarkerList,NULL-method</li><li>annotation&lt;--methods</li><li>annotation-methods</li><li>details</li><li>details,MarkerList-method</li><li>details-methods</li><li>geneIds</li><li>geneIds&lt;-</li><li>geneIds&lt;-,MarkerList,list-method</li><li>geneIds,MarkerList-method</li><li>geneIds&lt;--methods</li><li>geneIds-methods</li><li>geneIdType</li><li>geneIdType&lt;-</li><li>geneIdType&lt;-,MarkerList,character-method</li><li>geneIdType&lt;-,MarkerList,GeneIdentifierType-method</li><li>geneIdType,MarkerList-method</li><li>geneIdType&lt;-,MarkerList,NULL-method</li><li>geneIdType&lt;--methods</li><li>geneIdType-methods</li><li>geneValues</li><li>geneValues&lt;-</li><li>geneValues,MarkerList-method</li><li>geneValues&lt;--methods</li><li>geneValues-methods</li><li>hasValues</li><li>marknames</li><li>marknames,list-method</li><li>marknames-methods</li><li>marknames,vector-method</li><li>nmf</li><li>nmf,MatrixData,MarkerList,ANY-method</li><li>nmf-methods</li><li>show,MarkerList-method</li>
+    </ul>
+    <ul>
+      <li>methods</li>
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

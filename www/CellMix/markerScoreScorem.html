@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>markerScoreScorem. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Marker scoring method: SCOREM</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre>markerScoreScorem(object, data, minsd = 0.1, alpha = 0.01, ..., verbose = FALSE)
+
+<span class="label label-success">S3</span> (markerScore_scorem)
+`selectMarkers`(x, data, mscore = "pearson", statistic = c("size", "score"), 
+  ..., .object = NULL)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>minsd</dt>
+      <dd>minimum standard deviation of expression
+  marker profiles</dd>
+      <dt>alpha</dt>
+      <dd>numerical value between 0 and 1, indicating
+  the level of significance required for correlations to be
+  considered significant. It is a p-value threshold: the
+  lower the value the more markers must be correlated to be
+  called in the same sub-group.</dd>
+      <dt>...</dt>
+      <dd>extra arguments not used in
+  <code>markerScoreScorem</code>, but passed to
+  <code><a href='selectMarkers.html'>selectMarkers.MarkerList</a></code> in
+  <code>selectMarkers</code>.</dd>
+      <dt>verbose</dt>
+      <dd>logical that toggles log messages (passed
+  to <code><a href='subset.html'>subset,MarkerList-method</a></code>), which can be
+  useful to track any ID conversion.</dd>
+      <dt>mscore</dt>
+      <dd>correlation method used to compute a score
+  for each marker of the selected groups.</dd>
+      <dt>object</dt>
+      <dd>A numeric <code>matrix</code>, an object of class
+  <code><a href='http://www.inside-r.org/r-doc/Biobase/class.ExpressionSet'>ExpressionSet</a></code>, or a
+  <code><a href='markers.html'>MarkerList-class</a></code> object.</dd>
+      <dt>data</dt>
+      <dd>main extra data used by the scoring and
+  selection methods.
+
+  If <var>object</var> is a matrix-like object, <var>data</var> is
+  generally a factor or grouping variable, as a vector,
+  that defines the cell-type for each -- pure -- sample. If
+  a vector, this argument is converted into a factor with
+  the levels in their order of appearance in <code>data</code>,
+  by <code>factor(data, levels=unique(data))</code>. This is to
+  obtain levels in an order that is consistent with the
+  samples' order.
+
+  If <var>object</var> is a <code>MarkerList</code> object, then
+  <var>data</var> is generally a matrix-like object that
+  contains expression data.</dd>
+      <dt>x</dt>
+      <dd>data object based on which the markers are
+  selected, as computed returned by
+  <code>extractMarkers(..., format='raw')</code>. The type of
+  <code>x</code> depends on the scoring method used to compute
+  it.</dd>
+      <dt>statistic</dt>
+      <dd>name or column index of the
+  statistic/score to use. The default is to use the second
+  column of the matrix returned by the scoring method, but
+  each method can define its own default.</dd>
+      <dt>.object</dt>
+      <dd>argument used internally by
+  <code><a href='extractMarkers.html'>extractMarkers</a></code> to pass the original object
+  on which marker scores where computed.</dd>
+    </dl>
+    
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>This method applies an approach called <em>statistical
+  consolidation of redundant expression measures</em> (SCOREM)
+  from <cite>Schneider et al. (2011)</cite> whitin each cell
+  type, in order to select groups of markers that have
+  consistent expression in mixed samples.</p>
+  
+      <p>If multiple groups pass the criterion, then the group
+  with the lowest median gene expression gene-wise standard
+  deviation is selected. This is to select the group of
+  markers whose expression values are the more similar.</p>
+  
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p>The SCOREM approach allows sets of marker genes to be
+  optimised with respect to the dataset one intends to use
+  them with. It uses a sub-graph detection algorithm, on a
+  graph defined from the rank correlation matrix of marker
+  expression profiles.</p>
+  
+      <p><strong>IMPORTANT: this feature is still experimental and
+  in development.</strong></p>
+  
+      <p>Before returning the <code>MarkerList</code> object, each
+  selected marker is assigned a score defined as its
+  minimum correlation with other markers in its group.</p>
+  
+    </div>
+
+    <div class="References">
+      <h2>References</h2>
+      
+      <p>Schneider S, Smith T and Hansen U (2011). "SCOREM:
+  statistical consolidation of redundant expression
+  measures." _Nucleic acids research_, pp. 1-12. ISSN
+  1362-4962, <URL: http://dx.doi.org/10.1093/nar/gkr1270>,
+  <URL: http://www.ncbi.nlm.nih.gov/pubmed/22210887>.</p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'># random data matrix and marker list</div><div class='input'>x <- rmix(3, 100, 20)
+</div><div class='input'>m <- getMarkers(x)
+</div><div class='input'></div><div class='input'># compute SCOREM groups: should keep all markers together</div><div class='input'># or remove weak markers</div><div class='input'>s <- markerScoreScorem(m, x)
+</div><div class='input'>str(s)
+</div>
+<div class='output'>List of 3
+ $ CL_1:List of 1
+  ..$ :List of 2
+  .. ..$ ids  : int [1:5] 1 2 3 4 5
+  .. ..$ score: num 0.908
+ $ CL_2:List of 1
+  ..$ :List of 2
+  .. ..$ ids  : int [1:5] 6 7 8 9 10
+  .. ..$ score: num 0.865
+ $ CL_3:List of 4
+  ..$ :List of 2
+  .. ..$ ids  : int(0) 
+  .. ..$ score: num 0.92
+  ..$ :List of 2
+  .. ..$ ids  : int(0) 
+  .. ..$ score: num 1
+  ..$ :List of 2
+  .. ..$ ids  : int(0) 
+  .. ..$ score: num 1
+  ..$ :List of 2
+  .. ..$ ids  : int(0) 
+  .. ..$ score: num 1
+ - attr(*, "annotation")= chr ""
+</div><div class='input'># add some non marker genes</div><div class='input'>m2 <- m
+</div><div class='input'>m2[[1]] <- as.integer(c(m2[[1]], c(40, 50, 60)))
+</div><div class='input'>s <- markerScoreScorem(m2, x)
+</div><div class='input'>str(s[[1]])
+</div>
+<div class='output'>List of 2
+ $ :List of 2
+  ..$ ids  : int(0) 
+  ..$ score: num 0.806
+ $ :List of 2
+  ..$ ids  : int(0) 
+  ..$ score: num 1
+</div><div class='input'></div><div class='input'># with group selection and reordering through the main interface function</div><div class='input'>extractMarkers(m, x, method='scorem')
+</div>
+<div class='output'><object of class: MarkerList>
+Types: CL_1, CL_2, CL_3 (total: 3)
+Mode: numeric
+setName: NA 
+geneIds: 5, 1, ..., 10 (total: 10)
+geneIdType: Null
+collectionType: Null 
+geneValues: 0.89450286738862, 0.879665285762373, ..., 0.569711603298128 
+details: use 'details(object)'
+</div><div class='input'>extractMarkers(m2, x, method='scorem')
+</div>
+<div class='output'><object of class: MarkerList>
+Types: CL_1, CL_2, CL_3 (total: 3)
+Mode: numeric
+setName: NA 
+geneIds: 7, 9, ..., 10 (total: 5)
+geneIdType: Null
+collectionType: Null 
+geneValues: 0.71086744770673, 0.656968865683375, ..., 0.569711603298128 
+details: use 'details(object)'
+</div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>markerScoreScorem</li><li>selectMarkers.markerScore_scorem</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+    <h2>See also</h2>
+    
+  Other markerScore: <code><a href='extractMarkers.html'>extractMarkers</a></code>,
+  <code><a href='markerScoreAbbas.html'>markerScoreAbbas</a></code>,
+  <code><a href='markerScoreHSD.html'>markerScoreHSD</a></code>,
+  <code><a href='markerScoreMaxcol.html'>markerScoreMaxcol</a></code>,
+  <code><a href='extractMarkers.html'>markerScoreMethod</a></code>,
+  <code><a href='extractMarkers.html'>scoreMarkers</a></code>,
+  <code><a href='markerScoreHSD.html'>selectMarkers.markerScore_HSD</a></code>
+
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>mixData. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Extracting Mixture Data</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre>mixData(object, ...)
+
+mixData(object) <- value</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>object</dt>
+      <dd>object from which to extract the mixture
+  data</dd>
+      <dt>...</dt>
+      <dd>extra argument to allow extension. See each
+  method's description for more details,.</dd>
+      <dt>value</dt>
+      <dd>replacement value. In the case of
+  <code><a href='ExpressionMix.html'>ExpressionMix</a></code> objects, this will be an
+  object of class <code><a href='http://www.inside-r.org/r-doc/NMF/NMFstd-class'>NMFstd-class</a></code>.</dd>
+    </dl>
+    
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>The S4 generic function <code>mixData</code> extract mixture
+  data from an object, i.e. information on its underlying
+  constituents/components. For example, for gene expression
+  deconvolution, the <span class = "pkg">CellMix</span> stores such data as an
+  <code><a href='http://www.inside-r.org/r-doc/NMF/NMFstd-class'>NMFstd-class</a></code> model object.</p>
+  
+      <p>The function <code>mixData<-</code> assign mixture data onto
+  objects.</p>
+  
+    </div>
+
+    <div class="Methods">
+      <h2>Methods</h2>
+      
+      <p><ol>
+<li>mixData<code>signature(object =
+  "ExpressionMix")</code>: Extracts mixture data from an
+  <code>ExpressionMix</code> object.</p>
+  
+      <p>Because <code><a href='ExpressionMix-class.html'>ExpressionMix-class</a></code> inherits from
+  <code>linkS4class{NMFstd}</code>, this methods simply returns
+  the the object coerced as an <code>NMFstd</code> object.</p>
+  
+      <p></li>
+<li>mixData<-<code>signature(object =
+  "ExpressionMix", value = "NMFstd")</code>: Sets mixture data in
+  an ExpressionMix object.</p>
+  
+      <p>Because <code><a href='ExpressionMix-class.html'>ExpressionMix-class</a></code> inherits from
+  <code>linkS4class{NMFstd}</code>, this method simply copies all
+  slots in <code>value</code> in into the corresponding slots in
+  <code>object</code>, and then checks that the result object is
+  valid.</p>
+  
+      <p></li>
+</ol></p>
+  
+      <p></p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'>e <- ExpressionMix(rmatrix(10,5))
+</div><div class='input'>e
+</div>
+<div class='output'>ExpressionMix (storageMode: lockedEnvironment)
+assayData: 10 features, 5 samples 
+  element names: exprs 
+protocolData: none
+phenoData: none
+featureData: none
+experimentData: use 'experimentData(object)'
+Annotation:  
+Composition: none
+</div><div class='input'># the mixture data is stored as an NMF model</div><div class='input'>mixData(e)
+</div>
+<div class='output'><Object of class:NMFstd>
+features: 10 
+basis/rank: 0 
+samples: 5 
+</div><div class='input'></div><div class='input'># assign a random mixture data with 5 cell types</div><div class='input'>m <- rnmf(3, e)
+</div><div class='input'># ensure proportions sum-up to one</div><div class='input'>coef(m) <- scoef(m)
+</div><div class='input'>mixData(e) <- m
+</div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>mixData</li><li>mixData&lt;-</li><li>mixData,ExpressionMix-method</li><li>mixData&lt;-,ExpressionMix,NMFstd-method</li><li>mixData&lt;--methods</li><li>mixData-methods</li>
+    </ul>
+    <ul>
+      <li>methods</li>
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

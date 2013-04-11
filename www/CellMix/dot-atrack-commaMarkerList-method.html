@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>.atrack,MarkerList-method. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Heatmap Annotation Track for MarkerList Objects</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><span class="label label-important">S4</span> (MarkerList)
+`.atrack`(object, data = NULL, ..., view = c("single", "split", "predict"))</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>object</dt>
+      <dd>a MarkerList object</dd>
+      <dt>data</dt>
+      <dd>the reference data to annotate</dd>
+      <dt>view</dt>
+      <dd>a character string that specifies how markers
+  should be annotated: <ol>
+<li>&#147;single&#148;markers are shown in a single
+  track </li>
+<li>&#147;split&#148;each cell type is shown in a
+  separate track </li>
+<li>&#147;predict&#148;one track for
+  each column in <code>data</code> is added, and markers are
+  shown on the track associated with the column
+  corresponding to its maximum value. </li>
+</ol>
+</dd>
+      <dt>...</dt>
+      <dd>extra parameters passed to .atrack</dd>
+    </dl>
+    
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>This method allows to add annotation tracks in heatmaps
+  produced by <code><a href='http://www.inside-r.org/r-doc/NMF/aheatmap'>aheatmap</a></code>, to highlight the
+  position of markers, when plotting either the global
+  expression values or cell type-specific signatures,
+  whether measured or estimated.</p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'># load IRIS markers and the Abbas signature matrix</div><div class='input'>m <- MarkerList('IRIS')
+</div><div class='input'>data(Abbas)
+</div><div class='input'>aheatmap(Abbas, annRow=m)
+</div><p><img src='dot-atrack-commaMarkerList-method-ex1.png' alt='' width='400' height='400' /></p></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>.atrack,MarkerList-method</li>
+    </ul>
+    <ul>
+      <li>methods</li>
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

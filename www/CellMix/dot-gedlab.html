@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>.gedlab. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Gene Expression Deconvolution: Flexible Experimental Algorithm</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre>.gedlab(target, x, data = NULL, maxIter = 1000L, markers = c("prior+semi", "prior", 
+  "semi", "post"), cscale = FALSE, sscale = FALSE, ratio = 2, ...)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>v</dt>
+      <dd>target matrix</dd>
+      <dt>x</dt>
+      <dd>factorisation rank, i.e. the number of cell
+  types to extract, or a complete initial NMF model.</dd>
+      <dt>data</dt>
+      <dd>optional marker list used to either <em>a
+  posteriori</em> assign estimated signatures, or <em>a
+  priori</em> enforce marker block patterns <strong>before</strong>
+  each iteration.</dd>
+      <dt>maxIter</dt>
+      <dd>maximum number of iterations</dd>
+      <dt>markers</dt>
+      <dd>indicates what the markers are used for:
+  <ol>
+<li>sQuoteprioruses
+  <code><a href='gedAlgorithm.DSA.html'>DSA</a></code> proportion estimation method
+  from <cite>Zhong2013</cite> to compute sensible initial
+  proportions from average marker expression profiles in
+  the mixed sample data. </li>
+<li>sQuotesemienforces
+  marker block patterns after each iteration.
+  </li>
+<li>sQuotepost<em>a posteriori</em> assigns estimated
+  signatures; </li>
+</ol>
+</dd>
+      <dt>cscale</dt>
+      <dd>logical that indicates if the estimated
+  coefficient matrix, i.e. the proportions, should be
+  scaled to force them to sum up to one, after each of its
+  update.</dd>
+      <dt>sscale</dt>
+      <dd>logical that indicates if the estimated
+  signature matrix, i.e. the cell-specific expression
+  profiles, should be scaled to force them to have a unit
+  euclidean norm, after each of its update. If
+  <code>sscale=2</code>, then an inverse scaling is also applied
+  to the coefficient matrix, so that the overall deviance
+  of the model is not changed by this transformation.</dd>
+      <dt>ratio</dt>
+      <dd>a numeric value that indicates the maximum
+  ratio allowed between marker expression values in their
+  own cell type and in other cell types. It is meaningful
+  only if greater than 1, but no errors is thrown if it is
+  not. E.g. using <code>ratio=2</code> means that marker genes
+  will have their expression values on signatures other
+  than their own forced to a value at least twice lower
+  than on their own cell types. If <code>NULL</code>, then marker
+  expression on cell types other than their own is forced
+  to zero.</dd>
+      <dt>...</dt>
+      <dd>extra parameters currently not used</dd>
+    </dl>
+    
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p><code>.gedlab</code> is an internal function of <span class = "pkg">CellMix</span>
+  that implements a flexible workhorse function, whose
+  arguments can be tuned to generate different kind of ged
+  methods. Its purpose is mainly to experiment and
+  benchmark combinations of techniques, in order to design
+  "better" deconvolution algorithm. For example, it is
+  called by the &#145;deconf&#146; algorithm (fast version).</p>
+  
+    </div>
+      </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>.gedlab</li>
+    </ul>
+    <ul>
+      <li>internal</li>
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

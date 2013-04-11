@@ -1,0 +1,73 @@
+## R >= 2.8.0 passes package metadata to citation().
+if( !exists('meta') || is.null(meta) ) meta <- packageDescription("CellMix")
+
+year <- sub(".*(2[[:digit:]]{3})-.*", "\\1", meta$Date, perl = TRUE)
+vers <- paste("R package version", meta$Version)
+author <- as.personList(meta$Author)
+url <- sprintf("http://cran.r-project.org/package=%s", meta$Package)
+
+citHeader(sprintf("To cite the package '%s' in publications use:", meta$Package))
+
+citEntry(entry="Article"
+		, title = "CellMix: A Comprehensive Toolbox for Gene Expression Deconvolution"
+		, author = personList(as.person("Renaud Gaujoux"), as.person("Cathal Seoighe"))		
+		, journal = "(submitted)"
+		, year = 2012
+		#, volume = 
+		#, number = 
+		#, pages = 
+		, url = "http://web.cbio.uct.ac.za/~renaud/CRAN/web/CellMix"
+		#, doi = ""
+		#, issn = ""
+		, textVersion =
+				paste("Renaud Gaujoux, Cathal Seoighe (2012)"
+					, "CellMix: A Comprehensive Toolbox for Gene Expression Deconvolution"
+					, "(submitted)"
+					, "[http://web.cbio.uct.ac.za/~renaud/CRAN/web/CellMix]"
+					, sep=". ")
+)
+
+citEntry(entry="Manual"
+		, title = vign <- "An introduction to gene expression deconvolution and the CellMix package"
+    	, author = author
+    	, publisher = "CRAN"
+    	, year = year
+    	, note = vers
+    	, url = url
+    	, textVersion = sprintf("%s (%s). %s. CRAN. %s. [%s]", author, year, vign, vers, url)
+    	, header = "Vignette(s):"
+)
+
+citEntry(entry="Manual"
+		, title = vign <- "CellMix: Sample Analyses"
+    	, author = author
+    	, publisher = "CRAN"
+    	, year = year
+    	, note = vers
+    	, url = url
+    	, textVersion = sprintf("%s (%s). %s. CRAN. %s. [%s]", author, year, vign, vers, url)
+    	, header = "Vignette(s):"
+)
+
+
+citEntry(entry="Manual"
+		, title = vign <- "CellMix: FAQ-HowTo"
+    	, author = author
+    	, publisher = "CRAN"
+    	, year = year
+    	, note = vers
+    	, url = url
+    	, textVersion = sprintf("%s (%s). %s. CRAN. %s. [%s]", author, year, vign, vers, url)
+    	, header = "Vignette(s):"
+)
+
+citEntry(entry="Manual"
+		, title = "The CellMix package: manual pages"
+    	, author = author
+    	, publisher = "CRAN"
+    	, year = year
+    	, note = vers
+    	, url = url
+    	, textVersion = sprintf("%s (%s). %s CRAN. %s. [%s]", author, year, meta$Title, vers, url)
+    	, header = "Technical documentation:"
+)

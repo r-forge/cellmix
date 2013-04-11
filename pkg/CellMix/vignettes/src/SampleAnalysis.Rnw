@@ -1,0 +1,529 @@
+%\VignetteIndexEntry{CellMix: Sample Analyses}
+%\VignetteDepends{CellMix,knitr,AnnotationDbi,limSolve}
+%\VignetteCompiler{knitr}
+
+\documentclass[a4paper]{article}
+%\usepackage{Sweave}
+
+% Encoding
+\usepackage[OT1]{fontenc}
+
+\usepackage{a4wide}
+\usepackage{indentfirst}
+
+
+% boxed figures
+\usepackage{float}
+\floatstyle{boxed} 
+\restylefloat{figure}
+% caption formatting
+\usepackage[font=small, labelfont=bf,textfont=it]{caption}
+% sub-figures
+\usepackage[position=top]{subfig}
+% sideways figures
+\usepackage{rotating}
+
+%% Hyperrefs
+\usepackage[plainpages=false, colorlinks]{hyperref} % for hyperlinks
+% \hypersetup{
+% citecolor=black,% 
+% filecolor=black,% 
+% linkcolor=black,% 
+% urlcolor=black
+% } 
+
+% special table of contents
+%\usepackage{tocloft}
+%\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+%\usepackage[toc]{multitoc}
+
+\usepackage{bookmark}
+
+% inline lists
+\usepackage{paralist}
+% MATH
+\usepackage{amsmath} %math symbols
+\usepackage{amssymb} %extra math symbols
+\usepackage{array}
+\usepackage{tabularx}
+
+% REFERENCES
+\usepackage[citestyle=authoryear-icomp
+, doi=true
+, url=true
+, maxnames=1
+, maxbibnames=15
+, backref=true]{biblatex}
+\AtEveryCitekey{\clearfield{url}}
+<<pkgmaker_preamble, echo=FALSE, results='asis'>>=
+pkgmaker::latex_preamble('CellMix')
+@
+<<bibliofile, echo=FALSE, results='asis'>>=
+pkgmaker::latex_bibliography('CellMix')
+@
+\bibliography{Rpackages}
+\newcommand{\citet}[1]{\textcite{#1}}
+\renewcommand{\cite}[1]{\parencite{#1}}
+\DefineBibliographyStrings{english}{%
+    backrefpage  = {see p.}, % for single page number
+    backrefpages = {see pp.} % for multiple page numbers
+}
+%%
+
+\usepackage[noabbrev, capitalise, nameinlink]{cleveref}
+
+% graphic path
+\graphicspath{ {.//}{./src/} }
+%
+
+\newcommand{\footurl}[1]{\footnote{\url{#1}}}
+\newcommand{\matlab}{Matlab$^\circledR$\xspace}
+
+\title{\pkgname{CellMix}: Sample Analyses}
+\author{Renaud Gaujoux \and Cathal Seoighe}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Gene expression experiments are commonly performed using samples that are composed of a variety of cell types, each contributing to the global gene expression measurements in different proportions.
+The \Rpkg{CellMix} defines a general framework for gene expression deconvolution that integrates several of the currently available deconvolution algorithms, and facilitates the estimation of cell type proportions and/or cell-specific differential expression in gene expression experiments.
+
+The package was designed to handle common data settings using a unified interface, and to help in dealing with specific issues such as cross-platform/species identifier conversions.
+This vignette illustrates some of the package's key functionalities on practical sample analyses.
+\end{abstract}
+
+\tableofcontents
+
+\setkeys{Gin}{width=0.6\textwidth}
+<<hacks, echo=FALSE>>=
+summary <- function(x){
+	if( is(x, 'MarkerList') ){
+		res  <- getMethod('summary', 'MarkerList')(x)
+		print(res)
+		invisible(res)
+	} else base::summary(x)
+}
+
+# knitr options
+opts_knit$set(progress = TRUE, verbose = TRUE, stop_on_error=2)
+opts_chunk$set(size='small', out.width="0.6\\textwidth")
+@
+
+\section{Setting up the \pkgname{CellMix} package}
+
+Until the package is released on CRAN \cite{R} or BioConductor \cite{Gentleman2004}, the \Rpkg{CellMix} can be installed from our CRAN-like repository, as any other \proglang{R} package:
+
+<<myCRAN, eval=FALSE>>=
+# enable Bioconductor repositories
+# -> add Bioc-software and Bioc-annotation
+setRepositories() 
+# install
+repos <- c('http://web.cbio.uct.ac.za/~renaud/CRAN', getOption('repos'))
+install.packages('CellMix', repos=repos)
+# load
+library(CellMix)
+@
+
+<<load, echo=FALSE, include=FALSE>>=
+library(CellMix)
+library(AnnotationDbi)
+library(limSolve)
+library(matrixStats)
+@
+
+\section{Background and objectives}
+
+Gene expression experiments typically assess heterogeneous samples in a single experiement, measuring \emph{global gene expression} levels.
+From a biological point of view, however, different cell populations are fundamental units, for which specific gene expression profiles, and, in some cases, proportions can provide more detailed and meaningful insights about the underlying processes.
+
+Gene expression deconvolution methodologies have been developed by several authors in order to answer the following questions, using global gene expression data, possibly in combination with some other data such as known signatures or marker genes:
+
+\begin{itemize}
+  \item cell proportions: what is the proportion of each cell type? 
+  \item are there differences in proportion that are associated with some disease status/covariate?
+  \item cell-specific expression: what is the expression profile of each cell type?
+  \item which genes are differently expressed in each cell types between groups of samples?  
+\end{itemize}
+
+In terms of data requirement, most approaches fall into one of the three categories illustrated in \cref{fig:ged_full_partial}.
+
+\begin{figure}[h!]
+\centering
+\setkeys{Gin}{width=0.32\textwidth}
+\subfloat[Partial from available signatures]{%
+\label{fig:ged_partial_sig}
+\includegraphics{approach-with-signatures.png}%
+}%
+\hfill
+\subfloat[Partial from available proportions]{%
+\label{fig:ged_partial_prop}
+\includegraphics{approach-with-proportions.png}%
+}%
+\subfloat[Complete from global expression]{%
+\label{fig:ged_complete}
+\includegraphics{approach-full.png}
+}
+\\
+\vspace{2em}
+\raggedright
+\scriptsize{Graphic \subref{fig:ged_partial_prop} was extracted from \citet{Shen-Orr2010}, and modified to produce the other panels.}
+\caption{Partial vs. Complete gene expression deconvolution.\\
+Partial deconvolution methods assume that either signatures \protect\subref{fig:ged_partial_sig} or proportions \protect\subref{fig:ged_partial_prop} are available and use them to infer the unknown proportions and signatures respectively.
+Complete deconvolution methods \protect\subref{fig:ged_complete} infer both cell-type signatures and proportions from the global gene expression data, possibly using extra data such as marker genes to guide or seed the estimation.}
+\label{fig:ged_full_partial}
+\end{figure}
+
+Gene expression deconvolution is naturally expressed as matrix decomposition problem.
+This is why we use the theoretical framework of Nonnegative Matrix Factorization \cite{Lee1999,Paatero1994}, for which we use the\citeCRANpkg{NMF}, because it provides a flexible interface to simultaneously handle both celll-specific signatures and proportion data, as well as a comprehensive set of features to run NMF(-like) algorithms.
+
+\section{Estimating cell proportions from known signatures}
+
+Consider some gene expression data, obtained from heterogeneous samples, i.e. in which the cell type proportions are expected to vary across samples.
+Laboratory techniques exist to measure these proportions, e.g., FACS, however, these measurments are not always performed, or are limited in terms of which cell types can be measured.
+Some computational methods use known cell-specific expression profiles/signatures to estimate their respective cell proportions in a mixture, given its global gene expression data.
+
+\subsection{Blood samples}
+
+Some deconvolution methdologies have been developed specifically for blood samples, which are arguably the most common type of samples for which gene expression is assessed.
+The \Rpkg{CellMix} provides an easy interface to apply deconvolution methods that use known cell-specific expression signatures, e.g., generated in independent studies \cite{Abbas2009,Gong2011}.  
+
+For the purpose of this tutorial we will use the dataset \GEOhref{GSE20300} on acute kidney transplant rejection (ACR) from \citet{Shen-Orr2010}, for which Complete Blood Count (CBC) data are available.
+The \Rpkg{CellMix} stores a pre-processing pipeline for this dataset, which extracts all relevant data from otherwise composite and unfriendly sample annotation data.
+The dataset is loaded using the function \code{ExpressionMix}, which requires an internet connection on first execution, when the actual data are retrieved from the Gene Expression Omnibus (GEO) database\footurl{http://www.ncbi.nlm.nih.gov/geo/}\footnote{\pkgname{CellMix} includes special functions that make GEOquery works even behind CNTLM proxies, e.g., your university proxy.} \cite{Barrett2010}.
+Subsequent calls use a locally cached version of the data and are much faster as shown below.
+
+<<blood>>=
+# load data (normally requires an internet connection to GEO)
+acr <- ExpressionMix('GSE20300', verbose=2)
+
+# the result is a combination of an ExpressionSet and an NMF model object
+acr
+@
+
+\citet{Abbas2009} defined a set of cell-specifc signature for 17 immune cell types in a variety of states (e.g., activated or resting).
+Although these signatures were defined on Affymetrix \emph{HGU133A} and \emph{HGU133B} chips, they can theoretically be used on data generated on other platforms.
+This, however, potentially requires to map the original Affymetrix probe ids to corresponding probes on the other platform.
+One might also have concerns about how well correlated gene expression measures are between different platforms.
+
+The function \code{gedBlood} enables to apply in a single call a pre-processing pipeline, which deals with such issues.
+We use argument \code{verbose=TRUE} to show some details about the pipeline workflow\footnote{More details can be displayed with \code{verbose=2}, \code{verbose=3}, etc..}:
+
+<<gedBlood>>=
+# estimate proportions using signatures from Abbas et al. (2009) 
+res <- gedBlood(acr, verbose=TRUE)
+@
+
+The result is stored in an \code{NMF} object that contains both the known basis signatures, and the estimated proportions in the coefficient matrix, which can be retrieve using the method \code{basis} and \code{coef}: 
+<<res_gedBlood>>=
+# result object
+res
+
+# proportions are stored in the coefficient matrix
+dim(coef(res))
+coef(res)[1:3, 1:4]
+
+# cell type names
+basisnames(res)
+
+# basis signatures (with converted IDs)
+basis(res)[1:5, 1:3]
+@
+
+The proportions can be aggregated into CBC data using the function \code{asCBC} and, in this case, compared to the known proportions.
+Since the dataset contains a case/control group variable, \code{Status} for kidney transplant output, one can also highlight proportion differences between the two group of samples with the dedicated function \code{boxplotBy}:
+
+<<plot_gedBlood, fig.show='hold', out.width="0.5\\textwidth">>=
+# aggregate into CBC
+cbc <- asCBC(res)
+dim(cbc)
+basisnames(cbc)
+
+# plot against actual CBC
+profplot(acr, cbc)
+# plot cell proportion differences between groups
+boxplotBy(res, acr$Status, main="Cell proportions vs Transplant status")
+@
+
+\subsection{Other tissues with known signatures}
+
+For other tissue types where a set of cell-specific signatures is available, the same analysis pipeline can be applied using the function \code{gedProportions}.
+For example, the dataset \GEOhref{GSE19830} contains data from a controlled mixture experiment on Rat samples \cite{Shen-Orr2010}, where both the expression profiles from pure tissues (brain, liver and lung), as well as cell proportions from controlled mixtures are known.
+A data pre-processing pipline is also available in \pkgname{CellMix}'s dataset registry, meaning that it can easily be loaded, as in the previous example.
+In particular, once the data is loaded, the average pure expression profiles,
+i.e. the cell-specific signature, are stored in the associated basis matrix, and
+can be retreived with the function \code{basis}, while the data restricted to all mixed and pure samples can be extracted via the functions \code{mixedSamples} and \code{pureSamples} respectively:
+
+<<known_sig_data>>=
+# load data (requires internet connection to GEO)
+gse <- ExpressionMix('GSE19830', verbose=TRUE)
+gse
+
+# extract data for mixed samples only
+mix <- mixedSamples(gse)
+
+# extract stored known signatures (= average pure profiles)
+sig <- basis(mix)
+@
+
+The same analysis pipeline used for blood samples can then be applied through the main interface function \code{ged}, provided that one also passes along the pure cell-specific signature matrix.
+In this example, the basis signatures in \code{sig} are those computed from the
+sorted cell samples themsleves as their average expression profile within each
+cell type.
+In practice, however, they could have been generated in an independent study.
+Moreover, no normalization is performed by default and we force the
+deconvolution to be performed in linear space (i.e. using non log-transformed
+expression values) by setting argument \code{log=FALSE}, since both the global
+expression and signature data come from the same dataset, and should not suffer
+from normalization or transformation discrepancies:
+
+<<known_sig>>=
+# estimate proportions from pure signatures (default: no normalization)
+res <- ged(mix, sig, verbose=TRUE, log=FALSE)
+
+# plot against known proportions
+profplot(mix, res)
+@
+
+We notice that the estimates are separately very well correlated with the true proportions, but show some bias.
+This is fine if the proportions are not of interests, but are subsequently used to correct for proportion heterogeneity in the estimation of cell-specific differential expression.
+Indeed, estimates with high correlations will accurately reflect the variations in the true proportions, which is what eventually matters when estimating the effect of proportions on gene expression levels, at least using standard regression-like approaches.
+
+However, more care is required if accurate proportion estimates are desired.
+Indeed, sets of complete expression profiles from pure samples generally need to be filtered to increase the deconvolution accuracy,  and remove the bias due to noise or genes that are expressed across all/multiple cell types, whose expression is not expected to reflect cell proportions.
+
+\subsection{Building/filtering basis signatures}
+
+\citet{Abbas2009} proposed to select genes based on their cell type specificity, and build a basis signature matrix that provides the ``maximum" deconvolution power, which the authors showed correlates well with its \emph{condition number}.
+The main idea is to do so is to limit the signatures to a set of genes that discriminate well between cell types, and together constitute a basis matrix that is well conditonned.
+This also has the advantage of reducing the number of measurements needed to perform the deconvolution.
+
+\subsubsection{Extracting marker p-values}
+The first filtering step consists in computing p-values associated with cell type specificty.
+It is briefly described as follows in \citet{Abbas2009}:
+
+\begin{quote}
+[...] top differentially expressed (based on 95 change confidence
+ intervals from Student's T-test) probesets were determined by
+ comparing each probe's highest-expressed group with the next
+ highest-expressed group in order to find probesets that are good
+ markers for each cell population. This step was repeated with
+ comparison between the top group and the third-highest group in
+ order to also include probesets that were strong markers for two
+ cell populations.
+ 
+ \small{From \citet{Abbas2009}}
+\end{quote}
+
+The \Rpkg{CellMix} implements this step in the interface function \code{extractMarkers}, but by default only compares the top and second most expressing groups\footnote{This can be changed setting argument \code{ntop > 2}, if some of the cell types are expected to be similar}:
+<<extractmarkers_basis>>=
+# extract data for pure samples only
+pure <- pureSamples(gse)
+
+# compute p-values for all probes
+ml <- extractMarkers(pure, pure$Type, method='Abbas')
+# all probes get attributed a cell-type and a p-value
+summary(ml)
+@
+
+\subsubsection{Filtering on p-value}
+One can estimate proportions only using markers with a p-value under a given threshold.
+This is facilitated by the rich interface of the S4 class \code{MarkerList}, which enables marker lists to be filtered in many different ways:
+<<ged_basis_pvalues, fig.show='hold', out.width="0.5\\textwidth">>=
+# Filtering 1:
+# show p-values histogram 
+hist(ml, breaks=20)
+summary(ml <= 10^-8)
+
+# refit proportions using only the subset of markers with p-value <= 10^-8
+res2 <- ged(mix, basis(gse), subset=ml <= 10^-8, log=FALSE)
+# plot against known proportions
+profplot(mix, res2)
+@
+
+\subsubsection{The condition number criterion}
+
+\citet{Abbas2009} suggested to further reduce the number of markers, by choosing the set for which the basis matrix's condition number is minimun, which aims at increasing the robustness and scale consistency of the basis signatures.
+This can be achieved using the function \code{screeplot}:
+
+<<condition_number, fig.show='hold', out.width="0.5\\textwidth">>=
+# Filtering 2:
+# select limited number of markers based on the 
+# signature matrix's condition number as proposed by Abbas et al. (2009) 
+sel <- screeplot(ml, basis(gse), range=1:500)
+summary(sel)
+
+# refit proportions using the optimised set of markers
+res3 <- ged(mix, basis(gse), subset=sel, log=FALSE)
+# plot against known proportions
+profplot(mix, res3)
+@
+
+\subsection{From marker genes only}
+
+In the situation where no pure sample expression profile is available, deconvolution and estimation of cell type proportions can be still be performed, using sets of marker genes, i.e. genes that are know or at least expected to be expressed by only one of the cell types present in the mixture.
+
+For example, supposing the markers we selected above were \emph{a priori} known marker genes, for the cell types that compose the samples.
+A simple approach consists in using their mean expression profile, computed
+within their respective cell type, as implemented in the ged algorithm
+\code{'meanProfile'}.
+This is \emph{part} of the approach
+used by \citet{Kuhn2011}, who used these average profiles as proxies for the proportions, and plugged them into a linear
+regression framework to detect cell-specific differential expression.
+See \Cref{sec:semi} for how to apply an alternative approach, based on a
+semi-supervised NMF algorithm.
+
+In this context, very recent work from \citet{Zhong2013}
+suggests that deconvolution of gene expression data should be conducted in linear
+space, rather than on log-transformed expression values, which are usually
+used in more classical analyses.
+They proposed a more sophisticated computation of the proportions -- and
+cell-specific signatures -- from average marker expression profiles in mixed
+samples, which they named \emph{Digital Sorting Algorithm}, which is implemented in the ged algorithm
+\code{'DSA'}.
+The following sample code illustrates the difference in proportion estimates,
+when computed using plain average expression of markers and DSA, either in
+linear or log-space.
+Note that, in this particular example, because we are interested in the
+proportions only, we can speed up the DSA estimation by limiting the target
+expression matrix to the selected marker genes (\code{target = mix[sel]}).
+
+<<mean_markers, out.width="0.5\\textwidth", fig.show='hold'>>=
+# check if data is in log scale
+is_logscale(mix)
+
+# compute mean expression profiles within each cell type
+p <- ged(expb(mix, 2), sel, 'meanProfile')
+# plot against known proportions (p is by default not scaled)
+profplot(mix, p, scale=TRUE, main='meanProfile - Linear scale')
+
+# compute mean expression profiles within each cell type
+lp <- ged(mix, sel, 'meanProfile')
+# plot against known proportions (p is by default not scaled)
+profplot(mix, lp, scale=TRUE, main='meanProfile - Log scale')
+
+# compute proportions using DSA methods [Zhong et al. (2013)]
+pdsa <- ged(mix[sel], sel, 'DSA', verbose=TRUE)
+profplot(mix, pdsa, main='DSA - Linear scale')
+pdsa <- ged(mix[sel], sel, 'DSA', log=FALSE)
+profplot(mix, pdsa, main='DSA - Log scale')
+@ 
+
+
+\section{Estimating differential cell-specific expression}
+
+One is generally eventually interested in estimating cell-specific expression, and, in particular, detecting genes that are differentially expressed between two groups of samples.
+Being able to perform such analysis at the cell type level facilitates interpretation, i.e. the traduction of a list of genes into meaningfull biological hypotheses.
+
+\subsection{From measured proportions: \emph{csSAM}}
+The \emph{csSAM} algorithm \cite{Shen-Orr2010} defines an extension of the popular \emph{SAM} algorithm \cite{Tusher2001}, which estimates differential expression between cell types.
+This algorithm is implemented in the \citeCRANpkg{csSAM}.
+The \Rpkg{CellMix} provides access to this method within its comprehensive framework.
+In particular, some \emph{csSAM}'s utility functions have been rewritten in \proglang{C++}, which results in a large performance gain. 
+We illustrate its use on the ACR dataset, reproducing the analysis from the original \code{csSAM} paper:
+
+<<csSAM, cache=TRUE>>=
+# take the 5000 most variable genes
+s <- esApply(acr, 1L, sd, na.rm=TRUE)
+i <- order(s, decreasing=TRUE)[1:5000]
+# fit csSAM for the groups defined in covariate 'Status' 
+rescs <- ged(acr[i,], coef(acr), method='csSAM', data=acr$Status, nperms=200, verbose=TRUE)
+@
+
+The result may be plotted using the function \code{csplot}, which plots the number of genes that have a false discovery rate below a given threshold, within each cell type separately.
+This function is generic and may be called for any result from the \code{ged} function, as long as the deconvolution algorithm is suitable for such computation.
+
+<<csplot, fig.height=8, fig.width=7>>=
+csplot(rescs)
+@
+
+\subsection{From proportion priors: \emph{DSection}}
+
+Another algorithm, similar to \emph{csSAM} in its input and output, is the
+\code{DSection} algorithm.
+This algorithm is a Monte-Carlo-Markov-Chain (MCMC) approach, which models
+uncertainity in the proportions measurments, considering them as Bayesian priors, and computes posterior probabilities and estimates for cell type-specific signatures and proportions \cite{Erkkila2010}.
+It can perform the deconvolution in multiple groups of samples, possibly more than two.
+We illustrate its use on a small simulated dataset, as it is very computationally intensive: for large datasets, one would need several hundreds/thousands of samples, as well as a burnin period, to ensure the convergence of the Markov chain.
+Note that \emph{DSection} is expected to perform very well on such simulated data, because they are generated using noise assumptions that are close to its underlying statistical model.  
+
+<<DSection, cache=TRUE, fig.show='hold', out.width="0.5\\textwidth">>=
+# generate random data: 3 cell types, 20 samples, 100 genes
+# and 5 markers per cell type
+x <- rmix(3, 100, 20, markers=5)
+x
+# show true basis signatures (the markers clearly appear)
+basismap(x, Rowv=NA)
+
+# add noise to the proportions
+p0 <- abs(coef(x) + rmatrix(coef(x), dist=rnorm, sd=0.2))
+# rescale into proportion (columns sum up to one)
+p0 <- scoef(p0)
+# see how noisy they got
+profplot(x, p0)
+
+# fit DSection MCMC model
+ds <- ged(x, p0, 'DSection', maxIter=20, verbose=TRUE)
+# check reduction of noise on proportions  
+profplot(x, ds)
+@
+
+\section{Complete deconvolution using marker genes}
+\label{sec:semi}
+
+\subsection{A priori: enforce marker expression patterns}
+In previous work, we proposed a simple strategy to modify some common NMF algorithms, in order to improve the estimation of cell-specific signatures, by enforcing the expected expression pattern of known marker genes \cite{Gaujoux2011}.
+The strategy was shown to greatly improve the ability of those algorithms to extract meaningful signatures. 
+The algorithms \code{'ssKL'}, \code{'ssFrobenius'} implement this strategy, for the Kullback-Leibler divergence and the euclidean distance respectively.
+We illustrate their use on a sythetic dataset.
+
+<<semi, cache=TRUE, fig.show='hold', out.width="0.5\\textwidth">>=
+# generate random data with 5 markers per cell type
+x <- rmix(3, 200, 20, markers=5)
+m <- getMarkers(x)
+
+# deconvolve using KL divergence metric
+kl <- ged(x, m, 'ssKL')
+
+# plot against known proportions
+profplot(x, kl)
+# check consistency of most expressing cell types in known basis signatures
+basismarkermap(basis(x), kl)
+# correlation with known signatures
+basiscor(x, kl)
+@
+
+Note that experiments showed, however, that enforcing markers could introduce a bias in the proportion estimates -- which can be seen on the scatterplot above.
+Further investigation would be required in order to design a strategy that enforces markers without introducing such bias.
+
+\subsection{A posteriori: assign signatures to cell types}
+Another NMF based method that uses marker genes is the \emph{deconf} algorithm \cite{Repsilber2010}.
+This algorithm use markers \emph{a posteriori}, to assign the estimated signatures each cell type.
+Its original implementation is very slow.
+The \Rpkg{CellMix} implements a faster version of this algorithm, which uses the
+fast combinatorial nonnegative least-squares algorithm (FCNNLS) from
+\citet{VanBenthem2004}, as provided by the \Rpkg{NMF} package.
+
+<<deconf, cache=TRUE, fig.show='hold', out.width="0.5\\textwidth">>=
+# deconvolve using KL divergence metric
+dec <- ged(x, m, 'deconf', rng=12345, nrun=20)
+
+# plot against known proportions
+profplot(x, dec)
+# check consistency of most expressing cell types in known signatures 
+basismarkermap(basis(x), dec)
+# correlation with known signatures
+basiscor(x, dec)
+@
+
+\section{Conclusion}
+
+The \Rpkg{CellMix} provides a comprehensive framework for researchers working with gene expression deconvolution, whether to apply algorithms or develop new methods.
+Its objective is to gather in one place as many relevant components as possible, so as to facilitate gene expression deconvolution, and extract as much as possible from gene expression data, despite sample heterogeneity.
+We plan to develop further the package, along with our own research in the area, and contribute towards the improvment and the popularisation of deconvolution techniques.
+
+\pagebreak
+\printbibliography[heading=bibintoc]
+
+\end{document}

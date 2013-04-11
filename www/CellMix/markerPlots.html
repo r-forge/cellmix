@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>beeswarm.MarkerList. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Plotting Markers</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><span class="label label-success">S3</span> (MarkerList)
+`beeswarm`(x, data, types = NULL, tcol = "red", otcol = "#00000090", las = 2, 
+  fold = FALSE, method = "square", corral = "wrap", pch = 19, pwcol = NULL, ylab = if (fold) "Fold changes" else "Expression values", 
+      ...)
+
+<span class="label label-success">S3</span> (MarkerList)
+`stripchart`(x, data, types = NULL, tcol = "red", otcol = "#00000090", 
+      las = 2, fold = FALSE, method = "square", corral = "wrap", pch = 19, pwcol = NULL, 
+      ylab = if (fold) "Fold changes" else "Expression values", ...)
+
+<span class="label label-success">S3</span> (MarkerList)
+`profplot`(x, y, groups = NULL, scale = FALSE, col = NULL, legend = FALSE, 
+      split = TRUE, ylab = NA, labels = NULL, ..., restore.gpar = TRUE)
+
+<span class="label label-success">S3</span> (MarkerList)
+`screeplot`(x, data = NULL, breakdown = FALSE, range = NULL, xlab = NULL, 
+      ylab = NULL, main = NULL, ..., plot = TRUE)
+
+<span class="label label-success">S3</span> (MarkerList)
+`hist`(x, range = NULL, split = FALSE, xlab = "Marker scores", main = "Histogram of marker scores", 
+      ..., restore.gpar = TRUE)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>x</dt>
+      <dd>an object of class <code><a href='MarkerList.html'>MarkerList</a></code></dd>
+      <dt>data</dt>
+      <dd>a numeric <code>matrix</code> or an
+  <code>ExpressionSet</code> object containing expression values
+  from samples.</dd>
+      <dt>types</dt>
+      <dd>a <code>factor</code> giving the cell-type of each
+  sample</dd>
+      <dt>tcol</dt>
+      <dd>type colour, used for the marker values in
+  samples of their corresponding types.</dd>
+      <dt>otcol</dt>
+      <dd>out-of-type colour, used for maker values in
+  samples that are not from their corresponding type.</dd>
+      <dt>las</dt>
+      <dd>specifies the orientation of the y-labels: 1
+  for horizontal, 2 for vertical. See <code><a href='http://www.inside-r.org/r-doc/graphics/par'>par</a></code>.</dd>
+      <dt>fold</dt>
+      <dd>logical that indicates if the plot should
+  show the markers' plain expression values or their fold
+  change against the maximum expression value in samples
+  from other types.</dd>
+      <dt>...</dt>
+      <dd>extra parameters passed to subsequent calls to
+  <code>beeswarm</code>, <code><a href='http://www.inside-r.org/r-doc/graphics/matplot'>matplot</a></code>,
+  <code><a href='http://www.inside-r.org/r-doc/graphics/barplot'>barplot</a></code>, <code><a href='http://www.inside-r.org/r-doc/graphics/hist'>hist</a></code> or
+  <code><a href='http://www.inside-r.org/r-doc/graphics/plot'>plot</a></code>, depending on the main calling
+  function.</dd>
+      <dt>y</dt>
+      <dd>reference data matrix, that contains the marker
+  expression values that are plotted.</dd>
+      <dt>groups</dt>
+      <dd>factor coercible vector that defines groups
+  of samples, which are plotted using different point
+  types.</dd>
+      <dt>scale</dt>
+      <dd>when <code>split=FALSE</code>, this is a logical
+  that indicates if the marker expression profiles should
+  be scaled into relative contribution (i.e., sum up to
+  one), as in <code><a href='http://www.inside-r.org/r-doc/NMF/profplot'>profplot</a></code>.
+
+  When <var>split</var> is not <code>FALSE</code>, then
+  <code>scale=TRUE</code> indicates that the profiles should be
+  normalised with the mean expression profile of all
+  markers. If a single numeric, then it indicates the index
+  of a specific marker that is used to normalise the
+  expression profiles of other markers. Separate indexes
+  for each cell type can be passed as a numeric vector or a
+  list.
+
+  This is useful to highlight groups of markers that should
+  have equivalent cell-specific expression levels, given
+  the -- mixed -- expression data in <code>y</code>. These groups
+  are likely to provide better proportion/cell-specific
+  estimates.
+
+  Note: values are recycled if necessary.</dd>
+      <dt>col</dt>
+      <dd>colour specification for each cell types if
+  <code>split=FALSE</code>, or for each marker in each cell type
+  otherwise.</dd>
+      <dt>split</dt>
+      <dd>logical that indicates if one should draw a
+  plot for each type separately.
+
+  One can specify how to split the plots, by providing a
+  2-long vector that is used as <code>par(mfrow=split)</code>.</dd>
+      <dt>ylab</dt>
+      <dd>label for the y-axis. If missing, a default
+  label is generated, which, in particular, tells if the
+  plot is scaled or not.</dd>
+      <dt>restore.gpar</dt>
+      <dd>logical that indicates if all
+  graphical parameters should be restored on exit. It could
+  be used to add things to the plots, especially when
+  <code>split=TRUE</code>.</dd>
+      <dt>breakdown</dt>
+      <dd>logical that indicates if breakdowns of
+  the number of markers over the given range of values
+  should be shown. It may also be a single numberic that
+  indicates the number of breakdowns to show.</dd>
+      <dt>range</dt>
+      <dd>specifies the range of values to plot. In
+  <code>hist</code>, or in <code>screeplot</code> when
+  <code>data=NULL</code>, it indicates a range over which the
+  scores are used to computing the histogram. If
+  <code>NULL</code>, then all values are used (Note: this might
+  take a bit of time for long marker lists if
+  <code>breakdown=TRUE</code>). Otherwise it must be a 2-long
+  numeric vector giving the interval of values to use.
+
+  If <code>data</code> is not <code>NULL</code>, it indicates which</dd>
+      <dt>plot</dt>
+      <dd>logical that indicates if the function should
+  effectively produce a plot or only return the result.
+
+  Otherwise, if <var>data</var> is not <code>NULL</code>, then it must
+  be either a range of values</dd>
+      <dt>method</dt>
+      <dd> Method for arranging points (see Details).
+  </dd>
+      <dt>corral</dt>
+      <dd> Method to adjust points that would be
+  placed outside their own group region (see Details). </dd>
+      <dt>pch</dt>
+      <dd> Plotting characters and colors, specified by
+  group (see Details). </dd>
+      <dt>pwcol</dt>
+      <dd> &#147;Point-wise&#148; plotting characters and
+  colors, specified for each data point (see Details). </dd>
+      <dt>labels</dt>
+      <dd> Labels for each group.  By default, these
+  are inferred from the data. </dd>
+      <dt>xlab</dt>
+      <dd> Axis labels. </dd>
+      <dt>legend</dt>
+      <dd>a logical that specifies whether drawing
+  the legend or not, or coordinates specifications passed
+  to argument <code>x</code> of <code><a href='http://www.inside-r.org/r-doc/graphics/legend'>legend</a></code>, that
+  specifies the position of the legend.</dd>
+      <dt>main</dt>
+      <dd>graphics parameters.</dd>
+    </dl>
+    
+    <div class="Value">
+      <h2>Value</h2>
+      
+      <p>When <code>data=NULL</code> and <code>breakdown</code> is not
+  <code>FALSE</code> this function returns a list with the result
+  from the breakdown barplot and the breakdown (in element
+  &#145;breakdown&#146;).</p>
+  
+      <p>When <code>data</code> is not <code>NULL</code>, a
+  <code><a href='markers.html'>MarkerList-class</a></code> object made of the set of
+  markers that achieve the least condition number is
+  returned.</p>
+  
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>The method <code>beeswarm</code> for <code>MarkerList</code> objects
+  draws, separately for each cell-type, a stripchart of the
+  markers' expression values in a reference data,
+  highlighting the expression of their respective
+  associated -- generally pure -- samples.</p>
+  
+      <p>The method <code>stripchart.MarkerList</code> is an alias for
+  <code>beeswarm.MarkerList</code>.</p>
+  
+      <p><code>profplot</code> is vectorised over arguments <var>scale</var>
+  and <var>legend</var>.</p>
+  
+      <p><code>screeplot</code> plots the following diagnostic plots:
+  <ul>
+<li> for marker lists with associated scores,
+  it plots the total number of markers whose values are
+  over/under a range of threshold, as well as, optionally
+  their distribtuion amongst the different cell types;
+  </li>
+<li> a screeplot of the condition number of a
+  deconvolution matrix for a varying (increasing) number of
+  markers. </li>
+</ul></p>
+  
+      <p><code>hist</code> plots the histogram of numeric scores
+  associated with each marker in a marker list, if any.</p>
+  
+    </div>
+      </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>beeswarm.MarkerList</li><li>hist.MarkerList</li><li>profplot.MarkerList</li><li>screeplot.MarkerList</li><li>stripchart.MarkerList</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

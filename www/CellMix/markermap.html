@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>markermap. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Heatmaps Highlighting Markers</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre>markermap(object, data, ...)
+
+<span class="label label-important">S4</span> (MarkerList,matrix)
+`markermap`(object, data, annCol = NA, annColors = NA, annRow = NA, view = "split", 
+  subsetRow = NULL, scale = "row", color = "YlOrRd:100", Rowv = TRUE, Colv = NA, 
+      distfun = "correlation", hclustfun = "average", ...)
+
+basismarkermap(object, data, scale = "r1", view = "predict", subsetRow = TRUE, Rowv = NA, 
+      labRow = NA, ...)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>object</dt>
+      <dd>a <code>MarkerList</code> object</dd>
+      <dt>data</dt>
+      <dd>reference data object, whose values are used
+  in the heatmap.</dd>
+      <dt>subsetRow</dt>
+      <dd>this argument acts as in
+  <code><a href='http://www.inside-r.org/r-doc/NMF/aheatmap'>aheatmap</a></code>, but if <code>subsetRow=TRUE</code>,
+  then the heatmap is limited to the markers only.</dd>
+      <dt>...</dt>
+      <dd>graphical parameters for the text used in
+  plot. Parameters passed to <code><a href='http://www.inside-r.org/r-doc/grid/grid.text'>grid.text</a></code>, see
+  <code><a href='http://www.inside-r.org/r-doc/grid/gpar'>gpar</a></code>.</dd>
+      <dt>annCol</dt>
+      <dd>specifications of column annotation tracks
+  displayed as coloured rows on top of the heatmaps. The
+  annotation tracks are drawn from bottom to top. A single
+  annotation track can be specified as a single vector;
+  multiple tracks are specified as a list, a data frame, or
+  an
+  <code><a href='http://www.inside-r.org/r-doc/Biobase/class.ExpressionSet'>ExpressionSet</a></code>
+  object, in which case the phenotypic data is used
+  (<code>pData(eset)</code>). Character or integer vectors are
+  converted and displayed as factors. Unnamed tracks are
+  internally renamed into <code>Xi</code>, with i being
+  incremented for each unamed track, across both column and
+  row annotation tracks. For each track, if no
+  corresponding colour is specified in argument
+  <code>annColors</code>, a palette or a ramp is automatically
+  computed and named after the track's name.</dd>
+      <dt>annColors</dt>
+      <dd>list for specifying annotation track
+  colors manually. It is possible to define the colors for
+  only some of the annotations. Check examples for
+  details.</dd>
+      <dt>annRow</dt>
+      <dd>specifications of row annotation tracks
+  displayed as coloured columns on the left of the
+  heatmaps. The annotation tracks are drawn from left to
+  right. The same conversion, renaming and colouring rules
+  as for argument <code>annCol</code> apply.</dd>
+      <dt>scale</dt>
+      <dd>character indicating how the values should
+  scaled in either the row direction or the column
+  direction. Note that the scaling is performed after
+  row/column clustering, so that it has no effect on the
+  row/column ordering. Possible values are: <ul>
+<li>
+  <code>"row"</code>: center and standardize each row separately
+  to row Z-scores </li>
+<li> <code>"column"</code>: center and
+  standardize each column separately to column Z-scores
+  </li>
+<li> <code>"r1"</code>: scale each row to sum up to one </li>
+<li>
+  <code>"c1"</code>: scale each column to sum up to one </li>
+<li>
+  <code>"none"</code>: no scaling </li>
+</ul>
+</dd>
+      <dt>color</dt>
+      <dd>colour specification for the heatmap.
+  Default to palette '-RdYlBu2:100', i.e. reversed palette
+  'RdYlBu2' (a slight modification of RColorBrewer's
+  palette 'RdYlBu') with 100 colors. Possible values are:
+  <ul>
+<li> a character/integer vector of length
+  greater than 1 that is directly used and assumed to
+  contain valid R color specifications. </li>
+<li> a single
+  color/integer (between 0 and 8)/other numeric value that
+  gives the dominant colors. Numeric values are converted
+  into a pallete by <code>rev(sequential_hcl(2, h = x, l =
+  c(50, 95)))</code>. Other values are concatenated with the grey
+  colour '#F1F1F1'. </li>
+<li> one of RColorBrewer's palette
+  name, or one of 'RdYlBu2', 'rainbow', 'heat', 'topo',
+  'terrain', 'cm'. </li>
+</ul>
+ When the coluor palette is specified
+  with a single value, and is negative or preceded a minus
+  ('-'), the reversed palette is used. The number of breaks
+  can also be specified after a colon (':'). For example,
+  the default colour palette is specified as
+  '-RdYlBu2:100'.</dd>
+      <dt>Rowv</dt>
+      <dd>clustering specification(s) for the rows. It
+  allows to specify the
+  distance/clustering/ordering/display parameters to be
+  used for the <em>rows only</em>. Possible values are:
+  <ul>
+<li> <code>TRUE</code> or <code>NULL</code> (to be
+  consistent with <code><a href='http://www.inside-r.org/r-doc/stats/heatmap'>heatmap</a></code>): compute a
+  dendrogram from hierarchical clustering using the
+  distance and clustering methods <code>distfun</code> and
+  <code>hclustfun</code>.
+
+  </li>
+<li> <code>NA</code>: disable any ordering. In this case, and
+  if not otherwise specified with argument
+  <code>revC=FALSE</code>, the heatmap shows the input matrix
+  with the rows in their original order, with the first row
+  on top to the last row at the bottom. Note that this
+  differ from the behaviour or <code><a href='http://www.inside-r.org/r-doc/stats/heatmap'>heatmap</a></code>, but
+  seemed to be a more sensible choice when vizualizing a
+  matrix without reordering.
+
+  </li>
+<li> an integer vector of length the number of rows of
+  the input matrix (<code>nrow(x)</code>), that specifies the row
+  order. As in the case <code>Rowv=NA</code>, the ordered matrix
+  is shown first row on top, last row at the bottom.
+
+  </li>
+<li> a character vector or a list specifying values to
+  use instead of arguments <code>distfun</code>, <code>hclustfun</code>
+  and <code>reorderfun</code> when clustering the rows (see the
+  respective argument descriptions for a list of accepted
+  values). If <code>Rowv</code> has no names, then the first
+  element is used for <code>distfun</code>, the second (if
+  present) is used for <code>hclustfun</code>, and the third (if
+  present) is used for <code>reorderfun</code>.
+
+  </li>
+<li> a numeric vector of weights, of length the number
+  of rows of the input matrix, used to reorder the
+  internally computed dendrogram <code>d</code> by
+  <code>reorderfun(d, Rowv)</code>.
+
+  </li>
+<li> <code>FALSE</code>: the dendrogram <em>is</em> computed
+  using methods <code>distfun</code>, <code>hclustfun</code>, and
+  <code>reorderfun</code> but is not shown.
+
+  </li>
+<li> a single integer that specifies how many subtrees
+  (i.e. clusters) from the computed dendrogram should have
+  their root faded out. This can be used to better
+  highlight the different clusters.
+
+  </li>
+<li> a single double that specifies how much space is
+  used by the computed dendrogram. That is that this value
+  is used in place of <code>treeheight</code>. </li>
+</ul>
+</dd>
+      <dt>Colv</dt>
+      <dd>clustering specification(s) for the columns.
+  It accepts the same values as argument <code>Rowv</code>
+  (modulo the expected length for vector specifications),
+  and allow specifying the
+  distance/clustering/ordering/display parameters to be
+  used for the <em>columns only</em>. <code>Colv</code> may also be
+  set to <code>"Rowv"</code>, in which case the dendrogram or
+  ordering specifications applied to the rows are also
+  applied to the columns. Note that this is allowed only
+  for square input matrices, and that the row ordering is
+  in this case by default reversed (<code>revC=TRUE</code>) to
+  obtain the diagonal in the standard way (from top-left to
+  bottom-right). See argument <code>Rowv</code> for other
+  possible values.</dd>
+      <dt>distfun</dt>
+      <dd>default distance measure used in
+  clustering rows and columns. Possible values are:
+  <ul>
+<li> <code>"correlation"</code> and all the
+  distances supported by <code><a href='http://www.inside-r.org/r-doc/stats/dist'>dist</a></code> (e.g.
+  <code>"euclidean"</code>). </li>
+<li> an object of class <code>dist</code>
+  such as returned by <code><a href='http://www.inside-r.org/r-doc/stats/dist'>dist</a></code> or
+  <code><a href='http://www.inside-r.org/r-doc/stats/dist'>as.dist</a></code>. </li>
+</ul>
+</dd>
+      <dt>hclustfun</dt>
+      <dd>default clustering method used to
+  cluster rows and columns. Possible values are: <ul>
+<li> a method name (a character string) supported by
+  <code><a href='http://www.inside-r.org/r-doc/stats/hclust'>hclust</a></code> (e.g. <code>'average'</code>). </li>
+<li> an
+  object of class <code>hclust</code> such as returned by
+  <code><a href='http://www.inside-r.org/r-doc/stats/hclust'>hclust</a></code> </li>
+<li> a dendrogram </li>
+</ul>
+</dd>
+      <dt>labRow</dt>
+      <dd>labels for the rows.</dd>
+      <dt>view</dt>
+      <dd>a character string that specifies how markers
+  should be annotated: <ol>
+<li>&#147;single&#148;markers are shown in a single
+  track </li>
+<li>&#147;split&#148;each cell type is shown in a
+  separate track </li>
+<li>&#147;predict&#148;one track for
+  each column in <code>data</code> is added, and markers are
+  shown on the track associated with the column
+  corresponding to its maximum value. </li>
+</ol>
+</dd>
+    </dl>
+    
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>The function <code>markermap</code> draws a heatmap of a
+  reference expression data (e.g., the expression matrix
+  from pure samples or estimated cell-specific signatures),
+  where marker are annotated by colored bands on the
+  left-hand side of the heatmap.</p>
+  
+      <p><code>basismarkermap</code> calls <code>markermap</code> with
+  arguments tuned so that: no column reordering is
+  performed, the rows are scaled to sum up to one, the
+  heatmap only shows marker expression values, and the
+  markers are placed according to their most expressing
+  estimated signature. This view is meant to help in
+  assessing the validity of deconvolution results, when
+  known markers are available: ideally marker row
+  annotations should be composed of monochrome monoblocks.</p>
+  
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p>Argument <code>view</code> controls the way markers are
+  annotated. On all views, markers are coloured according
+  to their type, defined by the element of <code>object</code> in
+  which they appear. Each couloured tick/cell corresponds
+  to a different marker position.</p>
+  
+      <p>The following views are available: <ol>
+<li>single a single row annotation is added, showing
+  the position of each marker. </li>
+<li>split one track per
+  marker type in added, showing the position of each marker
+  in its respective cell type. </li>
+<li>predict one track
+  per column in <code>data</code> is added, showing the position
+  of each marker in the most expressing column. When
+  <code>data</code> is a basis matrix obtained from
+  deconvolution, this view is useful to check how known
+  cell type markers (the coulours) map on estimated
+  signatures (the annotation columns). </li>
+</ol></p>
+  
+      <p></p>
+  
+    </div>
+
+    <div class="Methods">
+      <h2>Methods</h2>
+      
+      <p><ol>
+<li>markermap<code>signature(object = "MarkerList",
+  data = "matrix")</code>: Workhorse method is for
+  <code>markermap</code>.</p>
+  
+      <p></li>
+<li>markermap<code>signature(object = "MarkerList",
+  data = "ExpressionSet")</code>: The method <code>markermap</code> for
+  <code>ExpressionSet</code> objects calls the main
+  <code>markermap</code> method on the expression matrix
+  <code>exprs(object)</code>.</p>
+  
+      <p></li>
+<li>markermap<code>signature(object = "MarkerList",
+  data = "NMF")</code>: The method <code>markermap</code> for
+  <code>NMF</code> objects calls the main <code>markermap</code> method
+  on the basis matrix <code>basis(object)</code>.</p>
+  
+      <p></li>
+<li>markermap<code>signature(object = "MarkerList",
+  data = "NMFfitX")</code>: The method <code>markermap</code> for
+  <code>NMFfitX</code> objects calls the main <code>markermap</code>
+  method on the best fit <code>fit(object)</code>.</p>
+  
+      <p></li>
+<li>markermap<code>signature(object = "MatrixData",
+  data = "ANY")</code>: This method extracts and plots a list of
+  markers from a set of basis signature matrix (in
+  <code>object</code>), where each feature is associated with the
+  most-expressing signature.</p>
+  
+      <p></li>
+</ol></p>
+  
+      <p></p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'>x <- rmix(3, 100, 20)
+</div><div class='input'>m <- getMarkers(x)
+</div><div class='input'>markermap(m, basis(x))
+</div><p><img src='markermap-ex1.png' alt='' width='400' height='400' /></p><div class='input'>markermap(m, x, view='single')
+</div><p><img src='markermap-ex2.png' alt='' width='400' height='400' /></p><div class='input'>basismarkermap(m, rnmf(3, x))
+</div><p><img src='markermap-ex3.png' alt='' width='400' height='400' /></p><div class='input'></div><div class='input'># after real deconvolution</div><div class='input'>res <- ged(x, coef(x), 'csSAM')
+</div><div class='input'>basismarkermap(m, res)
+</div><p><img src='markermap-ex4.png' alt='' width='400' height='400' /></p><div class='input'>markermap(m, res, view='split')
+</div><p><img src='markermap-ex5.png' alt='' width='400' height='400' /></p></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>basismarkermap</li><li>markermap</li><li>markermap,MarkerList,ExpressionSet-method</li><li>markermap,MarkerList,matrix-method</li><li>markermap,MarkerList,NMFfitX-method</li><li>markermap,MarkerList,NMF-method</li><li>markermap,MatrixData,ANY-method</li><li>markermap-methods</li>
+    </ul>
+    <ul>
+      <li>methods</li>
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

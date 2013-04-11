@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>dropvalues. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Utility Functions for MarkerList Objects</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre>dropvalues(object, ..., int.ok = TRUE)
+
+mltype(object, type = c("character", "numeric", "integer", "logical"))
+
+rmDuplicated(object, ...)
+
+hasDuplicated(object, which = FALSE)
+
+reverse(object, ...)
+
+<span class="label label-important">S4</span> (MarkerList)
+`reverse`(object, all = FALSE)
+
+nmark(object, ...)
+
+<span class="label label-important">S4</span> (list)
+`nmark`(object, each = FALSE)
+
+<span class="label label-important">S4</span> (MarkerList)
+`drop`(x)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>object</dt>
+      <dd>an R object, typically a list that contains
+  marker data structured in a similar way as in
+  <code>MarkerList</code> objects.</dd>
+      <dt>...</dt>
+      <dd>extra argument to allow extension</dd>
+      <dt>int.ok</dt>
+      <dd>logical that indicates if integer marker
+  names are valid, or if one should use their names
+  instead.</dd>
+      <dt>type</dt>
+      <dd>type to compare with.</dd>
+      <dt>which</dt>
+      <dd>logical that indicates if a list of
+  duplicated identifiers should be returned. If
+  <code>which=TRUE</code> and no duplicates exist then
+  <code>NULL</code> is returned.</dd>
+      <dt>all</dt>
+      <dd>a logical that indicates if the list itself,
+  i.e., the sets should be reversed as well.</dd>
+      <dt>each</dt>
+      <dd>a logical indicating if the number of marker
+  in each set is to be returned or only the total number
+  (default).</dd>
+      <dt>x</dt>
+      <dd>an array (including a matrix).</dd>
+    </dl>
+    
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p><code>dropvalues</code> Drops the values associated with each
+  marker (e.g. tissue specificity score), and returns an
+  object of the same type as the input object. It is a
+  shorcut for <code><a href='MarkerList-data.html'>marknames</a>(object,
+  unlist=FALSE)</code>.</p>
+  
+      <p><code>mltype</code> returns the type of marker list or compare
+  it with a given type: <ul>
+<li> character: elements
+  are marker names/ids; </li>
+<li> numeric: elements are numeric
+  vectors (e.g., scores), named with the marker names;
+  </li>
+<li> index: elements are integer vectors corresponding
+  to indexes in some reference data; </li>
+<li> logical:
+  elements are logical vectors, named with marker names,
+  which result from logical operations on a
+  <code>MarkerList</code> object. </li>
+</ul></p>
+  
+      <p><code>rmDuplicated</code> remove marker identifiers that are
+  duplicated either within or between sets. Arguments in
+  <code>...</code> are not used.</p>
+  
+      <p><code>hasDuplicated</code> checks for duplicated identifiers
+  across sets.</p>
+  
+      <p><code>reverse</code> reverse is an S4 method to reverse an
+  object. For <code>MarkerList</code> object, it reverse the
+  order of markers within each set seprately, and
+  optionally the order of the set in the list.</p>
+  
+      <p><code>nmark</code> returns the number of markers for each
+  cell-type. It accepts any object as an input, but is
+  generally called on an <code>MarkerList</code> object or an
+  object with an attached <code>MarkerList</code> object (see
+  methods <code>getMarkers</code> and <code>attachMarkers</code>).</p>
+  
+    </div>
+
+    <div class="Methods">
+      <h2>Methods</h2>
+      
+      <p><ol>
+<li>drop<code>signature(x = "MarkerList")</code>:
+  <code>drop</code> drops empty sets of markers from a
+  <code>MarkerList</code> object, as well as markers with
+  <code>FALSE</code> values if the object is a logical marker
+  list. It returns the reduced <code>MarkerList</code> object.</p>
+  
+      <p></li>
+<li>nmark<code>signature(object = "list")</code>: The
+  method for lists, including <code>MarkerList</code> objects
+  returns the total number of markers, or optionaly its
+  breakdown per set of markers.</p>
+  
+      <p></li>
+<li>nmark<code>signature(object = "ANY")</code>: The
+  default method tries to extract embedded marker data from
+  <code>object</code> using <code><a href='markers.html'>getMarkers</a></code>, and returns
+  the result of <code>nmark</code> applied to these data if
+  present or 0L otherwise.</p>
+  
+      <p></li>
+</ol></p>
+  
+      <p></p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'>m <- gMarkerList(3, 4)
+</div><div class='input'>geneIds(m)
+</div>
+<div class='output'>$Type1
+[1] 1 2 3 4
+
+$Type2
+[1] 5 6 7 8
+
+$Type3
+[1]  9 10 11 12
+
+</div><div class='input'>geneIds( reverse(m) )
+</div>
+<div class='output'>$Type1
+[1] 4 3 2 1
+
+$Type2
+[1] 8 7 6 5
+
+$Type3
+[1] 12 11 10  9
+
+</div><div class='input'>geneIds( reverse(m, all=TRUE) )
+</div>
+<div class='output'>$Type3
+[1] 12 11 10  9
+
+$Type2
+[1] 8 7 6 5
+
+$Type1
+[1] 4 3 2 1
+
+</div><div class='input'>m <- MarkerList( list(1:4, 10:15, integer(), 100) )
+</div>
+<strong class='warning'>Warning message:
+MarkerList - Converting mixed integer/numeric elements into integers.</strong><div class='input'>geneIds(m)
+</div>
+<div class='output'>$Type_1
+[1] 1 2 3 4
+
+$Type_2
+[1] 10 11 12 13 14 15
+
+$Type_3
+integer(0)
+
+$Type_4
+[1] 100
+
+</div><div class='input'>geneIds(drop(m))
+</div>
+<div class='output'>$Type_1
+[1] 1 2 3 4
+
+$Type_2
+[1] 10 11 12 13 14 15
+
+$Type_4
+[1] 100
+
+</div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>drop,MarkerList-method</li><li>dropvalues</li><li>hasDuplicated</li><li>mltype</li><li>nmark</li><li>nmark,ANY-method</li><li>nmark,list-method</li><li>nmark,MarkerList-method</li><li>nmark-methods</li><li>reverse</li><li>reverse,MarkerList-method</li><li>reverse-methods</li><li>rmDuplicated</li>
+    </ul>
+    <ul>
+      <li>methods</li>
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

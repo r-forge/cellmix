@@ -1,0 +1,9 @@
+\documentclass[10pt]{article}
+%\VignetteIndexEntry{CellMix: A Comprehensive Toolbox for Gene Expression Deconvolution}
+%\VignetteDepends{CellMix,knitr,hgu133plus2.db}
+%\VignetteCompiler{knitr}
+\usepackage{url}
+\usepackage[colorlinks]{hyperref}
+
+\begin{document}
+\end{document}

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>rproportions. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Generating Random Cell Type Proportions</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre>rproportions(x, target, ..., alpha = 1)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>...</dt>
+      <dd>extra arguments passed to
+  <code><a href='http://www.inside-r.org/r-doc/NMF/rnmf'>rnmf</a></code>.</dd>
+      <dt>alpha</dt>
+      <dd>shape parameter(s) for the dirichlet
+  distribution. It must be a single numeric value, or a
+  numeric vector of length the number of basis components
+  in the NMF model -- which is generally specified in
+  <var>object</var>. If a single numeric, it is used as a shape
+  parameters for all components. If <code>alpha=NA</code>, then
+  the coefficients are only scaled to sum-up to one.
+
+  Note that because it appears after arguments <code>...</code>,
+  its name must be fully specified, or it will be passed to
+  <code>rnmf</code>, while its default value used within
+  <code>rproportions</code>.</dd>
+      <dt>x</dt>
+      <dd>an object that determines the rank, dimension
+  and/or class of the generated NMF model, e.g. a numeric
+  value or an object that inherits from class
+  <code><a href='http://www.inside-r.org/r-doc/NMF/NMF-class'>NMF-class</a></code>. See the description of the
+  specific methods for more details on the supported
+  types.</dd>
+      <dt>target</dt>
+      <dd>optional specification of target
+  dimensions. See section <em>Methods</em> for how this
+  parameter is used by the different methods.</dd>
+    </dl>
+    
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p><code>rproportions</code> generates a random NMF model, whose
+  mixture coefficients for each sample (i.e. column of the
+  coefficient matrix) fulfil the sum-up-to-one constraint
+  of proportions.</p>
+  
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p>Internally, it generates a full random NMF model using
+  the function <code><a href='http://www.inside-r.org/r-doc/NMF/rnmf'>rnmf</a></code>, and either scale
+  the columns of its coefficient matrix so that they sum-up
+  to one if <code>alpha=NA</code>, or re-draw them from a
+  dirichlet distribution using the function
+  <code><a href='http://www.inside-r.org/r-doc/gtools/dirichlet'>rdirichlet</a></code> if <code>alpha</code> is a
+  single number or a numeric vector.</p>
+  
+      <p>This function is suitable for seeding NMF computation,
+  and is in fact registered as the seeding method
+  &#145;rprop&#146;, which can be used in calls to
+  <code><a href='http://www.inside-r.org/r-doc/NMF/nmf'>nmf</a></code>.</p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'># target data</div><div class='input'>x <- rmatrix(20,10)
+</div><div class='input'></div><div class='input'># generate models</div><div class='input'>rproportions(3, x)
+</div>
+<div class='output'><Object of class:NMFstd>
+features: 20 
+basis/rank: 3 
+samples: 10 
+</div><div class='input'>rproportions(3, 30, 15)
+</div>
+<div class='output'><Object of class:NMFstd>
+features: 30 
+basis/rank: 3 
+samples: 15 
+</div><div class='input'></div><div class='input'># scaling only</div><div class='input'>rproportions(3, 20, 10, alpha=NA)
+</div>
+<div class='output'><Object of class:NMFstd>
+features: 20 
+basis/rank: 3 
+samples: 10 
+</div><div class='input'># full shape specification</div><div class='input'>rproportions(3, x, alpha=c(1,2,3))
+</div>
+<div class='output'><Object of class:NMFstd>
+features: 20 
+basis/rank: 3 
+samples: 10 
+</div><div class='input'></div><div class='input'># error if alpha has wrong length</div><div class='input'>try( rproportions(3, 20, 10, alpha=c(1,2,3,4)) )
+</div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>rproportions</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

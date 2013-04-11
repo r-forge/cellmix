@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="Renaud Gaujoux, Cathal Seoighe">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href=""><i class="icon-home icon-white"></i> Index</a></li>
+       <li><a href="_MAN.html">Documentation</a></li>
+       <li><a href="_DEMOS.html">Demos</a></li>
+       <li><a href="_REFERENCES.html">References</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Documentation</h1><br />
+
+<h3></h3>
+
+
+<ul class="index">
+
+  <li>
+    <code><a href="Abbas.html">Abbas</a></code><br />Basis Matrix for Whole Blood Expression Deconvolution</li>
+
+  <li>
+    <code><a href="addNames.html">addNames</a></code><br />Generating Names</li>
+
+  <li>
+    <code><a href="applyBy.html">applyBy</a></code>(colApplyBy, colMaxsBy, colMeansBy, colMediansBy, colSumsBy, rowApplyBy, rowMaxsBy, rowMeansBy, rowMediansBy, rowSumsBy)<br />Group Apply</li>
+
+  <li>
+    <code><a href="dot-atrack-commaMarkerList-method.html">.atrack,MarkerList-method</a></code><br />Heatmap Annotation Track for MarkerList Objects</li>
+
+  <li>
+    <code><a href="barplot.MarkerList.html">barplot.MarkerList</a></code><br />Plotting MarkerList Objects</li>
+
+  <li>
+    <code><a href="markerPlots.html">beeswarm.MarkerList</a></code>(hist.MarkerList, profplot.MarkerList, screeplot.MarkerList, stripchart.MarkerList)<br />Plotting Markers</li>
+
+  <li>
+    <code><a href="biocann_map.html">biocann_map</a></code><br />Retrieving ID Conversion Maps</li>
+
+  <li>
+    <code><a href="biocann_object.html">biocann_object</a></code><br />Retrieving Bioconductor Annotation Maps</li>
+
+  <li>
+    <code><a href="boxplotBy.html">boxplotBy</a></code>(boxplotBy.default, boxplotBy.NMF)<br />Split Boxplot by Group</li>
+
+  <li>
+    <code><a href="cbind.ExpressionSet.html">cbind.ExpressionSet</a></code><br />Combining Expression Matrices</li>
+
+  <li>
+    <code><a href="cellMarkers.html">cellMarkers</a></code>(cellMarkersInfo)<br />Loading Marker Lists from Registry</li>
+
+  <li>
+    <code><a href="options.html">cellmix.options</a></code>(cellmix.getOption, cellmix.printOptions, cellmix.resetOptions)<br />Package Specific Options for CellMix</li>
+
+  <li>
+    <code><a href="CellMix-package.html">CellMix-package</a></code>(CellMix)<br />Gene Expression Deconvolution</li>
+
+  <li>
+    <code><a href="checkConstraints.html">checkConstraints</a></code><br />Checking Linear Constraints</li>
+
+  <li>
+    <code><a href="combine-commaMarkerList-commafactor-method.html">combine,MarkerList,factor-method</a></code><br />Combine markers from multiple cell types of a MarkerList object, based on groups
+</li>
+
+  <li>
+    <code><a href="Compare-commaMarkerList-commanumeric-method.html">Compare,MarkerList,numeric-method</a></code><br />Operations on MarkerList Objects</li>
+
+  <li>
+    <code><a href="convertIDs.html">convertIDs</a></code>(convertIDs,ANY,ANY,ANY-method, convertIDs,ANY,ANY,NullIdentifier-method, convertIDs,ANY,list,missing-method, convertIDs,character,GeneIdentifierType,GeneIdentifierType-method, convertIDs,ExpressionSet,GeneIdentifierType,GeneIdentifierType-method, convertIDs,list,GeneIdentifierType,GeneIdentifierType-method, convertIDs,MarkerList,GeneIdentifierType,GeneIdentifierType-method, convertIDs,matrix,GeneIdentifierType,GeneIdentifierType-method, convertIDs-methods, mapIdentifiers,list,GeneIdentifierType,GeneIdentifierType-method)<br />Converting Gene or Probeset IDs</li>
+
+  <li>
+    <code><a href="csplot.html">csplot</a></code>(csplot.NMFfit, csplot.NMFfitX)<br />Plots Cell-Specific FDR Estimates</li>
+
+  <li>
+    <code><a href="dot-csSAM.html">.csSAM</a></code><br />Cell-specific Differential Expression with csSAM</li>
+
+  <li>
+    <code><a href="csTopTable.html">csTopTable</a></code>(csTopTable.array, csTopTable.matrix, csTopTable.NMFfit, csTopTable.NMFfitX)<br />Compute Cell-Specific Statistics</li>
+
+  <li>
+    <code><a href="ExpressionMix-dims.html">dim,ExpressionMix-method</a></code>(dimnames&lt;-,ExpressionMix-method, dimnames,ExpressionMix-method, featureNames&lt;-,ExpressionMix-method, sampleNames&lt;-,ExpressionMix,ANY-method, sampleNames&lt;-,ExpressionMix-method)<br />Dimensions in ExpressionMix Objects</li>
+
+  <li>
+    <code><a href="dot-DollarNames-commaExpressionMix-method.html">.DollarNames,ExpressionMix-method</a></code><br />Auto-completion for </li>
+
+  <li>
+    <code><a href="utils-MarkerList.html">dropvalues</a></code>(drop,MarkerList-method, hasDuplicated, mltype, nmark, nmark,ANY-method, nmark,list-method, nmark,MarkerList-method, nmark-methods, reverse, reverse,MarkerList-method, reverse-methods, rmDuplicated)<br />Utility Functions for MarkerList Objects</li>
+
+  <li>
+    <code><a href="DSAproportions.html">DSAproportions</a></code>(.DSAproportions)<br />Digital Sorting Algorithm: Proportion Estimation Method</li>
+
+  <li>
+    <code><a href="DSection.html">DSection</a></code><br />DSection Gene Expression Deconvolution Method</li>
+
+  <li>
+    <code><a href="enforceMarkers.html">enforceMarkers</a></code>(enforceMarkers,matrix,list-method, enforceMarkers,matrix,numeric-method, enforceMarkers-methods, enforceMarkers,NMF,ANY-method)<br />Enforcing Marker Block Patterns</li>
+
+  <li>
+    <code><a href="eset.html">eset</a></code>(eset,ExpressionMix-method, eset,GEDdata_entry-method, eset-methods)<br />Extracting Expression Data</li>
+
+  <li>
+    <code><a href="ExpressionMix.html">ExpressionMix</a></code>(ExpressionMix,character-method, ExpressionMix,ExpressionSet-method, ExpressionMix,matrix-method, ExpressionMix-methods, show,ExpressionMix-method)<br />Factory Method for ExpressionMix Objects</li>
+
+  <li>
+    <code><a href="ExpressionMix-class.html">ExpressionMix-class</a></code><br />Class for Gene Expression Deconvolution Benchmark Datasets</li>
+
+  <li>
+    <code><a href="ExpressionMix-subset.html">ExpressionMix-subset</a></code>([,ExpressionMix,ANY,ANY-method, [,MatrixData,MarkerList,ANY-method, [,NMF,MarkerList,ANY-method)<br />Subsetting ExpressionMix Objects</li>
+
+  <li>
+    <code><a href="extractMarkers.html">extractMarkers</a></code>(extractMarkers,ANY-method, extractMarkers,ExpressionSet-method, extractMarkers-methods, markerScoreMethod, scoreMarkers)<br />Extract Markers from Pure Samples.</li>
+
+  <li>
+    <code><a href="Bioc-generics.html">featureNames</a></code>(exprs, exprs,matrix-method, exprs-methods, featureNames&lt;-, featureNames,MarkerList-method, featureNames,matrix-method, featureNames&lt;--methods, featureNames-methods, sampleNames, sampleNames&lt;-, sampleNames,matrix-method, sampleNames&lt;--methods, sampleNames-methods)<br />Extracting Feature Names</li>
+
+  <li>
+    <code><a href="flatten.html">flatten</a></code>(flatten,list-method, flatten,MarkerList-method, flatten-methods)<br />Flattening Marker Lists</li>
+
+  <li>
+    <code><a href="ged.html">ged</a></code>(ged,ANY,ANY,function-method, ged,MatrixData,ANY,ANY-method, ged,MatrixData,ANY,GEDStrategy-method, ged,MatrixData,ANY,missing-method, ged-methods)<br />Main Interface for Gene Expression Deconvolution Methods</li>
+
+  <li>
+    <code><a href="gedAlgorithm.html">gedAlgorithm</a></code>(gedAlgorithmInfo)<br />Managing Gene Expression Deconvolution Algorithms</li>
+
+  <li>
+    <code><a href="gedAlgorithm.cs_lsfit.html">gedAlgorithm.cs_lsfit</a></code>(cs-lsfit-ged)<br />Cell-Specific Expression by Standard Least-Squares</li>
+
+  <li>
+    <code><a href="gedAlgorithm.cs_nnls.html">gedAlgorithm.cs_nnls</a></code>(cs-nnls-ged)<br />Partial Cell-Specific Expression by Nonnegative Least-Squares</li>
+
+  <li>
+    <code><a href="gedAlgorithm.csSAM.html">gedAlgorithm.csSAM</a></code>(csplot.ged_csSAM, csSAM-ged, csTopTable.ged_csSAM)<br />Partial Gene Expression Deconvolution with csSAM</li>
+
+  <li>
+    <code><a href="gedAlgorithm.deconf.html">gedAlgorithm.deconf</a></code>(.deconf-ged, deconf-ged, gedAlgorithm._deconf)<br />Complete Gene Expression Deconvolution: Method deconf</li>
+
+  <li>
+    <code><a href="gedAlgorithm.DSA.html">gedAlgorithm.DSA</a></code>(DSA-ged)<br />Complete Deconvolution using Digital Sorting Algorithm (DSA)</li>
+
+  <li>
+    <code><a href="gedAlgorithm.DSection.html">gedAlgorithm.DSection</a></code>(csTopTable.ged_DSection, DSection-ged)<br />Partial Gene Expression Deconvolution with DSection</li>
+
+  <li>
+    <code><a href="gedAlgorithm.lsfit.html">gedAlgorithm.lsfit</a></code>(lsfit-ged)<br />Partial Gene Expression Deconvolution by Standard Least-Squares</li>
+
+  <li>
+    <code><a href="gedAlgorithm.meanProfile.html">gedAlgorithm.meanProfile</a></code>(meanProfile-ged)<br />Partial Gene Expression Deconvolution: Marker Mean Expression Profile</li>
+
+  <li>
+    <code><a href="gedAlgorithm.nnls.html">gedAlgorithm.nnls</a></code>(nnls-ged)<br />Partial Gene Expression Deconvolution by Nonnegative Least-Squares</li>
+
+  <li>
+    <code><a href="gedAlgorithm.qprog.html">gedAlgorithm.qprog</a></code>(cs-qprog-ged, gedAlgorithm.cs_qprog, qprog-ged)<br />Partial Gene Expression Deconvolution by Quadratic Programming</li>
+
+  <li>
+    <code><a href="gedAlgorithm.ssKL.html">gedAlgorithm.ssKL</a></code>(gedAlgorithm.ssFrobenius, ssFrobenius-ged, ssKL-ged)<br />Complete Gene Expression Deconvolution by Semi-Supervised NMF</li>
+
+  <li>
+    <code><a href="blood.html">gedBlood</a></code>(asCBC, asCBC,character-method, asCBC,MarkerList-method, asCBC-methods, asCBC,NMF-method, gCBC, refCBC)<br />Blood Sample Deconvolution</li>
+
+  <li>
+    <code><a href="gedCheck.html">gedCheck</a></code><br />Checking a Deconvolution Method</li>
+
+  <li>
+    <code><a href="gedData.html">gedData</a></code>(gedDataInfo)<br />Loading Gene Expression Deconvolution Data</li>
+
+  <li>
+    <code><a href="GEDdata-access.html">GEDdata-access</a></code>(basis,GEDdata_entry-method, coef,GEDdata_entry-method, dims,GEDdata_entry-method, exprs,GEDdata_entry-method, nbasis,GEDdata_entry-method)<br />Accessing Data from CellMix Dataset</li>
+
+  <li>
+    <code><a href="GEDdownload.html">GEDdownload</a></code><br />Downloading Gene Expression Deconvolution Datasets</li>
+
+  <li>
+    <code><a href="gedProportions.html">gedProportions</a></code><br />Estimating Cell Proportions from Known Signatures</li>
+
+  <li>
+    <code><a href="GEDalgorithm-utils.html">gedRequired</a></code>(anyRequired, isRequired, onlyRequired)<br />Utility Functions for GED Algorithms</li>
+
+  <li>
+    <code><a href="GEDStrategy.html">GEDStrategy</a></code>(GEDStrategy,character-method, GEDStrategy,function-method, GEDStrategy,GEDalgorithm_entry-method, GEDStrategy,GEDStrategy-method, GEDStrategy-methods, GEDStrategy,missing-method)<br />Factory Methods for GEDStrategy Objects</li>
+
+  <li>
+    <code><a href="GEDStrategy-class.html">GEDStrategy-class</a></code>(show,GEDStrategy-method)<br />Class for GED Algorithms</li>
+
+  <li>
+    <code><a href="MarkerList-data.html">geneValues</a></code>(annotation, annotation&lt;-, annotation,GEDdata_entry-method, annotation&lt;-,MarkerList,character-method, annotation,MarkerList-method, annotation&lt;-,MarkerList,NULL-method, annotation&lt;--methods, annotation-methods, details, details,MarkerList-method, details-methods, geneIds, geneIds&lt;-, geneIds&lt;-,MarkerList,list-method, geneIds,MarkerList-method, geneIds&lt;--methods, geneIds-methods, geneIdType, geneIdType&lt;-, geneIdType&lt;-,MarkerList,character-method, geneIdType&lt;-,MarkerList,GeneIdentifierType-method, geneIdType,MarkerList-method, geneIdType&lt;-,MarkerList,NULL-method, geneIdType&lt;--methods, geneIdType-methods, geneValues&lt;-, geneValues,MarkerList-method, geneValues&lt;--methods, geneValues-methods, hasValues, marknames, marknames,list-method, marknames-methods, marknames,vector-method, nmf, nmf,MatrixData,MarkerList,ANY-method, nmf-methods, show,MarkerList-method)<br />Accessing Data in Marker Lists</li>
+
+  <li>
+    <code><a href="getGSE.html">getGSE</a></code><br />Downloading GSE Datasets from GEO</li>
+
+  <li>
+    <code><a href="gmarkers.html">gmarkers</a></code>(gMarkerList, rMarkerList, rmarkers)<br />Generating Marker Lists</li>
+
+  <li>
+    <code><a href="Bioc2GPL.html">gpl2bioc</a></code>(bioc2gpl)<br />Mapping Bioconductor Annotation packages to GEO GPL Identifiers</li>
+
+  <li>
+    <code><a href="GPL2bioc.html">GPL2bioc</a></code><br />Map Between Bioconductor Annotation Packages and GEO GPL Identifiers</li>
+
+  <li>
+    <code><a href="GSE11058_pdata.html">GSE11058_pdata</a></code><br />Cell Line Proportions for Dataset GSE11058</li>
+
+  <li>
+    <code><a href="GSE20300_pdata.html">GSE20300_pdata</a></code><br />Complete Blood Count for Dataset GSE20300</li>
+
+  <li>
+    <code><a href="GSE3649_fdata.html">GSE3649_fdata</a></code><br />Feature Annotation Data for Dataset GSE3649</li>
+
+  <li>
+    <code><a href="GSE3649_pdata.html">GSE3649_pdata</a></code><br />Phenotypic Annotation Data for Dataset GSE3649</li>
+
+  <li>
+    <code><a href="HaemAtlas.html">HaemAtlas</a></code><br />HaemAtlas Dataset - Immune Cells</li>
+
+  <li>
+    <code><a href="annotation-utils.html">hasAnnotation</a></code>(getAnnotation)<br />Extracting Annotation from Objects</li>
+
+  <li>
+    <code><a href="idFilter.html">idFilter</a></code>(idFilterAffy, idFilterAll, idFilterAuto, idFilterFirstN, idFilterInjective, idFilterMAuto, idFilterOneToMany, idFilterOneToOne)<br />Gene Identifier Filtering Strategies</li>
+
+  <li>
+    <code><a href="idtype.html">idtype</a></code>(idtype,ChipDb-method, idtype,ExpressionSet-method, idtype,GeneIdentifierType-method, idtype,list-method, idtype,MarkerList-method, idtype,matrix-method, idtype-methods, idtype,missing-method, idtype,NMF-method, idtype,NULL-method, idtype,ProbeAnnDbBimap-method, idtype,vector-method)<br />Identifying Gene or Probe ID Type</li>
+
+  <li>
+    <code><a href="initialize-commaExpressionMix-method.html">initialize,ExpressionMix-method</a></code><br />Initialize method for ExpressionMix object</li>
+
+  <li>
+    <code><a href="IRIS.html">IRIS</a></code><br />Immune Response In-Silico (IRIS) Data</li>
+
+  <li>
+    <code><a href="annotation-tools.html">is.annpkg</a></code>(biocann_mapname, biocann_pkgname, biocann_pkgobject, is.anndb, revmap,character-method)<br />Annotation Tools</li>
+
+  <li>
+    <code><a href="is_logscale.html">is_logscale</a></code>(log_transform)<br />Detect Log-transformed Data</li>
+
+  <li>
+    <code><a href="biocIDs.html">is.probeid</a></code>(asGeneIdentifierType, is.idtype, is.probetype)<br />Utility function for Biological Identifiers</li>
+
+  <li>
+    <code><a href="kappa.MarkerList.html">kappa.MarkerList</a></code><br />Condition Number of a Marker List</li>
+
+  <li>
+    <code><a href="ExpressionSet-compute.html">log,ExpressionSet-method</a></code>(expb, expb,ExpressionSet-method, expb,matrix-method, expb-methods, exp,ExpressionSet-method, quantile.ExpressionSet, range,ExpressionSet-method)<br />Numeric Computations on ExpressionSet objects</li>
+
+  <li>
+    <code><a href="dot-mAbbas.html">.mAbbas</a></code>(Abbas-markers)<br />Optimised Set of Marker Genes for Immune Cells</li>
+
+  <li>
+    <code><a href="mapIDs.html">mapIDs</a></code><br />Mapping Gene Identifiers</li>
+
+  <li>
+    <code><a href="MarkerList.html">MarkerList</a></code>(MarkerList,ANY-method, MarkerList,character-method, MarkerList,ExpressionSet-method, MarkerList,factor-method, MarkerList,integer-method, MarkerList,list-method, MarkerList,MarkerList-method, MarkerList,matrix-method, MarkerList-methods, MarkerList,missing-method, MarkerList,vector-method)<br />Factory Method for Marker Lists</li>
+
+  <li>
+    <code><a href="subset.html">[,MarkerList,ANY,ANY-method</a></code>([,MarkerList,list,ANY-method, [,MarkerList,missing,list-method, subset,MarkerList-method)<br />Subsetting Marker Lists</li>
+
+  <li>
+    <code><a href="markers.html">MarkerList-class</a></code>(attachMarkers, getMarkers, has.markers, isMarkerList, summary,MarkerList-method)<br />Class for Marker Gene Lists</li>
+
+  <li>
+    <code><a href="markermap.html">markermap</a></code>(basismarkermap, markermap,MarkerList,ExpressionSet-method, markermap,MarkerList,matrix-method, markermap,MarkerList,NMFfitX-method, markermap,MarkerList,NMF-method, markermap,MatrixData,ANY-method, markermap-methods)<br />Heatmaps Highlighting Markers</li>
+
+  <li>
+    <code><a href="markerScoreAbbas.html">markerScoreAbbas</a></code><br />Marker Scoring Method: Abbas et al. (2009)</li>
+
+  <li>
+    <code><a href="markerScoreHSD.html">markerScoreHSD</a></code>(selectMarkers.markerScore_HSD)<br />Marker Scoring Method: Tukey Honest Significant Difference</li>
+
+  <li>
+    <code><a href="markerScoreMaxcol.html">markerScoreMaxcol</a></code><br />Marker scoring method: Max Expression</li>
+
+  <li>
+    <code><a href="markerScoreScorem.html">markerScoreScorem</a></code>(selectMarkers.markerScore_scorem)<br />Marker scoring method: SCOREM</li>
+
+  <li>
+    <code><a href="MarkerSetCollection.html">MarkerSetCollection</a></code>(MarkerSetCollection-methods)<br />Factory Methods for Marker Gene Set Collections</li>
+
+  <li>
+    <code><a href="MarkerSetCollection-class.html">MarkerSetCollection-class</a></code><br />Classes for Marker Gene Set Collections</li>
+
+  <li>
+    <code><a href="match_first.html">match_first</a></code><br />Returns the index of the first match in a reference table</li>
+
+  <li>
+    <code><a href="matchIndex.html">matchIndex</a></code>(matchIndex,ANY,ANY-method, matchIndex,ANY,missing-method, matchIndex,list,character-method, matchIndex,list,ChipDb-method, matchIndex,list,ExpressionSet-method, matchIndex,list,matrix-method, matchIndex,list,NMF-method, matchIndex,list,ProbeAnnDbBimap-method, matchIndex-methods)<br />Creating Mapping from Marker Lists</li>
+
+  <li>
+    <code><a href="match.nmf.html">match.nmf</a></code>(match.cell)<br />Assigning Estimated Signature to Real Cell-Types</li>
+
+  <li>
+    <code><a href="mergeList.html">mergeList</a></code><br />Merge two lists</li>
+
+  <li>
+    <code><a href="dot-mHaemAtlas.html">.mHaemAtlas</a></code>(HaemAtlas-markers)<br />HaemAtlas Marker List for Immune Cells - Watkins et al. (2009)</li>
+
+  <li>
+    <code><a href="dot-mIRIS.html">.mIRIS</a></code>(IRIS-markers)<br />Marker Genes for Immune Cells (IRIS)</li>
+
+  <li>
+    <code><a href="mixData.html">mixData</a></code>(mixData&lt;-, mixData,ExpressionMix-method, mixData&lt;-,ExpressionMix,NMFstd-method, mixData&lt;--methods, mixData-methods)<br />Extracting Mixture Data</li>
+
+  <li>
+    <code><a href="mlsei.html">mlsei</a></code><br />Multivariate Least Squares with Equalities and Inequalities</li>
+
+  <li>
+    <code><a href="dot-mTDDB_HS.html">.mTDDB_HS</a></code>(TDDB_HS, TissueDistributionDB_HS-markers)<br />Human Tissue Specific Genes from the TissueDistributionDB Database</li>
+
+  <li>
+    <code><a href="dot-mTDDB_RN.html">.mTDDB_RN</a></code>(TDDB_RN, TissueDistributionDB_RN-markers)<br />Rat Tissue Specific Genes from the TissueDistributionDB Database</li>
+
+  <li>
+    <code><a href="dot-mTIGER.html">.mTIGER</a></code>(TIGER-markers)<br />TiGER - Human Tissue Specific Genes</li>
+
+  <li>
+    <code><a href="MySQLtoSQLite.html">MySQLtoSQLite</a></code><br />Load a MySQL Dump for Using with SQLite</li>
+
+  <li>
+    <code><a href="npure.html">npure</a></code>(lpure, mixedSamples, pureSamples, wpure)<br />Acessing Pure or Mixed Sample Data</li>
+
+  <li>
+    <code><a href="nuIDdecode.html">nuIDdecode</a></code><br />Convert nuID to Nucleotide Sequence</li>
+
+  <li>
+    <code><a href="Palmer.html">Palmer</a></code><br />Palmer Dataset</li>
+
+  <li>
+    <code><a href="propplot.html">propplot</a></code><br />Cell Type Proportion Plot</li>
+
+  <li>
+    <code><a href="regcheck.html">regcheck</a></code>(checkS4)<br />Validity Functions of Registry Fields</li>
+
+  <li>
+    <code><a href="sort.html">reorder,MarkerList-method</a></code>(sort.MarkerList)<br />Reordering Marker Lists</li>
+
+  <li>
+    <code><a href="rmix.html">rmix</a></code><br />Generating Random Global Mixed Gene Expression Data</li>
+
+  <li>
+    <code><a href="rproportions.html">rproportions</a></code><br />Generating Random Cell Type Proportions</li>
+
+  <li>
+    <code><a href="rpure.html">rpure</a></code><br />Generating Random Pure Cell Type Sample</li>
+
+  <li>
+    <code><a href="sapply-commaMarkerList-method.html">sapply,MarkerList-method</a></code><br />Aplying Functions Along MarkerList Objects</li>
+
+  <li>
+    <code><a href="selectGEDMethod.html">selectGEDMethod</a></code><br />Automatic Selection of Gene Expression Deconvolution Algorithms</li>
+
+  <li>
+    <code><a href="selectMarkers.html">selectMarkers</a></code>(selectMarkers.MarkerList, selectMarkers.markerScore)<br />Select Markers Based on Scores</li>
+
+  <li>
+    <code><a href="GEDMethods-internals.html">setGEDMethod</a></code>(removeGEDMethod)<br />Register CellMix Deconvolution Methods</li>
+
+  <li>
+    <code><a href="GEDMarkers-internals.html">setMarkerList</a></code>(removeMarkerList)<br />Register CellMix MarkerLists</li>
+
+  <li>
+    <code><a href="showData.html">showData</a></code>(showData,ExpressionMix-method, showData-methods)<br />Show Data Available in an Object</li>
+
+  <li>
+    <code><a href="SLE.html">SLE</a></code><br />Gene Expression from Systemic Lupus Erythematosus Patients</li>
+
+  <li>
+    <code><a href="stack.html">stack.MarkerList</a></code>(unstack.stackedMarkerList)<br />Converting Marker Lists into data.frames</li>
+
+  <li>
+    <code><a href="subsetML.html">subsetML</a></code><br />Subsetting Data with MarkerList Objects</li>
+
+  <li>
+    <code><a href="TIGER.html">TIGER</a></code><br />TiGER Database</li>
+
+  <li>
+    <code><a href="TissueDistributionDB_HS.html">TissueDistributionDB_HS</a></code><br />Human Tissue Specific Genes from TissueDistributionDB</li>
+
+  <li>
+    <code><a href="TissueDistributionDB_RN.html">TissueDistributionDB_RN</a></code><br />Rat Tissue Specific Genes from TissueDistributionDB</li>
+
+  <li>
+    <code><a href="userData.html">userData</a></code><br />User Data Directory</li>
+
+  <li>
+    <code><a href="VeryGene.html">VeryGene</a></code><br />VeryGene Dataset</li>
+
+  <li>
+    <code><a href="VeryGene-markers.html">VeryGene-markers</a></code><br />VeryGene - Marker List for Human Tissues</li>
+
+</ul>
+
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

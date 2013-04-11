@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>MarkerList. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Factory Method for Marker Lists</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre>MarkerList(object, ...)
+
+<span class="label label-important">S4</span> (missing)
+`MarkerList`(object, ..., file = NULL)
+
+<span class="label label-important">S4</span> (vector)
+`MarkerList`(object, ..., names = NULL)
+
+<span class="label label-important">S4</span> (character)
+`MarkerList`(object, ..., names = NULL)
+
+<span class="label label-important">S4</span> (list)
+`MarkerList`(object, ..., unlist = FALSE, quiet = FALSE)
+
+<span class="label label-important">S4</span> (matrix)
+`MarkerList`(object, ..., values = TRUE, add.names = TRUE)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>object</dt>
+      <dd>input object from which marker data are
+  extracted.</dd>
+      <dt>...</dt>
+      <dd>extra arguments to allow extension. See each
+  method's description for more details.</dd>
+      <dt>file</dt>
+      <dd>filename of a file that contains marker data.
+  Conneciton objects are also supported.</dd>
+      <dt>names</dt>
+      <dd>factor or character vector that defines the
+  types associated to each marker in <code>object</code>.</dd>
+      <dt>unlist</dt>
+      <dd>logical that indicates if the result should
+  be a vector representation of the marker list. In this
+  case auxiliary numeric values are dropped from the list.</dd>
+      <dt>quiet</dt>
+      <dd>logical that indicates if warnings should be
+  silenced if any.</dd>
+      <dt>values</dt>
+      <dd>a logical that indicates if the row
+  maximums should be embedded into the marker list.</dd>
+      <dt>add.names</dt>
+      <dd>logical that indicates if names should
+  be added if necessary (<code>TRUE</code>). This is used in the
+  case the input matrix has no rownames and the row maximum
+  values are requested to be attached to the marker list
+  (<code>values=TRUE</code>), which throws an error if
+  <code>add.names=FALSE</code>.</dd>
+    </dl>
+    
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p><code>MarkerList</code> is an S4 generic function that provides
+  a convenient interface to create
+  <code><a href='markers.html'>MarkerList-class</a></code> objects from a variety of
+  input formats, such as plain named lists, factors,
+  matrices or <code><a href='http://www.inside-r.org/r-doc/Biobase/class.ExpressionSet'>ExpressionSet-class</a></code> objects,
+  text files, etc..</p>
+  
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p>Except for its method <code>MarkerList,matrix</code>, this
+  function does not try to infer markers from the input
+  data, but only reorganise groups of markers that are
+  already clearly defined in the input data.</p>
+  
+    </div>
+
+    <div class="Methods">
+      <h2>Methods</h2>
+      
+      <p><ol>
+<li>MarkerList<code>signature(object =
+  "MarkerList")</code>: This method acts as a Constructor-Copy
+  that returns the input MarkerList object unchanged if no
+  other argument are passed, or creates a new MarkerList
+  object based on <code>object</code>, using the arguments in
+  <code>...</code> to initialise the slots.</p>
+  
+      <p></li>
+<li>MarkerList<code>signature(object = "missing")</code>:
+  Creates a <code>MarkerList</code> object as per
+  <code>new('MarkerList', ...)</code> or from a file (see section
+  <em>Loading from files</em>).</p>
+  
+      <p></li>
+<li>MarkerList<code>signature(object = "ANY")</code>:
+  Default method that tries to retrieve marker data from
+  the input object using the function
+  <code><a href='markers.html'>getMarkers</a></code>.</p>
+  
+      <p></li>
+<li>MarkerList<code>signature(object = "vector")</code>:
+  Creates a <code>MarkerList</code> object treating the input
+  vector as a factor, except if the input is a numeric
+  vector of scores. See
+  <code><a href='MarkerList.html'>MarkerList,factor-method</a></code>.</p>
+  
+      <p>If <code>object</code> is numeric, one also needs to supply a
+  factor that defines the cell types. Markers ids are taken
+  from the names <code>object</code>, or, if missing, from the
+  names of <code>types</code>.</p>
+  
+      <p></li>
+<li>MarkerList<code>signature(object = "integer")</code>:
+  Creates a MarkerList object using the -- normally --
+  duplicated names of the input vector as types, and the
+  values as marker indexes. See
+  <code><a href='MarkerList.html'>MarkerList,factor-method</a></code>.</p>
+  
+      <p></li>
+<li>MarkerList<code>signature(object = "character")</code>:
+  Either loads a marker list from the internal registry
+  (see <code><a href='cellMarkers.html'>cellMarkers</a></code>), or use the names of
+  <code>object</code> for defining the sets and the values
+  (strings) as marker identifiers.</p>
+  
+      <p>If no names are present, then it uses the character
+  vector as a factor, whose levels are the sets, and
+  creates an index marker list with
+  <code>MarkerList,factor-method</code>.</p>
+  
+      <p></li>
+<li>MarkerList<code>signature(object = "factor")</code>:
+  Create a MarkerList object by splitting the input factor
+  into a list of its different levels.</p>
+  
+      <p>If <code>object</code> has names they are used as marker
+  identifiers, otherwise an index marker list is created.</p>
+  
+      <p></li>
+<li>MarkerList<code>signature(object = "list")</code>:
+  Convert a standard list into a MarkerList object.</p>
+  
+      <p>The list should contain no duplicated marker identifiers
+  (either as strings or integer indexes).</p>
+  
+      <p></li>
+<li>MarkerList<code>signature(object = "matrix")</code>:
+  Creates a MarkerList object from a numeric matrix, that
+  is assumed to have one column per marker set, e.g., a
+  matrix cell type-specific signature.</p>
+  
+      <p>This method uses a very simple heuristic, which associate
+  each row in a matrix to the column with the maximum entry
+  (see <code><a href='http://www.inside-r.org/r-doc/base/maxCol'>max.col</a></code>).</p>
+  
+      <p>For more complex and finer ways of extracting markers
+  from expression data see <code><a href='extractMarkers.html'>extractMarkers</a></code>.</p>
+  
+      <p>The rownames are used as marker identifiers if present.
+  If not otherwise specified, each marker is associated
+  with its correspondong row maximum, which is also stored
+  in the result object.</p>
+  
+      <p></li>
+<li>MarkerList<code>signature(object =
+  "ExpressionSet")</code>: Create a MarkerList from the
+  expression matrix of an
+  <code><a href='http://www.inside-r.org/r-doc/Biobase/class.ExpressionSet'>ExpressionSet-class</a></code> object.</p>
+  
+      <p>This is a shortcut for <code>MarkerList(exprs(object),
+  ...)</code>.</p>
+  
+      <p></li>
+</ol></p>
+  
+      <p></p>
+  
+    </div>
+
+    <div class="Loading from files">
+      <h2>Loading from files</h2>
+      
+      <p>Loading marker lists directly from files can be performed
+  by providing filename to argument <code>file</code>. Currently
+  this functionality is only implemented for plain text
+  files that contain one marker feature description per
+  line: marker names (e.g., ENTREZID), marker set (e.g.,
+  cell type name) and optionally some numeric value (e.g.
+  specificity score).</p>
+  
+      <p>In this case all arguments in <code>...</code> are passed to
+  <code><a href='http://www.inside-r.org/r-doc/utils/read.table'>read.table</a></code>, and should be set so that the
+  loaded data.frame conforms with one of the following
+  formats: <ol>
+<li>at least one column and row
+  names: the row names are used as marker names, column 1
+  as marker set. Note that tables with automatic rownames
+  generated by <code>read.table</code> (i.e. 1,2,3, etc..) are
+  not considered as proper rownames. </li>
+<li>two columns and
+  no row names:column 1 is used for marker names, column
+  2 for the marker set names. </li>
+<li>single column and no
+  (or automatic) rownames:column is used for marker set
+  names, the markers are taken to be integers. </li>
+</ol></p>
+  
+      <p>Optionally, in all cases, the next numeric column after
+  the one used for marker set names is used for associated
+  numeric values.</p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'>## create a MarkerList from another MarkerList</div><div class='input'>m <- rMarkerList(3, 4, names=TRUE)
+</div><div class='input'>m
+</div>
+<div class='output'><object of class: MarkerList>
+Types: Type1, Type2, Type3 (total: 3)
+Mode: character
+setName: NA 
+geneIds: Marker.1, Marker.2, ..., Marker.10 (total: 12)
+geneIdType: Null
+collectionType: Null 
+geneValues: NA 
+details: use 'details(object)'
+</div><div class='input'>MarkerList(m, setName=mkScalar("Another list of markers"))
+</div>
+<div class='output'><object of class: MarkerList>
+Types: Type1, Type2, Type3 (total: 3)
+Mode: character
+setName: Another list of markers 
+geneIds: Marker.1, Marker.2, ..., Marker.10 (total: 12)
+geneIdType: Null
+collectionType: Null 
+geneValues: NA 
+details: use 'details(object)'
+</div><div class='input'>txtdesc <- function(x) textConnection(paste(x, collapse="\n"))
+</div><div class='input'></div><div class='input'># two columns</div><div class='input'>ml <- MarkerList(file=txtdesc(c("m1 a", "m2 b", "m3 a")))
+</div><div class='input'>summary(ml)
+</div>
+<div class='output'><object of class MarkerList>
+Types: 2 ['a', 'b'] 
+Mode: character
+Markers: 3 
+IDtype: unknown ['m1', 'm3', 'm2'] 
+Breakdown:
+a b 
+2 1 
+</div><div class='input'></div><div class='input'># single column with row.names</div><div class='input'>ml2 <- MarkerList(file=txtdesc(c("m1 a", "m2 b", "m3 a")), row.names=1L)
+</div><div class='input'>identical(ml, ml2)
+</div>
+<div class='output'>[1] TRUE
+</div><div class='input'></div><div class='input'># three columns with values</div><div class='input'>mlv <- MarkerList(file=txtdesc(c("m1 a 1.4", "m2 b 1.5", "m3 a 2.6")))
+</div><div class='input'>summary(mlv)
+</div>
+<div class='output'><object of class MarkerList>
+Types: 2 ['a', 'b'] 
+Mode: numeric
+Markers: 3 
+IDtype: unknown ['m1', 'm3', 'm2'] 
+Values: [1.4, 2.6]
+Breakdown:
+a b 
+2 1 
+</div><div class='input'>print(mlv)
+</div>
+<div class='output'>a :
+ m1  m3 
+1.4 2.6 
+
+b :
+ m2 
+1.5 
+
+</div><div class='input'></div><div class='input'># skip an extra column</div><div class='input'>mlv <- MarkerList(file=txtdesc(c("m1 a 1.4", "m2 b 1.5", "m3 a 2.6")))
+</div><div class='input'>summary(mlv)
+</div>
+<div class='output'><object of class MarkerList>
+Types: 2 ['a', 'b'] 
+Mode: numeric
+Markers: 3 
+IDtype: unknown ['m1', 'm3', 'm2'] 
+Values: [1.4, 2.6]
+Breakdown:
+a b 
+2 1 
+</div><div class='input'>print(mlv)
+</div>
+<div class='output'>a :
+ m1  m3 
+1.4 2.6 
+
+b :
+ m2 
+1.5 
+
+</div><div class='input'></div><div class='input'># single column: index MarkerList</div><div class='input'>ml <- MarkerList(file=txtdesc(c("a", "b", "a")))
+</div><div class='input'>summary(ml)
+</div>
+<div class='output'><object of class MarkerList>
+Types: 2 ['a', 'b'] 
+Mode: integer
+Markers: 3 
+IDtype: _INDEX_ [1L, 3L, 2L] 
+Breakdown:
+a b 
+2 1 
+</div><div class='input'>## create a MarkerList from an integer vector</div><div class='input'># names are required</div><div class='input'>try( MarkerList( 1:15 ) )
+</div><div class='input'># repeated names define marker sets</div><div class='input'>MarkerList( setNames(1:12, rep(letters[1:3], 4)) )
+</div>
+<div class='output'><object of class: MarkerList>
+Types: a, b, c (total: 3)
+Mode: integer
+setName: NA 
+geneIds: 1, 4, ..., 12 (total: 12)
+geneIdType: Null
+collectionType: Null 
+geneValues: NA 
+details: use 'details(object)'
+</div><div class='input'>## create a MarkerList from a character vector</div><div class='input'># no names: repeated values define the sets</div><div class='input'>v <- sample(letters[1:3], 15, replace=TRUE)
+</div><div class='input'>MarkerList(v)
+</div>
+<div class='output'><object of class: MarkerList>
+Types: a, b, c (total: 3)
+Mode: integer
+setName: NA 
+geneIds: 4, 6, ..., 15 (total: 15)
+geneIdType: Null
+collectionType: Null 
+geneValues: NA 
+details: use 'details(object)'
+</div><div class='input'># with names: repeated names define the sets</div><div class='input'>m <- str_c('M', 1:15)
+</div><div class='input'>MarkerList( setNames(m, v) )
+</div>
+<div class='output'><object of class: MarkerList>
+Types: a, b, c (total: 3)
+Mode: character
+setName: NA 
+geneIds: M4, M6, ..., M15 (total: 15)
+geneIdType: Null
+collectionType: Null 
+geneValues: NA 
+details: use 'details(object)'
+</div><div class='input'>## create a MarkerList from a factor</div><div class='input'>f <- factor(sample(letters[1:3], 15, replace=TRUE))
+</div><div class='input'>MarkerList(f)
+</div>
+<div class='output'><object of class: MarkerList>
+Types: a, b, c (total: 3)
+Mode: integer
+setName: NA 
+geneIds: 3, 4, ..., 15 (total: 15)
+geneIdType: Null
+collectionType: Null 
+geneValues: NA 
+details: use 'details(object)'
+</div><div class='input'>MarkerList( addNames(f, 'M') )
+</div>
+<div class='output'><object of class: MarkerList>
+Types: a, b, c (total: 3)
+Mode: character
+setName: NA 
+geneIds: M3, M4, ..., M15 (total: 15)
+geneIdType: Null
+collectionType: Null 
+geneValues: NA 
+details: use 'details(object)'
+</div><div class='input'>## create an index MarkerList from a standard list</div><div class='input'>m <- list(1:3, 5:10, c(4L,12L))
+</div><div class='input'>MarkerList(m)
+</div>
+<div class='output'><object of class: MarkerList>
+Types: Type_1, Type_2, Type_3 (total: 3)
+Mode: integer
+setName: NA 
+geneIds: 1, 2, ..., 12 (total: 11)
+geneIdType: Null
+collectionType: Null 
+geneValues: NA 
+details: use 'details(object)'
+</div><div class='input'></div><div class='input'># with mixed integer/numeric, a warning is thrown</div><div class='input'>m <- list(1:3, 5:10, c(4,12))
+</div><div class='input'>MarkerList(m)
+</div>
+<strong class='warning'>Warning message:
+MarkerList - Converting mixed integer/numeric elements into integers.</strong>
+<div class='output'><object of class: MarkerList>
+Types: Type_1, Type_2, Type_3 (total: 3)
+Mode: integer
+setName: NA 
+geneIds: 1, 2, ..., 12 (total: 11)
+geneIdType: Null
+collectionType: Null 
+geneValues: NA 
+details: use 'details(object)'
+</div><div class='input'>## create a MarkerList from a matrix of signatures</div><div class='input'>s <- rmatrix(10,4)
+</div><div class='input'>m <- MarkerList( s )
+</div>
+<strong class='warning'>Warning message:
+MarkerList - Rownames were generated (as integers) to be able to attach row maximum values.</strong><div class='input'># the object has values, that can be dropped is necessary</div><div class='input'>m
+</div>
+<div class='output'><object of class: MarkerList>
+Types: 1, 2, 3, 4 (total: 4)
+Mode: numeric
+setName: NA 
+geneIds: 1, 3, ..., 9 (total: 10)
+geneIdType: Null
+collectionType: Null 
+geneValues: 0.817066866206005, 0.987520481459796, ..., 0.796219746815041 
+details: use 'details(object)'
+</div><div class='input'>dropvalues(m)
+</div>
+<div class='output'><object of class: MarkerList>
+Types: 1, 2, 3, 4 (total: 4)
+Mode: character
+setName: NA 
+geneIds: 1, 3, ..., 9 (total: 10)
+geneIdType: Null
+collectionType: Null 
+geneValues: NA 
+details: use 'details(object)'
+</div><div class='input'># or directly</div><div class='input'>identical(dropvalues(m), MarkerList(s, values=FALSE))
+</div>
+<div class='output'>[1] FALSE
+</div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>MarkerList</li><li>MarkerList,ANY-method</li><li>MarkerList,character-method</li><li>MarkerList,ExpressionSet-method</li><li>MarkerList,factor-method</li><li>MarkerList,integer-method</li><li>MarkerList,list-method</li><li>MarkerList,MarkerList-method</li><li>MarkerList,matrix-method</li><li>MarkerList-methods</li><li>MarkerList,missing-method</li><li>MarkerList,vector-method</li>
+    </ul>
+    <ul>
+      <li>methods</li>
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

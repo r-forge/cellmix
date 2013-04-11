@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>gedAlgorithm.nnls. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Partial Gene Expression Deconvolution by Nonnegative Least-Squares</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre>gedAlgorithm.nnls(..., rescale = TRUE)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>...</dt>
+      <dd>extra arguments passed to
+  <code><a href='http://www.inside-r.org/r-doc/NMF/dot-fcnnls'>.fcnnls</a></code>.</dd>
+      <dt>rescale</dt>
+      <dd>logical used when estimating proportions
+  from signatures, that indicates if the esti,ated
+  coefficients should be scaled to sum up to one
+  (<code>TRUE</code>) or left as estimated by the linear
+  regression (<code>FALSE</code>). This scaling is performed
+  after the coefficients have been forced to be
+  nonnegative.</dd>
+    </dl>
+    
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>Estimates cell/tissue proportions given a known set of
+  cell/tissue-specific expression signatures, using the
+  fast combinatorial nonnegative least-square method, which
+  was proposed by <cite>Kim et al. (2007)</cite> to perform
+  nonnegative matrix factorization of gene expression --
+  not originally for deconvolution.</p>
+  
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p>All regressions are fitted using the function
+  <code><a href='http://www.inside-r.org/r-doc/NMF/dot-fcnnls'>.fcnnls</a></code>.</p>
+  
+    </div>
+
+    <div class="References">
+      <h2>References</h2>
+      
+      <p>Kim H and Park H (2007). "Sparse non-negative matrix
+  factorizations via alternating non-negativity-constrained
+  least squares for microarray data analysis."
+  _Bioinformatics (Oxford, England)_, *23*(12), pp.
+  1495-502. ISSN 1460-2059, <URL:
+  http://dx.doi.org/10.1093/bioinformatics/btm134>, <URL:
+  http://www.ncbi.nlm.nih.gov/pubmed/17483501>.</p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'># random target matrix</div><div class='input'>x <- rmatrix(100, 20)
+</div><div class='input'># random cell signatures</div><div class='input'>s <- rmatrix(100, 3)
+</div><div class='input'></div><div class='input'># deconvolve using nonnegative least-squares</div><div class='input'>res <- ged(x, s, 'nnls')
+</div><div class='input'>coef(res)
+</div>
+<div class='output'>          [,1]      [,2]      [,3]      [,4]      [,5]      [,6]       [,7]
+[1,] 0.4558544 0.4824952 0.4137330 0.3014527 0.4152551 0.3783065 0.56050852
+[2,] 0.2687943 0.1891378 0.3346595 0.3662415 0.2787551 0.3989379 0.34860481
+[3,] 0.2753512 0.3283670 0.2516075 0.3323058 0.3059898 0.2227556 0.09088667
+           [,8]      [,9]     [,10]      [,11]     [,12]     [,13]     [,14]
+[1,] 0.72162912 0.4707891 0.3752356 0.62464052 0.3029908 0.4774207 0.2254922
+[2,] 0.09299847 0.3556320 0.2537441 0.08442941 0.3368735 0.2578256 0.3280299
+[3,] 0.18537240 0.1735790 0.3710203 0.29093007 0.3601356 0.2647537 0.4464779
+         [,15]     [,16]     [,17]     [,18]     [,19]     [,20]
+[1,] 0.2049315 0.5418514 0.3827535 0.5152908 0.4290137 0.3516917
+[2,] 0.5026498 0.2303773 0.2296124 0.2577253 0.2719003 0.1586066
+[3,] 0.2924187 0.2277713 0.3876340 0.2269839 0.2990860 0.4897017
+</div><div class='input'># signatures are not updated</div><div class='input'>identical(basis(res), s)
+</div>
+<div class='output'>[1] TRUE
+</div><div class='input'></div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>gedAlgorithm.nnls</li><li>nnls-ged</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>barplot.MarkerList. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Plotting MarkerList Objects</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><span class="label label-success">S3</span> (MarkerList)
+`barplot`(height, data = NULL, col = NULL, byType = TRUE, ylab = NULL, 
+  border = missing(data), beside = TRUE, scale = !beside, legend = TRUE, reorder = if (is.null(data)) -1L else FALSE, 
+      las = 2, ...)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>height</dt>
+      <dd>a <code><a href='markers.html'>MarkerList-class</a></code> object.</dd>
+      <dt>data</dt>
+      <dd>dataset (a matrix or
+  <code><a href='http://www.inside-r.org/r-doc/Biobase/class.ExpressionSet'>ExpressionSet</a></code> object) that contains
+  expression values of the markers in some experiment. If
+  not missing, values corresponding to markers are plotted
+  for each column in the data. Markers that do not have
+  corresponding values in <code>data</code> are discarded. Note
+  that no identifier conversion is performed, meaning that
+  the marker list and the dataset must use the type of gene
+  identifiers. Use the function <code><a href='convertIDs.html'>convertIDs</a></code>,
+  if a conversion is needed.</dd>
+      <dt>col</dt>
+      <dd>colour specification for the bars.</dd>
+      <dt>byType</dt>
+      <dd>logical that indicates if the colour
+  specification in <code>col</code> should be interpreted as
+  colours for each cell type. Is is used only when
+  <code>data</code> is not missing. If <code>TRUE</code> then
+  <code>col</code> specifies the colours to be used for all bars
+  in each cell type. If <code>FALSE</code></dd>
+      <dt>ylab</dt>
+      <dd>label for the y-axis. Default labels are
+  provided if missing.</dd>
+      <dt>scale</dt>
+      <dd>logical that indicates if the data should be
+  scaled. This argument is used only when
+  <code>beside=FALSE</code>. If <code>TRUE</code> the gene expression
+  profiles (rows of <code>data</code>) are scaled to sum up to
+  100, then the sample expression profiles (the columns of
+  <code>data</code>) are scaled to sum up to 100. The scaled
+  values can be interpreted as how much a marker gene is
+  expressed in a sample relatively to other samples and
+  genes.</dd>
+      <dt>legend</dt>
+      <dd>logical that indicates if a legend box
+  should be added.</dd>
+      <dt>reorder</dt>
+      <dd>when <code>data</code> is missing, this argument
+  indicates if/how the cell types should be reordered:
+  <code>FALSE</code> do not reorder the cell types, a negative
+  number orders by decreasing number of markers, and
+  anything other than <code>FALSE</code> orders by increasing
+  order of number of markers.
+
+  When <code>data</code> is not missing, then it indicates if the
+  markers should be ordered in the same order as they
+  appear in the data.
+
+  is used when <code>data</code> is not missing and indicates if
+  the markers should be ordered as they appear in the
+  dataset, as opposed to keep their original order, i.e.
+  grouped by cell type.</dd>
+      <dt>las</dt>
+      <dd>specifies the orientation of the x-labels: 1
+  for horizontal, 2 for vertical.</dd>
+      <dt>...</dt>
+      <dd>extra arguments passed to
+  <code><a href='http://www.inside-r.org/r-doc/graphics/barplot'>barplot</a></code>.</dd>
+      <dt>border</dt>
+      <dd>the color to be used for the border of the
+  bars.  Use <code>border = NA</code> to omit borders.  If there
+  are shading lines, <code>border = TRUE</code> means use the
+  same colour for the border as for the shading lines.</dd>
+      <dt>beside</dt>
+      <dd>a logical value.  If <code>FALSE</code>, the
+  columns of <code>height</code> are portrayed as stacked bars,
+  and if <code>TRUE</code> the columns are portrayed as
+  juxtaposed bars.</dd>
+    </dl>
+    
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>The function <code>barplot</code> plots a barplot of the number
+  of markers of each cell type present in a
+  <code><a href='markers.html'>MarkerList-class</a></code> object, or their
+  respective expression values in a given dataset.</p>
+  
+    </div>
+      </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>barplot.MarkerList</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

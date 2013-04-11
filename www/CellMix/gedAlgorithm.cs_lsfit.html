@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>gedAlgorithm.cs_lsfit. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Cell-Specific Expression by Standard Least-Squares</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre>gedAlgorithm.cs_lsfit(..., nneg = c("iterate", "pmax", "none"), rescale = TRUE)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>...</dt>
+      <dd>extra arguments passed to
+  <code><a href='http://www.inside-r.org/r-doc/stats/lsfit'>lsfit</a></code>.</dd>
+      <dt>nneg</dt>
+      <dd>specification of the method used to enforce
+  the nonnegativity of the estimated proportions (used only
+  in method &#147;lsfit&#148;).</dd>
+      <dt>rescale</dt>
+      <dd>logical used when estimating proportions
+  from signatures, that indicates if the esti,ated
+  coefficients should be scaled to sum up to one
+  (<code>TRUE</code>) or left as estimated by the linear
+  regression (<code>FALSE</code>). This scaling is performed
+  after the coefficients have been forced to be
+  nonnegative.</dd>
+    </dl>
+    
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>Estimates cell-specific proportions given known
+  proportions expression signatures, using standard
+  least-squares.</p>
+  
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p>The algorithm uses the same heuristic as the ged
+  algorithm <code><a href='gedAlgorithm.lsfit.html'>lsfit</a></code> to enforce
+  non-negative expression values. It is included in the
+  <span class = "pkg">CellMix</span> package for test/experimental purposes.</p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'># random target matrix</div><div class='input'>x <- rmatrix(100, 20)
+</div><div class='input'># random cell proprtions</div><div class='input'>p <- rmatrix(3, 20)
+</div><div class='input'></div><div class='input'># deconvolve using standard least-squares</div><div class='input'>res <- ged(x, p, 'cs-lsfit')
+</div><div class='input'>head(basis(res))
+</div>
+<div class='output'>          [,1]      [,2]      [,3]
+[1,] 0.3276782 0.0000000 0.4325633
+[2,] 0.3257906 0.3965724 0.2974765
+[3,] 0.1020014 0.6537396 0.2876938
+[4,] 0.1884735 0.2639664 0.4987986
+[5,] 0.1164081 0.6583487 0.2447951
+[6,] 0.5041316 0.4840758 0.1374917
+</div><div class='input'># proportions are not updated</div><div class='input'>identical(coef(res), p)
+</div>
+<div class='output'>[1] TRUE
+</div><div class='input'></div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>cs-lsfit-ged</li><li>gedAlgorithm.cs_lsfit</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

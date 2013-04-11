@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>gedRequired. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Utility Functions for GED Algorithms</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre>gedRequired(x)
+
+isRequired(type, x)
+
+onlyRequired(type, x)
+
+anyRequired(x)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>x</dt>
+      <dd>an object that defines a GED algorithm, i.e. a
+  <code>GEDalgorithm</code> object, an access key, a registry
+  entry, etc..</dd>
+      <dt>type</dt>
+      <dd>a character string giving the type of input
+  to test, i.e. either <code>'Basis'</code>, <code>'Coef'</code> or
+  <code>'Marker'</code>.</dd>
+    </dl>
+    
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p><code>gedRequired</code> tells which input data is required by
+  a given, or all GED algorithm(s).</p>
+  
+      <p><code>isRequired</code>, <code>onlyRequired</code> and
+  <code>anyRequired</code> return a single logical if <code>x</code> is
+  not missing, or a logical vector with one element per
+  registered algorithm otherwise.</p>
+  
+      <p><code>onlyRequired</code> tells if a given input data is the
+  only required data for a GED algorithm to run.</p>
+  
+      <p><code>anyRequired</code> tells if any input data is required at
+  all to run a GED algorithm.</p>
+  
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p>If <code>x</code> is not missing <code>gedRequired</code> returns a
+  logical vector with one element per type of possible
+  input: <code>'Basis'</code>, <code>'Coef'</code>, <code>'Marker'</code>. If
+  <code>x</code> is missing, then it returns a matrix of these
+  vectors, with one row per algorithm registered in the
+  internal registry.</p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'># which algorithm requires what</div><div class='input'>gedRequired()
+</div>
+<div class='output'>            Basis  Coef Marker
+lsfit        TRUE FALSE  FALSE
+cs-lsfit    FALSE  TRUE  FALSE
+nnls         TRUE FALSE  FALSE
+cs-nnls     FALSE  TRUE  FALSE
+qprog        TRUE FALSE  FALSE
+cs-qprog    FALSE  TRUE  FALSE
+DSA         FALSE FALSE   TRUE
+csSAM       FALSE  TRUE  FALSE
+DSection    FALSE  TRUE  FALSE
+ssKL        FALSE FALSE   TRUE
+ssFrobenius FALSE FALSE   TRUE
+meanProfile FALSE FALSE   TRUE
+deconf      FALSE FALSE  FALSE
+</div><div class='input'># ask for a given algorithm</div><div class='input'>gedRequired('qprog')
+</div>
+<div class='output'> Basis   Coef Marker 
+  TRUE  FALSE  FALSE 
+</div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>anyRequired</li><li>gedRequired</li><li>isRequired</li><li>onlyRequired</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

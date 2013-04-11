@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>markerScoreHSD. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Marker Scoring Method: Tukey Honest Significant Difference</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre>markerScoreHSD(object, data, log = !is_logscale(object), lbase = 2, verbose = FALSE)
+
+<span class="label label-success">S3</span> (markerScore_HSD)
+`selectMarkers`(x, data, statistic = max, ...)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>verbose</dt>
+      <dd>verbosity level, usually <code>TRUE</code> or
+  <code>FALSE</code>.</dd>
+      <dt>statistic</dt>
+      <dd>method used to aggregate p-values of the
+  pairwise comparisons with each of the other cell types
+  into a single numeric score.</dd>
+      <dt>object</dt>
+      <dd>A numeric <code>matrix</code>, an object of class
+  <code><a href='http://www.inside-r.org/r-doc/Biobase/class.ExpressionSet'>ExpressionSet</a></code>, or a
+  <code><a href='markers.html'>MarkerList-class</a></code> object.</dd>
+      <dt>data</dt>
+      <dd>main extra data used by the scoring and
+  selection methods.
+
+  If <var>object</var> is a matrix-like object, <var>data</var> is
+  generally a factor or grouping variable, as a vector,
+  that defines the cell-type for each -- pure -- sample. If
+  a vector, this argument is converted into a factor with
+  the levels in their order of appearance in <code>data</code>,
+  by <code>factor(data, levels=unique(data))</code>. This is to
+  obtain levels in an order that is consistent with the
+  samples' order.
+
+  If <var>object</var> is a <code>MarkerList</code> object, then
+  <var>data</var> is generally a matrix-like object that
+  contains expression data.</dd>
+      <dt>log</dt>
+      <dd>a logical specifying if the should the data be
+  log-transformed before computing the p-values. Default is
+  to log-transform the data if is not already in log-scale,
+  which is determined by the function
+  <code><a href='is_logscale.html'>is_logscale</a></code>.</dd>
+      <dt>lbase</dt>
+      <dd>log base to used if the data is
+  log-transformed.</dd>
+      <dt>x</dt>
+      <dd>data object based on which the markers are
+  selected, as computed returned by
+  <code>extractMarkers(..., format='raw')</code>. The type of
+  <code>x</code> depends on the scoring method used to compute
+  it.</dd>
+      <dt>...</dt>
+      <dd>other parameters passed to the scoring method
+  in <code>extractMarkers</code> <strong>and</strong>
+  <code><a href='selectMarkers.html'>selectMarkers</a></code>, or that define default
+  arguments when defining a scoring method with
+  <code>markerScoreMethod</code>.</dd>
+    </dl>
+    
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>This scoring method <code>markerScoreHSD</code> performs
+  pairwise comparison between groups of pure samples, and
+  scores each comparison using Tukey's Honest Significant
+  Difference p-values (see <code><a href='http://www.inside-r.org/r-doc/stats/TukeyHSD'>TukeyHSD</a></code>).</p>
+  
+      <p>The method <code>selectMarkersmarkerScore_HSD</code> selects,
+  within each cell type separately, the markers with the
+  lower aggregated p-value for Tukey's HSD. The default
+  aggregation method is to compute the maximum HSD p-value.</p>
+  
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p>The scores are returned in a matrix, with features in
+  rows and cell types in column, which contains the HSD
+  p-values corresponding to the comparisons between the
+  most expressing cell type and other cell types. Each row
+  contains an NA value that identifies the column
+  corresponding to the associated feature's most expressing
+  cell type.</p>
+  
+      <p>Features whose expression is not consistently higher in
+  one cell type than in any other cell type are discarded.</p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'># generate data from pure cell type samples</div><div class='input'>x <- rpure(3)
+</div><div class='input'>x
+</div>
+<div class='output'>ExpressionMix (storageMode: lockedEnvironment)
+assayData: 100 features, 60 samples 
+  element names: exprs 
+protocolData: none
+phenoData
+  sampleNames: 1 2 ... 60 (60 total)
+  varLabels: CellType
+  varMetadata: labelDescription
+featureData: none
+experimentData: use 'experimentData(object)'
+Annotation:  
+Composition:  (3 total)
+</div><div class='input'>aheatmap(x, annCol=TRUE)
+</div><p><img src='markerScoreHSD-ex1.png' alt='' width='400' height='400' /></p><div class='input'></div><div class='input'># extract markers</div><div class='input'>ml <- extractMarkers(x, x$CellType, method='HSD')
+</div><div class='input'># check score/p-value distribution</div><div class='input'>hist(ml)
+</div><p><img src='markerScoreHSD-ex2.png' alt='' width='400' height='400' /></p><div class='input'># plot most significant ones</div><div class='input'>profplot(ml[ml < 0.0001], x, split=TRUE)
+</div><p><img src='markerScoreHSD-ex3.png' alt='' width='400' height='400' /></p></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>markerScoreHSD</li><li>selectMarkers.markerScore_HSD</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+    <h2>See also</h2>
+    
+  <code><a href='http://www.inside-r.org/r-doc/stats/TukeyHSD'>TukeyHSD</a></code>
+
+  Other markerScore: <code><a href='extractMarkers.html'>extractMarkers</a></code>,
+  <code><a href='markerScoreAbbas.html'>markerScoreAbbas</a></code>,
+  <code><a href='markerScoreMaxcol.html'>markerScoreMaxcol</a></code>,
+  <code><a href='extractMarkers.html'>markerScoreMethod</a></code>,
+  <code><a href='markerScoreScorem.html'>markerScoreScorem</a></code>,
+  <code><a href='extractMarkers.html'>scoreMarkers</a></code>,
+  <code><a href='markerScoreScorem.html'>selectMarkers.markerScore_scorem</a></code>
+
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

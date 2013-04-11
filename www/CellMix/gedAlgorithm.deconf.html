@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>gedAlgorithm.deconf. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Complete Gene Expression Deconvolution: Method deconf</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre>gedAlgorithm.deconf(..., maxIter = 1000L, data = NULL, error.threshold = 0)
+
+gedAlgorithm._deconf(..., maxIter = 1000L, data = NULL, error.threshold = 0)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>...</dt>
+      <dd>extra parameters currently not used</dd>
+      <dt>maxIter</dt>
+      <dd>maximum number of iterations</dd>
+      <dt>data</dt>
+      <dd>optional marker list used to either <em>a
+  posteriori</em> assign estimated signatures, or <em>a
+  priori</em> enforce marker block patterns <strong>before</strong>
+  each iteration.</dd>
+      <dt>error.threshold</dt>
+      <dd> min error to continue iterations,
+  if error falls below this threshold, the iterative
+  algorithm stops </dd>
+    </dl>
+    
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>The <code><a href='ged.html'>ged</a></code> method &#145;deconf&#146; uses an
+  alternate least-squares algorithm to estimate both cell
+  proportions and cell-specific signatures from global
+  expression data, as proposed by <cite>Repsilber et al.
+  (2010)</cite>.</p>
+  
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p>This method fits an NMF model to the data in a completely
+  <em>unsupervised</em> manner. If marker genes are provided,
+  they are used <strong>a posteriori</strong> to assign each
+  estimated component, i.e. each cell-specific signature,
+  to the cell-type with the greatest proportions of
+  consistent markers.</p>
+  
+    </div>
+
+    <div class="Fast built-in implementation">
+      <h2>Fast built-in implementation</h2>
+      
+      <p>The method &#145;deconf&#146; is implemented as an NMF
+  algorithm, which is registered under the same names in
+  the <span class = "pkg">NMF</span> package's algorithm registry.</p>
+  
+      <p>It uses an improved implementation, based on the fast
+  combinatorial nonnegative least-squares algorithm from
+  <cite>Van Benthem et al. (2004), Kim et al. (2007)</cite>, as provided by the
+  function <code><a href='http://www.inside-r.org/r-doc/NMF/fcnnls'>fcnnls</a></code> in the <span class = "pkg">NMF</span> package.
+  This enables to achieve great performance speed-up, being
+  really -- way -- much faster than the original
+  implementation.</p>
+  
+    </div>
+
+    <div class="Original implementation">
+      <h2>Original implementation</h2>
+      
+      <p>The <span class = "pkg">CellMix</span> also includes a way to run the original
+  version from the <span class = "pkg">deconf</span> package, registered under
+  the name &#145;.deconf&#146; in the algorithm registry.</p>
+  
+      <p>This version requires the <span class = "pkg">deconf</span> package, which was
+  released as supplementary data only to support the paper
+  from <cite>Repsilber et al. (2010)</cite>, i.e. it is not available from
+  CRAN or Bioconductor. However, we made it available from
+  the <span class = "pkg">CellMix</span> CRAN-like support repository:</p>
+  
+      <p><a href = 'http://web.cbio.uct.ac.za/~renaud/CRAN'>http://web.cbio.uct.ac.za/~renaud/CRAN</a></p>
+  
+      <p>The easiest way to install it is to run:</p>
+  
+      <p><code>install.extras('CellMix', 'deconf')</code></p>
+  
+    </div>
+
+    <div class="References">
+      <h2>References</h2>
+      
+      <p>Repsilber D, Kern S, Telaar A, Walzl G, Black GF, Selbig
+  J, Parida SK, Kaufmann SHE and Jacobsen M (2010).
+  "Biomarker discovery in heterogeneous tissue samples
+  -taking the in-silico deconfounding approach." _BMC
+  bioinformatics_, *11*, pp. 27. ISSN 1471-2105, <URL:
+  http://dx.doi.org/10.1186/1471-2105-11-27>, <URL:
+  http://www.ncbi.nlm.nih.gov/pubmed/20070912>.</p>
+  
+      <p>Van Benthem M and Keenan MR (2004). "Fast algorithm for
+  the solution of large-scale non-negativity-constrained
+  least squares problems." _Journal of Chemometrics_,
+  *18*(10), pp. 441-450. ISSN 0886-9383, <URL:
+  http://dx.doi.org/10.1002/cem.889>, <URL:
+  http://doi.wiley.com/10.1002/cem.889>.</p>
+  
+      <p>Kim H and Park H (2007). "Sparse non-negative matrix
+  factorizations via alternating non-negativity-constrained
+  least squares for microarray data analysis."
+  _Bioinformatics (Oxford, England)_, *23*(12), pp.
+  1495-502. ISSN 1460-2059, <URL:
+  http://dx.doi.org/10.1093/bioinformatics/btm134>, <URL:
+  http://www.ncbi.nlm.nih.gov/pubmed/17483501>.</p>
+  
+    </div>
+      </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>.deconf-ged</li><li>deconf-ged</li><li>gedAlgorithm.deconf</li><li>gedAlgorithm._deconf</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

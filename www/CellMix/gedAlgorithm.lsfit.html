@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>gedAlgorithm.lsfit. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Partial Gene Expression Deconvolution by Standard Least-Squares</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre>gedAlgorithm.lsfit(..., nneg = c("iterate", "pmax", "none"), rescale = TRUE)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>...</dt>
+      <dd>extra arguments passed to
+  <code><a href='http://www.inside-r.org/r-doc/stats/lsfit'>lsfit</a></code>.</dd>
+      <dt>nneg</dt>
+      <dd>specification of the method used to enforce
+  the nonnegativity of the estimated proportions (used only
+  in method &#147;lsfit&#148;).</dd>
+      <dt>rescale</dt>
+      <dd>logical used when estimating proportions
+  from signatures, that indicates if the esti,ated
+  coefficients should be scaled to sum up to one
+  (<code>TRUE</code>) or left as estimated by the linear
+  regression (<code>FALSE</code>). This scaling is performed
+  after the coefficients have been forced to be
+  nonnegative.</dd>
+    </dl>
+    
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>Estimates cell/tissue proportions given a known set of
+  cell/tissue-specific expression signatures, using
+  standard least-squares as proposed by <cite>Abbas et al.
+  (2009)</cite>.</p>
+  
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p>The algorithm uses a heuristic to enforce the
+  nonnegativity of the estimated proportions, that consists
+  in fitting successive regressions, each time excluding
+  the most negative coefficient from the model, until all
+  coefficients are nonnegative.</p>
+  
+      <p>All regressions are fitted using the function
+  <code><a href='http://www.inside-r.org/r-doc/stats/lsfit'>lsfit</a></code>.</p>
+  
+    </div>
+
+    <div class="References">
+      <h2>References</h2>
+      
+      <p>Abbas AR, Wolslegel K, Seshasayee D, Modrusan Z and Clark
+  HF (2009). "Deconvolution of blood microarray data
+  identifies cellular activation patterns in systemic lupus
+  erythematosus." _PloS one_, *4*(7), pp. e6098. ISSN
+  1932-6203, <URL:
+  http://dx.doi.org/10.1371/journal.pone.0006098>, <URL:
+  http://www.ncbi.nlm.nih.gov/pubmed/19568420>.</p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'># random target matrix</div><div class='input'>x <- rmatrix(100, 20)
+</div><div class='input'># random cell signatures</div><div class='input'>s <- rmatrix(100, 3)
+</div><div class='input'></div><div class='input'># deconvolve using standard least-squares</div><div class='input'>res <- ged(x, s, 'lsfit')
+</div><div class='input'>coef(res)
+</div>
+<div class='output'>          [,1]      [,2]      [,3]      [,4]      [,5]      [,6]      [,7]
+[1,] 0.3391818 0.3333050 0.1682294 0.3748907 0.3379333 0.3554786 0.3354459
+[2,] 0.4077467 0.3325597 0.5205478 0.3940407 0.4217372 0.2884657 0.4185569
+[3,] 0.2530715 0.3341353 0.3112228 0.2310686 0.2403295 0.3560556 0.2459972
+          [,8]      [,9]     [,10]     [,11]     [,12]     [,13]     [,14]
+[1,] 0.2431473 0.2769291 0.2522228 0.2823777 0.2763195 0.2873957 0.2848295
+[2,] 0.4794326 0.3414278 0.4070479 0.4148175 0.3499153 0.3908287 0.3527680
+[3,] 0.2774201 0.3816431 0.3407293 0.3028048 0.3737652 0.3217757 0.3624025
+         [,15]     [,16]     [,17]     [,18]     [,19]     [,20]
+[1,] 0.2868414 0.2002643 0.4440608 0.2531429 0.4581337 0.3934529
+[2,] 0.5028499 0.3182094 0.4034370 0.4096005 0.3189620 0.4243236
+[3,] 0.2103087 0.4815263 0.1525022 0.3372566 0.2229043 0.1822235
+</div><div class='input'># signatures are not updated</div><div class='input'>identical(basis(res), s)
+</div>
+<div class='output'>[1] TRUE
+</div><div class='input'></div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>gedAlgorithm.lsfit</li><li>lsfit-ged</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

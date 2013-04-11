@@ -1,0 +1,264 @@
+%\VignetteIndexEntry{CellMix: FAQ-HowTo}
+%\VignetteDepends{CellMix,knitr}
+%\VignetteCompiler{knitr}
+
+\documentclass[a4paper]{article}
+%\usepackage{Sweave}
+
+% Encoding
+\usepackage[OT1]{fontenc}
+
+\usepackage{a4wide}
+\usepackage{indentfirst}
+
+
+% boxed figures
+\usepackage{float}
+\floatstyle{boxed} 
+\restylefloat{figure}
+% caption formatting
+\usepackage[font=small, labelfont=bf,textfont=it]{caption}
+% sub-figures
+\usepackage[position=top]{subfig}
+% sideways figures
+\usepackage{rotating}
+
+%% Hyperrefs
+\usepackage[plainpages=false, colorlinks]{hyperref} % for hyperlinks
+% \hypersetup{
+% citecolor=black,% 
+% filecolor=black,% 
+% linkcolor=black,% 
+% urlcolor=black
+% } 
+
+% special table of contents
+%\usepackage{tocloft}
+%\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+\usepackage[toc]{multitoc}
+
+\usepackage{bookmark}
+
+% inline lists
+\usepackage{paralist}
+% MATH
+\usepackage{amsmath} %math symbols
+\usepackage{amssymb} %extra math symbols
+\usepackage{array}
+\usepackage{tabularx}
+
+% REFERENCES
+\usepackage[citestyle=authoryear-icomp
+, doi=true
+, url=true
+, maxnames=1
+, maxbibnames=15
+, backref=true]{biblatex}
+\AtEveryCitekey{\clearfield{url}}
+<<pkgmaker_preamble, echo=FALSE, results='asis'>>=
+pkgmaker::latex_preamble('CellMix')
+@
+\bibliography{Rpackages}
+\newcommand{\citet}[1]{\textcite{#1}}
+\renewcommand{\cite}[1]{\parencite{#1}}
+\DefineBibliographyStrings{english}{%
+    backrefpage  = {see p.}, % for single page number
+    backrefpages = {see pp.} % for multiple page numbers
+}
+%%
+
+\usepackage[noabbrev, capitalise, nameinlink]{cleveref}
+
+% graphic path
+\graphicspath{ {.//}{./src/} }
+%
+
+\newcommand{\footurl}[1]{\footnote{\url{#1}}}
+\newcommand{\matlab}{Matlab$^\circledR$\xspace}
+
+\title{\pkgname{CellMix} FAQ and HowTos}
+\author{Renaud Gaujoux}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+This vignette contains hints and pointers on how to perform common tasks with the \Rpkg{CellMix}.
+In particular, it will incorporate answers to user queries that would come up over time.
+\end{abstract}
+
+\tableofcontents
+
+\setkeys{Gin}{width=0.6\textwidth}
+<<hacks, echo=FALSE>>=
+summary <- function(x){
+	if( is(x, 'MarkerList') ){
+		res  <- getMethod('summary', 'MarkerList')(x)
+		print(res)
+		invisible(res)
+	} else base::summary(x)
+}
+
+opts_chunk$set(out.width="0.6\\textwidth")
+@
+
+<<load_package, include=FALSE>>=
+library(CellMix)
+@
+
+\section{Marker lists}
+
+The \Rpkg{CellMix} ships with a set of marker lists gathered from a variety of public databases.
+This section shows how to perform some common task with these gene lists. 
+
+\subsection{How to list all available marker gene lists?}
+
+<<list_markers>>=
+# list access keys
+cellMarkers()
+@
+<<longlist_markers, eval=FALSE>>=
+# show full property table
+cellMarkersInfo()
+@
+
+\subsection{How to load a registered marker gene list?}
+
+<<load_marker>>=
+# load HaemAtlas markers
+m <- cellMarkers('HaemAtlas')
+# or
+m <- MarkerList('HaemAtlas')
+@
+
+\subsection{How to get a summary view of a marker gene list?}
+
+<<summary_markers>>=
+# load 
+m <- MarkerList('HaemAtlas')
+# show summary
+summary(m)
+# plot number of markers for each cell type
+barplot(m)
+@
+
+\subsection{How to subset marker gene lists?}
+
+<<subset_markers>>=
+# subset the cell types
+summary(m[1:3])
+
+# Take only first n markers of each cell type
+summary(m[,1:3])
+
+# subset markers that are present in some dataset
+# => this converts/maps IDs if necessary
+x <- ExpressionMix('GSE11058')
+subset(m, x, verbose=TRUE)
+@
+
+\subsection{How to convert MarkerList objects into plain lists?}
+
+\code{MarkerList} objects can be converted to plain list objects using the
+methods \code{geneIds}, or \code{geneValues} if one wants to keep numeric
+scores associated with each marker:
+
+<<convertML>>=
+
+# load marker list that contains scores
+ml <- cellMarkers('TIGER')
+
+# plain list dropping values
+l <- geneIds(ml)
+str(head(l))
+
+# plain list keeping values
+l <- geneValues(ml)
+str(head(l))
+@
+
+\subsection{How to create MarkerList objects}
+
+\code{MarkerList} objects can be manually created from a variety of
+format/object types, using the factory generic \code{MarkerList()}:
+
+<<MarkerList_factory>>=
+@
+
+\section{Datasets}
+
+The \Rpkg{CellMix} ships a with a set of pre-processing pipelines for some public datasets on GEO, that can be used as benchmark data for gene expression deconvolution methods.
+
+\subsection{How to list all available datasets?}
+
+<<list_data>>=
+# list access keys
+gedData()
+@
+<<longlist_data, eval=FALSE>>=
+# show full property table
+gedDataInfo()
+@
+
+\subsection{How to load a dataset?}
+
+Datasets are loaded using the function \code{ExpressionMix}.
+This requires an internet connection.
+The first call will create a data directory in the user home directory, where all files related to datasets will be stored (GSE matrix files, GPL files, cache files, etc..)
+<<load_data>>=
+# load GSE29832 from Gong et al. (2011)
+mix <- ExpressionMix('GSE29832')
+mix
+@
+
+\subsection{How to retrieve data from an ExpressionMix object?}
+
+\code{ExpressionMix} objects are containers for multiple types of data, which
+can be retrieved with deticated methods.
+The idea is to hold both gene expression and cell composition data in a single
+object, facilitating common dataset operations (e.g. subsetting features or
+samples).
+<<emix_dims>>=
+# dimensions of an ExpressionMix object
+dim(mix)
+@
+
+\begin{description}
+\item[Expression data:] it is stored as an \code{ExpressionSet} object and
+is accessible via \code{eset} or \code{exprs}, if only the expression matrix is
+needed:
+<<emix_eset>>=
+class(eset(mix))
+class(exprs(mix))
+dim(exprs(mix))
+@
+\item[Cell proportions:] if available, they are stored in the mixuture
+coefficient matrix of the embedded \code{NMF} model and are accessible with
+the method \code{coef}:
+<<emix_coef>>=
+dim(coef(mix))
+@
+\item[Cell-specific signatures] if available, they are stored in the basis
+matrix of the embedded \code{NMF} model and are accessible with
+the method \code{basis}:
+<<emix_basis>>=
+dim(basis(mix))
+@
+\end{description}
+
+\section{Deconvolution methods}
+
+\subsection{How to list all available methods?}
+
+<<list_methods>>=
+# list access keys
+gedAlgorithm()
+@
+<<longlist_methods, eval=FALSE>>=
+# show full property table
+gedAlgorithmInfo()
+@
+
+
+\end{document}

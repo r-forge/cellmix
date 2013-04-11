@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>biocann_map. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Retrieving ID Conversion Maps</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre>biocann_map(from, to, keys = NULL, cache = TRUE, link = "ENTREZID", lib = NULL, verbose = FALSE)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>from</dt>
+      <dd>the source tyep of gene identifier specified
+  as a <code><a href='http://www.inside-r.org/r-doc/GSEABase/GeneIdentifierType-class'>GeneIdentifierType-class</a></code> object, or a
+  character string, e.g. <code>'ENTREZID'</code>, if <code>to</code>
+  already contains annotation data.</dd>
+      <dt>to</dt>
+      <dd>the source tyep of gene identifier specified as
+  a <code><a href='http://www.inside-r.org/r-doc/GSEABase/GeneIdentifierType-class'>GeneIdentifierType-class</a></code> object, or a
+  character string, e.g. <code>'UNIGENE'</code>, if <code>from</code>
+  already contains annotation data.</dd>
+      <dt>keys</dt>
+      <dd>character vector of gene identifiers to map.
+  This is only used when performing cross-species mapping.</dd>
+      <dt>cache</dt>
+      <dd>logical that indicates if -- lengthy --
+  cross-species mappings should be cached, so that
+  subsequent calls with the same set of keys returns much
+  faster.</dd>
+      <dt>link</dt>
+      <dd>the gene identifier type to use to link
+  between platforms. We <strong>strongly</strong> recommend to
+  leave this argument as default <code>'ENTREZID'</code>.</dd>
+      <dt>lib</dt>
+      <dd>path to the library (ie. directory) where to
+  first look and install any required annotation packages.
+  This library is temporarly prepended to the .libPath, so
+  that user and R standard library locations are still
+  looked up.</dd>
+      <dt>verbose</dt>
+      <dd>logical or integer that indicates the
+  level of verbosity.</dd>
+    </dl>
+    
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>Computes a complete list of maps to apply in order to
+  convert from one type of gene identifier to another.</p>
+  
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p>This function is an extension/enhancement of the function
+  <code>GSEABase:::.mapIdentifiers_selectMaps</code>, which cope
+  with the cases of cross-platform and cross-species
+  conversions.</p>
+  
+      <p>In particular, when called in an interactive session,
+  this function will notifies the user about missing
+  required annotation packages, and offers to install them
+  at runtime.</p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'>## <strong>Not run</strong>: </div><div class='input'># # intra-platform</div><div class='input'># m <- biocann_map('ENTREZID', AnnotationIdentifier('hgu133a.db'))</div><div class='input'># # cross platform</div><div class='input'># m <- biocann_map(UnigeneIdentifier('hgu133a.db'), EntrezIdentifier('hgu133b.db'))</div><div class='input'># # cross platform, cross-species</div><div class='input'># m <- biocann_map(EntrezIdentifier('hgu133a.db'), AnnotationIdentifier('mogene10stprobeset.db'), keys=as.character(1:1000))</div><div class='input'># ## <strong>End(Not run)</strong></div><div class='input'></div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>biocann_map</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

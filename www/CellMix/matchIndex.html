@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>matchIndex. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Creating Mapping from Marker Lists</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre>matchIndex(object, data, ...)
+
+<span class="label label-important">S4</span> (list,character)
+`matchIndex`(object, data, unlist = FALSE, no.match = FALSE, keep.names = TRUE, 
+  verbose = FALSE)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>object</dt>
+      <dd>to match against the reference data</dd>
+      <dt>data</dt>
+      <dd>reference data against which to match the
+  object, i.e. retrieve the indexes from.</dd>
+      <dt>...</dt>
+      <dd>extra argument to allow extension</dd>
+      <dt>unlist</dt>
+      <dd>a logical that indicates if the indexes
+  should be returned as a vector (<code>TRUE</code>) or another
+  <code>MarkerList</code> object.</dd>
+      <dt>no.match</dt>
+      <dd>a logical that specifies if the result
+  should keep the markers that cannot be found in the
+  reference object. If <code>TRUE</code>, 0L values are used for
+  unmatched markers. Default is <code>FALSE</code>.</dd>
+      <dt>keep.names</dt>
+      <dd>a logical that indicates if the
+  markers' names should be kept or removed (<code>FALSE</code>).
+  In this case, the names of the sets of each markers are
+  used -- and repeated.</dd>
+      <dt>verbose</dt>
+      <dd>verbosity level, usually <code>TRUE</code> or
+  <code>FALSE</code>.</dd>
+    </dl>
+    
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p><code>matchIndex</code> match indexes contained in an object
+  against some other reference data, returning an object
+  that is interpretable relatively to the reference data,
+  e.g. retreive the row index of a data matrix contained in
+  a marker list.</p>
+  
+      <p>Methods are provided for <code>MarkerList</code> objects to
+  match against character vectors, <code>matrix</code>,
+  <code><a href='http://www.inside-r.org/r-doc/Biobase/class.ExpressionSet'>ExpressionSet-class</a></code> or <code>NMF</code>
+  objects, etc..</p>
+  
+    </div>
+
+    <div class="Methods">
+      <h2>Methods</h2>
+      
+      <p><ol>
+<li>matchIndex<code>signature(object = "list", data =
+  "character")</code>: This is the workhorse method for
+  <code>MarkerList</code> objects, that is eventually called by
+  all other methods. It matches marker names against names
+  in a character vector and returns the corresponding sets
+  of indexes for each marker set (cell type).</p>
+  
+      <p></li>
+<li>matchIndex<code>signature(object = "list", data =
+  "matrix")</code>: Match markers against the row names of a data
+  matrix.</p>
+  
+      <p></li>
+<li>matchIndex<code>signature(object = "list", data =
+  "NMF")</code>: Match markers against the basis matrix of an
+  <code>NMF</code> model object.</p>
+  
+      <p>See <code>matchIndex,MarkerList,matrix-method</code>.</p>
+  
+      <p></li>
+<li>matchIndex<code>signature(object = "list", data =
+  "ExpressionSet")</code>: Match markers against the expression
+  matrix of an <code>ExpressionSet</code> data object.</p>
+  
+      <p>See <code>matchIndex,MarkerList,matrix-method</code>.</p>
+  
+      <p></li>
+<li>matchIndex<code>signature(object = "list", data =
+  "ChipDb")</code>: Match markers against the keys of a chip
+  annotation database.</p>
+  
+      <p></li>
+<li>matchIndex<code>signature(object = "list", data =
+  "ProbeAnnDbBimap")</code>: Match markers against the keys of a
+  probe annotation database.</p>
+  
+      <p></li>
+</ol></p>
+  
+      <p></p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'># load IRIS markers and Abbas signatures</div><div class='input'>m <- cellMarkers('IRIS')
+</div><div class='input'>data(Abbas)
+</div><div class='input'>summary(m)
+</div>
+<div class='output'><object of class MarkerList>
+Types: 9 ['B', 'T', ..., 'Multiple'] 
+Mode: numeric
+Markers: 2270 
+IDtype: .Affymetrix ['205267_at', '211048_s_at', ..., '229026_at'] 
+Values: [6.8842, 5.2979, ..., 0.0298]
+Source: hgu133a.db, hgu133b.db 
+Breakdown:
+         B          T         NK  Dendritic   Monocyte Neutrophil   Lymphoid 
+       121         94         24         86        103         54        302 
+   Myeloid   Multiple 
+       449       1037 
+</div><div class='input'>ma <- matchIndex(m, Abbas)
+</div><div class='input'>summary(ma)
+</div>
+<div class='output'><object of class MarkerList>
+Types: 9 ['B', 'T', ..., 'Multiple'] 
+Mode: integer
+Markers: 121 
+IDtype: _INDEX_ [284L, 85L, ..., 314L] 
+Source: hgu133a.db, hgu133b.db 
+Breakdown:
+         B          T         NK  Dendritic   Monocyte Neutrophil   Lymphoid 
+        18         19          1         20         14         12         15 
+   Myeloid   Multiple 
+        10         12 
+</div><div class='input'></div><div class='input'># get as a mapping vector</div><div class='input'>head(matchIndex(m, Abbas, unlist=TRUE))
+</div>
+<div class='output'>210356_x_at 218949_s_at 219667_s_at   206641_at 217418_x_at 209995_s_at 
+        284          85         281         109         282          79 
+</div><div class='input'># only set names</div><div class='input'>head(matchIndex(m, Abbas, unlist=TRUE, keep.names=FALSE))
+</div>
+<div class='output'>  B   B   B   B   B   B 
+284  85 281 109 282  79 
+</div><div class='input'></div><div class='input'># if keeping all one get 0-value indexes</div><div class='input'>summary(matchIndex(m, Abbas, no.match=TRUE))
+</div>
+<div class='output'><object of class MarkerList>
+Types: 9 ['B', 'T', ..., 'Multiple'] 
+Mode: integer
+Markers: 2270 
+IDtype: _INDEX_ [0L, 0L, ..., 0L] 
+Source: hgu133a.db, hgu133b.db 
+Breakdown:
+         B          T         NK  Dendritic   Monocyte Neutrophil   Lymphoid 
+       121         94         24         86        103         54        302 
+   Myeloid   Multiple 
+       449       1037 
+</div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>matchIndex</li><li>matchIndex,ANY,ANY-method</li><li>matchIndex,ANY,missing-method</li><li>matchIndex,list,character-method</li><li>matchIndex,list,ChipDb-method</li><li>matchIndex,list,ExpressionSet-method</li><li>matchIndex,list,matrix-method</li><li>matchIndex,list,NMF-method</li><li>matchIndex,list,ProbeAnnDbBimap-method</li><li>matchIndex-methods</li>
+    </ul>
+    <ul>
+      <li>methods</li>
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

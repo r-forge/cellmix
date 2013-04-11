@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>gpl2bioc. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Mapping Bioconductor Annotation packages to GEO GPL Identifiers</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre>gpl2bioc(x)
+
+bioc2gpl(x)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>x</dt>
+      <dd>character vector of GPL ids or Bioconductor
+  packages to map.</dd>
+    </dl>
+    
+    <div class="Value">
+      <h2>Value</h2>
+      
+      <p>a character vector</p>
+  
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p><code>gpl2bioc</code> and <code>bioc2gpl</code> maps a vector of GEO
+  GPL ids into Bioconductor annotation packages, and vice
+  versa.</p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'>gpl2bioc()
+</div>
+<div class='output'>             GPL71             GPL198            GPL3738             GPL200 
+           "ag.db"    "ath1121501.db"       "canine2.db"      "celegans.db" 
+           GPL3213              GPL72            GPL1322            GPL3154 
+      "chicken.db"   "drosgenome1.db"   "drosophila2.db"        "ecoli2.db" 
+             GPL74             GPL201              GPL96             GPL571 
+       "hcg110.db"       "hgfocus.db"       "hgu133a.db"      "hgu133a2.db" 
+             GPL97             GPL570              GPL91              GPL92 
+      "hgu133b.db"   "hgu133plus2.db"      "hgu95av2.db"        "hgu95b.db" 
+             GPL93              GPL94              GPL95            GPL3921 
+       "hgu95c.db"        "hgu95d.db"        "hgu95e.db"     "hthgu133a.db" 
+             GPL98              GPL99             GPL100             GPL101 
+    "hu35ksuba.db"     "hu35ksubb.db"     "hu35ksubc.db"     "hu35ksubd.db" 
+             GPL80              GPL32              GPL81              GPL33 
+       "hu6800.db"        "mgu74a.db"      "mgu74av2.db"        "mgu74b.db" 
+             GPL82              GPL34              GPL83             GPL339 
+     "mgu74bv2.db"        "mgu74c.db"      "mgu74cv2.db"       "moe430a.db" 
+            GPL340            GPL1261              GPL75              GPL76 
+    "mouse4302.db"    "mouse430a2.db"     "mu11ksuba.db"     "mu11ksubb.db" 
+             GPL77              GPL78              GPL79            GPL3533 
+    "mu19ksuba.db"     "mu19ksubb.db"     "mu19ksubc.db"       "porcine.db" 
+            GPL341             GPL342            GPL1355              GPL85 
+      "rae230a.db"       "rae230b.db"       "rat2302.db"        "rgu34a.db" 
+             GPL86              GPL87              GPL88              GPL89 
+       "rgu34b.db"        "rgu34c.db"         "rnu34.db"         "rtu34.db" 
+           GPL1352            GPL1318            GPL2529              GPL90 
+      "u133x3p.db" "xenopuslaevis.db"        "yeast2.db"         "ygs98.db" 
+           GPL1319 
+    "zebrafish.db" 
+</div><div class='input'>gpl2bioc("GPL96")
+</div>
+<div class='output'>       GPL96 
+"hgu133a.db" 
+</div><div class='input'>gpl2bioc(c("GPL96", "GPL570", '123456'))
+</div>
+<div class='output'>           GPL96           GPL570           123456 
+    "hgu133a.db" "hgu133plus2.db"               NA 
+</div><div class='input'>gpl2bioc("96")
+</div>
+<div class='output'>          96 
+"hgu133a.db" 
+</div><div class='input'>bioc2gpl()
+</div>
+<div class='output'>           ag.db    ath1121501.db       canine2.db      celegans.db 
+         "GPL71"         "GPL198"        "GPL3738"         "GPL200" 
+      chicken.db   drosgenome1.db   drosophila2.db        ecoli2.db 
+       "GPL3213"          "GPL72"        "GPL1322"        "GPL3154" 
+       hcg110.db       hgfocus.db      hgu133a2.db       hgu133a.db 
+         "GPL74"         "GPL201"         "GPL571"          "GPL96" 
+      hgu133b.db   hgu133plus2.db      hgu95av2.db        hgu95b.db 
+         "GPL97"         "GPL570"          "GPL91"          "GPL92" 
+       hgu95c.db        hgu95d.db        hgu95e.db     hthgu133a.db 
+         "GPL93"          "GPL94"          "GPL95"        "GPL3921" 
+    hu35ksuba.db     hu35ksubb.db     hu35ksubc.db     hu35ksubd.db 
+         "GPL98"          "GPL99"         "GPL100"         "GPL101" 
+       hu6800.db        mgu74a.db      mgu74av2.db        mgu74b.db 
+         "GPL80"          "GPL32"          "GPL81"          "GPL33" 
+     mgu74bv2.db        mgu74c.db      mgu74cv2.db       moe430a.db 
+         "GPL82"          "GPL34"          "GPL83"         "GPL339" 
+    mouse4302.db    mouse430a2.db     mu11ksuba.db     mu11ksubb.db 
+        "GPL340"        "GPL1261"          "GPL75"          "GPL76" 
+    mu19ksuba.db     mu19ksubb.db     mu19ksubc.db       porcine.db 
+         "GPL77"          "GPL78"          "GPL79"        "GPL3533" 
+      rae230a.db       rae230b.db       rat2302.db        rgu34a.db 
+        "GPL341"         "GPL342"        "GPL1355"          "GPL85" 
+       rgu34b.db        rgu34c.db         rnu34.db         rtu34.db 
+         "GPL86"          "GPL87"          "GPL88"          "GPL89" 
+      u133x3p.db xenopuslaevis.db        yeast2.db         ygs98.db 
+       "GPL1352"        "GPL1318"        "GPL2529"          "GPL90" 
+    zebrafish.db 
+       "GPL1319" 
+</div><div class='input'>bioc2gpl('hgu133a')
+</div>
+<div class='output'>hgu133a 
+"GPL96" 
+</div><div class='input'>bioc2gpl(c('hgu133a', 'hgu133plus2', 'abcd'))
+</div>
+<div class='output'>    hgu133a hgu133plus2        abcd 
+    "GPL96"    "GPL570"          NA 
+</div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>bioc2gpl</li><li>gpl2bioc</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

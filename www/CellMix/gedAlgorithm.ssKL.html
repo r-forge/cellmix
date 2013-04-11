@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>gedAlgorithm.ssKL. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Complete Gene Expression Deconvolution by Semi-Supervised NMF</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre>gedAlgorithm.ssKL(..., maxIter = 3000L, seed = "rprop", eps = 2.22044604925031e-16, 
+  .stop = NULL, data = NULL, markers = c("prior+semi", "semi"), ratio = NULL, copy = FALSE, 
+      sscale = FALSE, alpha = 0, stationary.th = .Machine$double.eps, check.interval = 5 * 
+          check.niter, check.niter = 10L)
+
+gedAlgorithm.ssFrobenius(..., maxIter = 3000L, seed = "rprop", .stop = NULL, data = NULL, 
+      markers = c("prior+semi", "semi"), ratio = NULL, eps = NULL, sscale = TRUE, copy = FALSE, 
+      alpha = 0, stationary.th = .Machine$double.eps, check.interval = 5 * check.niter, 
+      check.niter = 10L)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>seed</dt>
+      <dd>default seeding method.</dd>
+      <dt>sscale</dt>
+      <dd>specifies how signatures -- and proportions
+  -- are re-scaled at the end of each iteration. If
+  <code>TRUE</code>, each signature is mean-centered separately.
+  If <code>2</code>, then each signature is mean-centered
+  separately and the inverse linear transformation
+  proportions is applied to the proportions (i.e. on the
+  rows of the mixture coefficient matrix), so that the
+  fitted matrix does not change. If <code>FALSE</code>, no
+  re-scaling is performed at all.</dd>
+      <dt>alpha</dt>
+      <dd>numeric coefficient used to smoothly enforce
+  a sum-up-to-one constraint on the proportions, by
+  regularising the objective function. If <code>NULL,</code> no
+  constraint is applied.</dd>
+      <dt>...</dt>
+      <dd>extra arguments passed to the function
+  <code><a href='http://www.inside-r.org/r-doc/NMF/algorithmic'>objective</a></code>, which computes the objective
+  value between <code>x</code> and <code>y</code>.</dd>
+      <dt>stationary.th</dt>
+      <dd>maximum absolute value of the
+  gradient, for the objective function to be considered
+  stationary.</dd>
+      <dt>check.interval</dt>
+      <dd>interval (in number of iterations)
+  on which the stopping criterion is computed.</dd>
+      <dt>check.niter</dt>
+      <dd>number of successive iteration used to
+  compute the stationnary criterion.</dd>
+      <dt>maxIter</dt>
+      <dd>maximum number of iterations to perform.</dd>
+      <dt>eps</dt>
+      <dd>small numeric value used to ensure numeric
+  stability, by shifting up entries from zero to this fixed
+  value.</dd>
+      <dt>.stop</dt>
+      <dd>specification of a stopping criterion, that
+  is used instead of the one associated to the NMF
+  algorithm. It may be specified as: <ul>
+<li> the
+  access key of a registered stopping criterion; </li>
+<li> a
+  single integer that specifies the exact number of
+  iterations to perform, which will be honoured unless a
+  lower value is explicitly passed in argument
+  <code>maxIter</code>. </li>
+<li> a single numeric value that
+  specifies the stationnarity threshold for the objective
+  function, used in with <code><a href='http://www.inside-r.org/r-doc/NMF/stop-NMF'>nmf.stop.stationary</a></code>;
+  </li>
+<li> a function with signature
+  <code>(object="NMFStrategy", i="integer", y="matrix",
+  x="NMF", ...)</code>, where <code>object</code> is the
+  <code>NMFStrategy</code> object that describes the algorithm
+  being run, <code>i</code> is the current iteration, <code>y</code> is
+  the target matrix and <code>x</code> is the current value of
+  the NMF model. </li>
+</ul>
+</dd>
+      <dt>copy</dt>
+      <dd>logical that indicates if the update should
+  be made on the original matrix directly (<code>FALSE</code>) or
+  on a copy (<code>TRUE</code> - default). With <code>copy=FALSE</code>
+  the memory footprint is very small, and some speed-up may
+  be achieved in the case of big matrices. However, greater
+  care should be taken due the side effect. We recommend
+  that only experienced users use <code>copy=TRUE</code>.</dd>
+      <dt>data</dt>
+      <dd>marker list</dd>
+      <dt>markers</dt>
+      <dd>indicates what the markers are used for:
+  <ol>
+<li>sQuoteprioruses
+  <code><a href='gedAlgorithm.DSA.html'>DSA</a></code> proportion estimation method
+  from <cite>Zhong2013</cite> to compute sensible initial
+  proportions from average marker expression profiles in
+  the mixed sample data. </li>
+<li>sQuotesemienforces
+  marker block patterns after each iteration.
+  </li>
+<li>sQuotepost<em>a posteriori</em> assigns estimated
+  signatures; </li>
+</ol>
+</dd>
+      <dt>ratio</dt>
+      <dd>expression ratio of markers between its cell
+  type and other cell types.</dd>
+    </dl>
+    
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>Algorithms &#145;ssKL&#146; and &#145;ssFrobenius&#146; are
+  modified versions of the original NMF algorithm from
+  <cite>Brunet et al. (2004)</cite> and <cite>Lee et al. (2001)</cite>,
+  that use a set of known marker genes for each cell type,
+  to enforce the expected block expression pattern on the
+  estimated signatures, as proposed in <cite>Gaujoux et al.
+  (2011)</cite>.</p>
+  
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p>These algorithms simultaneously estimates both the
+  cell-specific signature and mixture proportion matrices,
+  using block-descent method that alternately estimates
+  each matrix. Both re-scale the final proportion estimates
+  so that they sum-up to one.</p>
+  
+      <p>The functions <code>gedAlgorithm.ssKL</code> and
+  <code>gedAlgorithm.ssFrobenius</code> are wrapper functions to
+  the underlying NMF algorithms. They are primiraly defined
+  to enable correct listing their specific arguments on
+  this help page. The recommend way of applying these
+  algorithms is via <code><a href='ged.html'>ged</a></code> interface (e.g.,
+  <code>ged(..., method='ssKL')</code>).</p>
+  
+    </div>
+
+    <div class="References">
+      <h2>References</h2>
+      
+      <p>Brunet J, Tamayo P, Golub TR and Mesirov JP (2004).
+  "Metagenes and molecular pattern discovery using matrix
+  factorization." _Proceedings of the National Academy of
+  Sciences of the United States of America_, *101*(12), pp.
+  4164-9. ISSN 0027-8424, <URL:
+  http://dx.doi.org/10.1073/pnas.0308531101>, <URL:
+  http://www.ncbi.nlm.nih.gov/pubmed/15016911>.</p>
+  
+      <p>Lee DD and Seung H (2001). "Algorithms for non-negative
+  matrix factorization." _Advances in neural information
+  processing systems_. <URL:
+  http://scholar.google.com/scholar?q=intitle:Algorithms+for+non-negative+matrix+factorization\#0>.</p>
+  
+      <p>Gaujoux R and Seoighe C (2011). "Semi-supervised
+  Nonnegative Matrix Factorization for gene expression
+  deconvolution: A case study." _Infection, genetics and
+  evolution : journal of molecular epidemiology and
+  evolutionary genetics in infectious diseases_. ISSN
+  1567-7257, <URL:
+  http://dx.doi.org/10.1016/j.meegid.2011.08.014>, <URL:
+  http://www.ncbi.nlm.nih.gov/pubmed/21930246>.</p>
+  
+    </div>
+      </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>gedAlgorithm.ssFrobenius</li><li>gedAlgorithm.ssKL</li><li>ssFrobenius-ged</li><li>ssKL-ged</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

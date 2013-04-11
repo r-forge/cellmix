@@ -1,0 +1,9 @@
+\documentclass[10pt]{article}
+%\VignetteIndexEntry{An introduction to gene expression deconvolution and the CellMix package}
+%\VignetteDepends{CellMix,knitr}
+%\VignetteCompiler{knitr}
+\usepackage{url}
+\usepackage[colorlinks]{hyperref}
+
+\begin{document}
+\end{document}

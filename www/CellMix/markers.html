@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>MarkerList-class. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="
+  Renaud Gaujoux
+">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Class for Marker Gene Lists</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre>isMarkerList(x)
+
+<span class="label label-important">S4</span> (MarkerList)
+`summary`(object)
+
+attachMarkers(x, object)
+
+getMarkers(x, err.notfind = NULL, unlist = FALSE)
+
+has.markers(x)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>x</dt>
+      <dd>generally a <code>MarkerList</code> object or any
+  object depending on the method. See their respective
+  description for details.</dd>
+      <dt>object</dt>
+      <dd>a list of markers, usually a
+  <code>MarkerList</code> object, or any object with an attached
+  list of markers (cf. <code>attachMarkers</code> and
+  <code>getMarkers</code>), depending on the method. See their
+  respective description for details.</dd>
+      <dt>err.notfind</dt>
+      <dd>a character vector that will prefix an
+  error message if no <code>x</code> has no marker list attached.
+  The error is only thrown if <code>err.notfind</code> is not
+  <code>NULL</code>.</dd>
+      <dt>unlist</dt>
+      <dd>a single logical specifying if the result
+  should be unlisted Default is <code>FALSE</code>.</dd>
+    </dl>
+    
+    <div class="Value">
+      <h2>Value</h2>
+      
+      <p>summary returns a numeric vector containing the
+  number of markers for each cell-type</p>
+  
+      <p><code>attachMarkers</code>returns <code>object</code> with an
+  attribute named <code>'markers'</code> that contains the result
+  of <code>MarkerList(x)</code>.</p>
+  
+      <p><code>getMarkers</code>returns the attached marker
+  list</p>
+  
+      <p><code>has.markers</code>returns a logical</p>
+  
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>This is the main class used to store sets of marker
+  genes, for use in gene expression deconvolution methods.
+  It serves as a light version of class
+  <code><a href='MarkerSetCollection-class.html'>MarkerSetCollection-class</a></code>, assuming that
+  all marker identifiers are of the same type (e.g., entrez
+  gene, unigene or probe ids), and are relative to the same
+  platform, organism, etc.. (see details).</p>
+  
+      <p><code>isMarkerList</code> tests if an object is a
+  <code><a href='markers.html'>MarkerList-class</a></code> object.</p>
+  
+      <p><code>attachMarkers</code> attaches a marker list to an
+  <code>NMF</code> object, by storing it in an attribute named
+  <code>'markers'</code>. It actually stores the results from
+  <code>MarkerList(x)</code>, that is a <code>MarkerList</code> object.</p>
+  
+      <p><code>getMarkers</code> extracts the marker list from the
+  attribute named <code>'markers'</code> that will generally
+  contain a <code>MarkerList</code> object.</p>
+  
+      <p><code>has.markers</code> tells if an object has an attached
+  marker list, i.e. an attribute named <code>'markers'</code>.</p>
+  
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p>The objective of the <code>MarkerList</code> class is to
+  simplify the structure and processing of gene lists,
+  compared to handling <code>MarkerSetCollection</code> objects.
+  Conversion methods between these two classes are
+  provided.</p>
+  
+      <p>The class is essentially a named list, in which each
+  element contains data about a set of marker
+  features/genes, e.g., from a given cell-type. Marker
+  features are assumed to be exclusive to each set, i.e.
+  they appear in only one element of the list. In addition
+  to their identifiers, markers can be associated with
+  numeric values, e.g., corresponding to p-values or
+  specificity scores, or integer, which are then
+  interpreted as indexes relative to some expression data.</p>
+  
+      <p>It contains the same slots as
+  <code><a href='http://www.inside-r.org/r-doc/GSEABase/GeneSet-class'>GeneSet-class</a></code>, which are used when
+  converting <code>MarkerList</code> objects into
+  <code>MarkerSetCollection</code> objects, to fill the slots of
+  all gene set. For a description of each slot, please see
+  the documentation for <code><a href='http://www.inside-r.org/r-doc/GSEABase/GeneSet-class'>GeneSet-class</a></code>.</p>
+  
+    </div>
+
+    <div class="Methods">
+      <h2>Methods</h2>
+      
+      <p><ol>
+<li>[<code>signature(x = "MarkerList", i = "ANY", j =
+  "ANY")</code>: <code>MarkerList</code> objects have convenient subset
+  methods, that allow to subset the list not only along the
+  sets (first dimension) but also along the markers, which
+  proves to be very useful to subset markers list based on
+  another set of identifier, e.g., the genes present in
+  some expression data, or in another marker list.</p>
+  
+      <p>The method <code>`[`</code> works performs basic strict subsets
+  using integer, character and logical subsetting vectors.</p>
+  
+      <p>See <code><a href='subset.html'>[,MarkerList,ANY,ANY-method</a></code> for more
+  details.</p>
+  
+      <p></li>
+<li>[<code>signature(x = "MarkerList", i = "list", j
+  = "ANY")</code>: This method subsets/reorders each set of
+  marker using a subset specification found in</p>
+  
+      <p></li>
+<li>[<code>signature(x = "MarkerList", i = "missing",
+  j = "list")</code>: This method is equivalent to <code>x[i, ,
+  ..., match.names=FALSE]</code>, i.e. that each element of the
+  marker list <code>x</code> are subset/reordered as its
+  corresponding one in <code>j</code>, following the lists' order
+  -- with no attempt to match their elements names before
+  subsetting.</p>
+  
+      <p></li>
+<li>annotation<code>signature(object =
+  "MarkerList")</code>: Extract name of the annotation package
+  from a marker list.</p>
+  
+      <p></li>
+<li>annotation<-<code>signature(object =
+  "MarkerList", value = "character")</code>: Sets the name of the
+  annotation package associated to a marker list.</p>
+  
+      <p></li>
+<li>annotation<-<code>signature(object =
+  "MarkerList", value = "NULL")</code>: Reset the annotation
+  package associated to a marker list</p>
+  
+      <p></li>
+<li>asCBC<code>signature(object = "MarkerList")</code>:
+  This method combines markers of cell types that belong to
+  the same CBC group.</p>
+  
+      <p></li>
+<li>.atrack<code>signature(object = "MarkerList")</code>:
+  This method allows to add annotation tracks in heatmaps
+  produced by <code><a href='http://www.inside-r.org/r-doc/NMF/aheatmap'>aheatmap</a></code>, to highlight the
+  position of markers, when plotting either the global
+  expression values or cell type-specific signatures,
+  whether measured or estimated.</p>
+  
+      <p></li>
+<li>combine<code>signature(x = "MarkerList", y =
+  "factor")</code>: Combine markers from multiple cell types of a
+  MarkerList object, based on groups defined by a given
+  factor.</p>
+  
+      <p></li>
+<li>Compare<code>signature(e1 = "MarkerList", e2 =
+  "numeric")</code>: <code>Compare</code> compares all embedded values
+  with a given fixed value. This is useful to filter
+  markers based on their associated scores.</p>
+  
+      <p></li>
+<li>convertIDs<code>signature(object = "MarkerList",
+  to = "GeneIdentifierType", from = "GeneIdentifierType")</code>:
+  Convert IDs from a MarkerList object.</p>
+  
+      <p>In this case, argument <code>unlist</code> indicates if the
+  result should be a simple list containing the mapping (a
+  list) for each cell type or a
+  <code><a href='markers.html'>MarkerList-class</a></code> object (default).</p>
+  
+      <p></li>
+<li>details<code>signature(object = "MarkerList")</code>:
+  Shows more details than the regular <code>show</code> method.</p>
+  
+      <p></li>
+<li>drop<code>signature(x = "MarkerList")</code>:
+  <code>drop</code> drops empty sets of markers from a
+  <code>MarkerList</code> object, as well as markers with
+  <code>FALSE</code> values if the object is a logical marker
+  list. It returns the reduced <code>MarkerList</code> object.</p>
+  
+      <p></li>
+<li>featureNames<code>signature(object =
+  "MarkerList")</code>: Returns the character vector of all
+  marker names in the list.</p>
+  
+      <p></li>
+<li>flatten<code>signature(object = "MarkerList")</code>:
+  For <code><a href='MarkerList.html'>MarkerList</a></code> objects the conversion is
+  similar to what <code><a href='http://www.inside-r.org/r-doc/base/unlist'>unlist</a></code> would do, but
+  argument <code>use.names</code> is used slightly differently.</p>
+  
+      <p>Secondly, the names of the main elements are append to
+  the marker names (like <code>unlist</code> does if
+  <code>use.names=TRUE</code>) only for marker lists that contain
+  numeric values (e.g. specificity scores). In the other
+  cases, they are used either as values for character
+  marker lists or as duplicated names for integer marker
+  lists.</p>
+  
+      <p></li>
+<li>geneIdType<code>signature(object =
+  "MarkerList")</code>: Returns the type of gene identifier used
+  in a marker list.</p>
+  
+      <p></li>
+<li>geneIdType<-<code>signature(object =
+  "MarkerList", value = "NULL")</code>: Sets the type of gene
+  identifier used in a marker list to
+  <code><a href='http://www.inside-r.org/r-doc/GSEABase/GeneIdentifierType-constructors'>NullIdentifier</a>()</code>.</p>
+  
+      <p></li>
+<li>geneIdType<-<code>signature(object =
+  "MarkerList", value = "character")</code>: Sets the type of
+  gene identifier used in a marker list to a given value.</p>
+  
+      <p></li>
+<li>geneIdType<-<code>signature(object =
+  "MarkerList", value = "GeneIdentifierType")</code>: Sets the
+  type of gene identifier associated with a marker list to
+  a given <code><a href='http://www.inside-r.org/r-doc/GSEABase/GeneIdentifierType-class'>GeneIdentifierType-class</a></code> object.</p>
+  
+      <p></li>
+<li>geneValues<code>signature(object =
+  "MarkerList")</code>: Returns the values embedded in a
+  <code>MarkerList</code> object.</p>
+  
+      <p></li>
+<li>MarkerList<code>signature(object =
+  "MarkerList")</code>: This method acts as a Constructor-Copy
+  that returns the input MarkerList object unchanged if no
+  other argument are passed, or creates a new MarkerList
+  object based on <code>object</code>, using the arguments in
+  <code>...</code> to initialise the slots.</p>
+  
+      <p></li>
+<li>markermap<code>signature(object = "MarkerList",
+  data = "matrix")</code>: Workhorse method is for
+  <code>markermap</code>.</p>
+  
+      <p></li>
+<li>markermap<code>signature(object = "MarkerList",
+  data = "ExpressionSet")</code>: The method <code>markermap</code> for
+  <code>ExpressionSet</code> objects calls the main
+  <code>markermap</code> method on the expression matrix
+  <code>exprs(object)</code>.</p>
+  
+      <p></li>
+<li>markermap<code>signature(object = "MarkerList",
+  data = "NMF")</code>: The method <code>markermap</code> for
+  <code>NMF</code> objects calls the main <code>markermap</code> method
+  on the basis matrix <code>basis(object)</code>.</p>
+  
+      <p></li>
+<li>markermap<code>signature(object = "MarkerList",
+  data = "NMFfitX")</code>: The method <code>markermap</code> for
+  <code>NMFfitX</code> objects calls the main <code>markermap</code>
+  method on the best fit <code>fit(object)</code>.</p>
+  
+      <p></li>
+<li>reorder<code>signature(x = "MarkerList")</code>: The
+  method <code>reorder</code> for <code>MarkerList</code> objects
+  allows to reorder each set of markers according to some
+  auxiliary reference data, e.g, their gene expression in
+  different cell types.</p>
+  
+      <p>See <code><a href='sort.html'>reorder,MarkerList-method</a></code> for more
+  details.</p>
+  
+      <p></li>
+<li>sapply<code>signature(X = "MarkerList")</code>: Applies
+  a given function to a <code><a href='markers.html'>MarkerList-class</a></code>
+  object.</p>
+  
+      <p></li>
+<li>subset<code>signature(x = "MarkerList")</code>:
+  <code>subset</code> subset a <code>MarkerList</code> object keeping
+  only the markers that are present with a given reference
+  set, which can be a character vector, the rownames of a
+  matrix or an <code>NMF</code> object, or the feature names of
+  an <code>ExpressionSet</code>. The markers are matched using
+  the function <code>matchIndex</code>, and gene identifier
+  conversion is performed if necessary.</p>
+  
+      <p></li>
+<li>summary<code>signature(object = "MarkerList")</code>:
+  Summary method for <code>MarkerList</code> objects</p>
+  
+      <p></li>
+<li>summary<code>signature(object = "MarkerList")</code>:
+  Summary method for <code>MarkerList</code> objects</p>
+  
+      <p></li>
+</ol></p>
+  
+      <p></p>
+  
+    </div>
+
+    <div class="Heterogeneous marker lists">
+      <h2>Heterogeneous marker lists</h2>
+      
+      <p>Due to the structure of <code>MarkerList</code> objects, all
+  gene identifiers must share the same set of
+  characteristics. However, it is possible to associate a
+  <code>MarkerList</code> object with multiple annotation
+  packages, which will be correctly dealt with if all the
+  list's identifiers are found in only one of them. For
+  example the registered maker list &#145;Abbas&#146; is
+  associated with annotation packages <code>hgu133a.db</code> and
+  <code>hgu133b.db</code>.</p>
+  
+    </div>
+      </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>attachMarkers</li><li>getMarkers</li><li>has.markers</li><li>isMarkerList</li><li>MarkerList-class</li><li>summary,MarkerList-method</li>
+    </ul>
+    <ul>
+      <li>methods</li>
+    </ul> -->
+      
+    
+    <h2>Author</h2>
+    
+  Renaud Gaujoux
+
+    
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

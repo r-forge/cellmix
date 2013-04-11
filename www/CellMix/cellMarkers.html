@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>cellMarkers. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Loading Marker Lists from Registry</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre>cellMarkers(key, error = TRUE, verbose = FALSE, all = FALSE, ...)
+
+cellMarkersInfo(show = TRUE)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>verbose</dt>
+      <dd>logical that toggles verbose messages.</dd>
+      <dt>...</dt>
+      <dd>arguments passed to the marker list's loading
+  function. In particular argument <code>reload=TRUE</code> can
+  be used to clear the cache and force
+  reloading/recomputing the marker list from its primary
+  data file.</dd>
+      <dt>show</dt>
+      <dd>logical that indicates if the registry object
+  should be printed (<code>FALSE</code>) or only returned
+  invisibly (<code>FALSE</code>).</dd>
+      <dt>key</dt>
+      <dd>algorithm access key, as a single character
+  string. If missing the function returns the list of
+  registered keys, as a character vector.</dd>
+      <dt>error</dt>
+      <dd>a logical that indicates whether an error
+  should be thrown if the key is not found in the registry
+  or match multiple lists. If <code>FALSE</code> then function
+  returns <code>NULL</code> if the key is not found or <code>NA</code>
+  in case of multiple matches.</dd>
+      <dt>all</dt>
+      <dd>logical that is only used when <code>key</code> is
+  missing and indicates if all registered keys should be
+  returned, including the internal one -- whose key starts
+  with a '.'.</dd>
+    </dl>
+    
+    <div class="Value">
+      <h2>Value</h2>
+      
+      <p>a <code>GEDmarkers_entry</code> object or <code>NULL</code> (see
+  argument <code>error</code>)</p>
+  
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>Loading Marker Lists from Registry</p>
+  
+      <p><code>cellMarkersInfo</code> prints information about the
+  registered marker gene lists or return the complete
+  marker list registry, as a <code>registry</code> object.</p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'># show marker lists and properties</div><div class='input'>cellMarkersInfo()
+</div>
+<div class='output'>                                                                                                       Description
+IRIS                            Immune Response In Silico: B, T, NK and dendritic cells, monocytes and neutrophils
+Abbas                                             Optimised set of immune genes for deconvolution of blood samples
+TDDB_HS                  TissueDistributionDB: UniGene EST distribution profiles using Tissue Ontology from BRENDA
+TDDB_RN                  TissueDistributionDB: UniGene EST distribution profiles using Tissue Ontology from BRENDA
+Palmer                                    Markers for B-cells, CD4+ and CD8+ T-cells, lymphocytes and granulocytes
+HaemAtlas HaemAtlas markers for CD4+ and CD8+ T-cells, lymphocytes, monocytes, B-cells, NK cells, and granulocytes
+TIGER                                                   TiGER database: based on UniGene EST distribution profiles
+VeryGene                                                 VeryGene database: based on two large microarray datasets
+          Organism Types Markers      idType             Annotation
+IRIS         Human     9    2270 .Affymetrix hgu133a.db, hgu133b.db
+Abbas        Human    12     122 .Affymetrix hgu133a.db, hgu133b.db
+TDDB_HS      Human    65   14732     UNIGENE           org.Hs.eg.db
+TDDB_RN        Rat    19    3915     UNIGENE           org.Rn.eg.db
+Palmer       Human     5     907      SYMBOL           org.Hs.eg.db
+HaemAtlas    Human     8    2069   .Illumina     illuminaHumanv2.db
+TIGER        Human    30    7743     UNIGENE           org.Hs.eg.db
+VeryGene     Human   127   10102    ENTREZID           org.Hs.eg.db
+             Reference
+IRIS         Abbas2005
+Abbas        Abbas2009
+TDDB_HS   Kogenaru2009
+TDDB_RN   Kogenaru2009
+Palmer      Palmer2006
+HaemAtlas  Watkins2009
+TIGER         Liu2008a
+VeryGene      Yang2011
+</div><div class='input'>class(cellMarkersInfo(FALSE))
+</div>
+<div class='output'>[1] "GEDmarkers_registry"      "markers_package_registry"
+[3] "package_registry"         "registry"                
+</div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>cellMarkers</li><li>cellMarkersInfo</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

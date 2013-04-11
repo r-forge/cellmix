@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>gedData. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Loading Gene Expression Deconvolution Data</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre>gedData(key, error = TRUE, all = FALSE, exact = FALSE, with = NULL, ...)
+
+gedDataInfo(show = TRUE)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>with</dt>
+      <dd>character vector, only used when <code>key</code>
+  is missing, that specifies some filtering criterium. It
+  allows to only list datasets that contain specific data,
+  which may help choosing a suitable dataset when
+  developping/testing deconvolution methods: <ol>
+<li><code>'prop'</code>cell proportions for each samples.
+  </li>
+<li><code>'sig'</code>cell-specific sigantures.
+  </li>
+<li><code>'all'</code>both proportions and cell-specific
+  signatures. </li>
+<li><code>'mixed'</code>mixed samples.
+  </li>
+<li><code>'pure'</code>pure samples. </li>
+</ol>
+
+
+  Any combination of these is allowed, e.g. <code>c('prop',
+  'pure')</code> to list datasets that contain proportions and
+  pure samples.</dd>
+      <dt>show</dt>
+      <dd>logical that indicates if the registry object
+  should be printed (<code>FALSE</code>) or only returned
+  invisibly (<code>FALSE</code>).</dd>
+      <dt>key</dt>
+      <dd>algorithm access key, as a single character
+  string. If missing the function returns the list of
+  registered keys, as a character vector.</dd>
+      <dt>error</dt>
+      <dd>a logical that indicates whether an error
+  should be thrown if the key is not found in the registry
+  or match multiple lists. If <code>FALSE</code> then function
+  returns <code>NULL</code> if the key is not found or <code>NA</code>
+  in case of multiple matches.</dd>
+      <dt>all</dt>
+      <dd>logical that is only used when <code>key</code> is
+  missing and indicates if all registered keys should be
+  returned, including the internal one -- whose key starts
+  with a '.'.</dd>
+      <dt>exact</dt>
+      <dd>logical that indicates if one should use
+  exact matching or partial matching to match the provided
+  access key against all registered keys.</dd>
+      <dt>...</dt>
+      <dd>extra arguments used internally, not to be
+  used by the end user.</dd>
+    </dl>
+    
+    <div class="Value">
+      <h2>Value</h2>
+      
+      <p>a <code>GEDdata_entry</code> object or <code>NULL</code> (see
+  argument <code>error</code>)</p>
+  
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p><code>gedData</code> loads entries from the CellMix dataset
+  registry.</p>
+  
+      <p><code>gedDataInfo</code> prints information about the
+  registered gene expression datasets or returns --
+  invisibly -- the complete dataset registry, as a
+  <code>registry</code> object.</p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'># retrieve a dataset entry</div><div class='input'>gedData('GSE20300')
+</div>
+<div class='output'>               key GSE20300
+           aliases 
+               url 
+       description Whole blood from stable and acute rejection
+                   pediatric kidney transplant
+              cite Shen-Orr2010
+        annotation hgu133plus2.db
+               dim 54675, 24, 5
+             basis NA
+              coef <<function>>
+              pure NA
+               env <environment>
+             pdata <<function>>
+             fdata NA
+            filter NA
+REGISTERINGpackage CellMix
+</div><div class='input'></div><div class='input'># error if the entry does not exists</div><div class='input'>try( gedData('GSE1234') )
+</div><div class='input'># unless error=FALSE</div><div class='input'>gedData('GSE1234', error=FALSE)
+</div>
+<div class='output'>NULL
+</div><div class='input'></div><div class='input'># list datasets that contain cell proportions</div><div class='input'>gedData(with='prop')
+</div>
+<div class='output'>[1] "GSE29832"   "GSE19830"   "GSE20300"   "GSE5350"    "GSE11058"  
+[6] "GSE33076"   "GSE3649"    "E-TABM-633"
+</div><div class='input'># or pure samples</div><div class='input'>gedData(with='sig')
+</div>
+<div class='output'>[1] "GSE29832"   "GSE19830"   "GSE5350"    "GSE11057"   "GSE11058"  
+[6] "GSE33076"   "E-TABM-633"
+</div><div class='input'># or both</div><div class='input'>gedData(with=c('prop', 'sig'))
+</div>
+<div class='output'>[1] "GSE29832"   "GSE19830"   "GSE5350"    "GSE11058"   "GSE33076"  
+[6] "E-TABM-633"
+</div><div class='input'># or mixed samples</div><div class='input'>gedData(with='mixed')
+</div>
+<div class='output'>[1] "GSE29832" "GSE24223" "GSE19830" "GSE20300" "GSE5350"  "GSE11057" "GSE11058"
+[8] "GSE33076" "GSE3649" 
+</div><div class='input'># show algorithms and properties</div><div class='input'>gedDataInfo()
+</div>
+<div class='output'>An object of class 'registry' with 12 entries.
+                                                                                  Description
+GSE29832                Pure/mixed blood and breast to test deconvolution of clinical samples
+GSE24223             Deconvoluting Early Post-Transplant Immunity Using Purified Cell Subsets
+GSE19830             Pure/mixed brain, liver and lung to test statistical deconvolution [Rat]
+GSE20300              Whole blood from stable and acute rejection pediatric kidney transplant
+GSE5350                MicroArray Quality Control (MAQC) Project: Affymetrix HG-U133 Plus 2.0
+GSE11057                        Memory T Cell Subsets: Central memory, Effector memory, Naive
+GSE11058                                 Immune Cell Line Mixtures: Jurkat, IM-9, Raji, THP-1
+GSE22886_A                          IRIS: Resting and activated human immune cells [HG-U133A]
+GSE22886_B                          IRIS: Resting and activated human immune cells [HG-U133B]
+GSE33076   Linearity of amplification between gene expression values and mRNA in retina cells
+GSE3649                Individuality and variation in gene expression patterns in human blood
+E-TABM-633         The HaemAtlas: Transcription profiling of differentiated human blood cells
+           Features Samples Types Mixed  Pure Basis  Coef            Annotation
+GSE29832      54675      15     2  TRUE  TRUE  TRUE  TRUE        hgu133plus2.db
+GSE24223      54675     179     5  TRUE  TRUE FALSE FALSE        hgu133plus2.db
+GSE19830      31099      42     3  TRUE  TRUE  TRUE  TRUE            rat2302.db
+GSE20300      54675      24     5  TRUE FALSE FALSE  TRUE        hgu133plus2.db
+GSE5350       54675     120     2  TRUE  TRUE  TRUE  TRUE        hgu133plus2.db
+GSE11057      54675      17     3  TRUE  TRUE  TRUE FALSE        hgu133plus2.db
+GSE11058      54675      24     4  TRUE  TRUE  TRUE  TRUE        hgu133plus2.db
+GSE22886_A    22283     114    11 FALSE  TRUE FALSE FALSE            hgu133a.db
+GSE22886_B    22645     114    11 FALSE  TRUE FALSE FALSE            hgu133b.db
+GSE33076      22347      24     2  TRUE  TRUE  TRUE  TRUE mogene10stprobeset.db
+GSE3649       36794      70     5  TRUE FALSE FALSE  TRUE                      
+E-TABM-633    46693      50     8 FALSE  TRUE  TRUE  TRUE    illuminaHumanv2.db
+               Reference
+GSE29832        Gong2011
+GSE24223   Grigoryev2010
+GSE19830    Shen-Orr2010
+GSE20300    Shen-Orr2010
+GSE5350          Shi2006
+GSE11057       Abbas2009
+GSE11058       Abbas2009
+GSE22886_A     Abbas2005
+GSE22886_B     Abbas2005
+GSE33076     Siegert2012
+GSE3649      Whitney2003
+E-TABM-633   Watkins2009
+</div><div class='input'>class(gedDataInfo(FALSE))
+</div>
+<div class='output'>[1] "GEDdata_registry"      "data_package_registry" "package_registry"     
+[4] "registry"             
+</div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>gedData</li><li>gedDataInfo</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

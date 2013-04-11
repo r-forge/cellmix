@@ -1,0 +1,1295 @@
+%\VignetteIndexEntry{An introduction to gene expression deconvolution and the CellMix package}
+%\VignetteDepends{CellMix,knitr}
+%\VignetteCompiler{knitr}
+
+\documentclass[a4paper]{article}
+%\usepackage{Sweave}
+
+% Encoding
+\usepackage[OT1]{fontenc}
+
+\usepackage{a4wide}
+\usepackage{indentfirst}
+
+
+% boxed figures
+\usepackage{float}
+\floatstyle{boxed} 
+\restylefloat{figure}
+% caption formatting
+\usepackage[font=small, labelfont=bf,textfont=it]{caption}
+% sub-figures
+\usepackage[position=top]{subfig}
+% sideways figures
+\usepackage{rotating}
+
+%% Hyperrefs
+\usepackage[plainpages=false, colorlinks]{hyperref} % for hyperlinks
+% \hypersetup{
+% citecolor=black,% 
+% filecolor=black,% 
+% linkcolor=black,% 
+% urlcolor=black
+% } 
+\usepackage{bookmark}
+
+% inline lists
+\usepackage{paralist}
+% MATH
+\usepackage{amsmath} %math symbols
+\usepackage{amssymb} %extra math symbols
+\usepackage{array}
+\usepackage{tabularx}
+
+% special table of contents
+%\usepackage{tocloft}
+%\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+%\usepackage[toc]{multitoc}
+
+% REFERENCES
+\usepackage[citestyle=authoryear-icomp
+, doi=true
+, url=true
+, maxnames=1
+, maxbibnames=15
+, backref=true]{biblatex}
+\AtEveryCitekey{\clearfield{url}}
+<<pkgmaker_preamble, echo=FALSE, results='asis'>>=
+pkgmaker::latex_preamble('CellMix')
+@
+<<bibliofile, echo=FALSE, results='asis'>>=
+pkgmaker::latex_bibliography('CellMix')
+@
+\bibliography{Rpackages}
+\newcommand{\citet}[1]{\textcite{#1}}
+\renewcommand{\cite}[1]{\parencite{#1}}
+\DefineBibliographyStrings{english}{%
+    backrefpage  = {see p.}, % for single page number
+    backrefpages = {see pp.} % for multiple page numbers
+}
+%%
+
+\usepackage[noabbrev, capitalise, nameinlink]{cleveref}
+
+% graphic path
+\graphicspath{ {.//}{./src/} }
+%
+
+\newcommand{\footurl}[1]{\footnote{\url{#1}}}
+\newcommand{\matlab}{Matlab$^\circledR$\xspace}
+
+\title{An introduction to gene expression deconvolution and the \pkgname{CellMix} package\\
+\small A Comprehensive Framework for Gene Expression Deconvolution}
+\author{Renaud Gaujoux}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+
+This vignette motivates and describes the functionalities of the \Rpkg{CellMix}, an R package for performing gene expression deconvolution analysis.
+The package defines a general framework to apply, develop and test gene expression deconvolution methods.
+It incorporates, generalises and extends the set of tools we implemented when developing a semi-supervised approach to this problem, and includes several other previously published algorithms, hence facilitating their application and comparison.
+A special focus is drawn on lists of cell/tissue marker genes, which are very valuable resources as they may be used not only as prior knowledge or \emph{post-hoc} independent validation data by deconvolution algorithms, but also as gene sets in classical enrichment analysis.
+We envisage that this package will provide the bioinformatics research community with an easy to use and flexible platform for working with deconvolution methods, and cell heterogeneity in omics data in general.
+
+\end{abstract}
+
+\setkeys{Gin}{width=0.95\textwidth}
+<<cellmix_load, echo=FALSE, include=FALSE>>=
+library(xtable)
+library(CellMix)
+summary <- function(x){
+	if( is(x, 'MarkerList') ){
+		res  <- getMethod('summary', 'MarkerList')(x)
+		print(res)
+		invisible(res)
+	} else base::summary(x)
+}
+@
+
+This vignette aims at providing a general background on gene expression deconvolution, motivating the \Rpkg{CellMix}, as well as describing its main features.
+It serves as supplementary material for the following article:
+
+\noindent\fullcite{Gaujoux2012}
+
+Documentation, practical examples, and sample analyses can be found online at:
+
+\url{http://web.cbio.uct.ac.za/~renaud/CRAN/web/CellMix}
+
+\pagebreak
+\tableofcontents
+
+\pagebreak
+
+\section{Introduction and Objectives}
+\label{sec:ged_intro}
+
+Our work on semi-supervised gene expression deconvolution \cite{Gaujoux2011} revealed several challenges that researchers must face when developing or simply applying gene expression deconvolution methods.
+These challenges are essentially related to the availability and usability of benchmark expression datasets, cell/tissue specific quantitative signatures, lists of marker genes and/or deconvolution algorithms.
+Most of the time, one or more of these items will be required, whether the objective is to deconvolve a specific global expression dataset or design new methodologies.
+
+\subsection{Computational or \emph{in-silico} gene expression deconvolution}
+\label{sec:intro_gedmethods}
+
+
+Starting with \citet{Venet2001}, many authors provided insights into how to estimate the cell type/tissue specific signatures and/or relative cell type proportions from global gene expression measurements, e.g., by microarray or RNA-seq, and proposed a variety of methods to do so \cite{Zhao2010}.
+These methods are of two different types, distinct with respect to the input data they require:
+
+\begin{itemize}
+\item the \emph{partial} gene expression deconvolution methods require that either cell type-specific signatures \cite{Lu2003, Wang2006a, Abbas2009, Clarke2010, Gong2011}, or mixture proportions \cite{Lahdesmaki2005,Erkkila2010,Shen-Orr2010,Stuart2004} are available;
+\item the \emph{complete} deconvolution methods estimate both the cell/tissue signatures and the proportions directly from the global gene expression data of the heterogeneous samples \cite{Roy2006,Repsilber2010,Venet2001,Gaujoux2011,Kuhn2011}.
+\end{itemize}
+
+\Cref{fig:ged_full_partial} summarises the input data required by each type of method.
+It is clear from this figure that the type of deconvolution problems addressed by each method differ in their complexity, which increases as the input data requirement decreases:
+
+\begin{enumerate}
+\item Estimating proportions from known cell-type signatures: this is an
+overdetermined estimation problem separately for each sample, having
+generally more observations (genes) than coefficients to estimate
+(one proportion per cell type), which can potentially lead to very robust and accurate estimates \cite{Abbas2009, Gong2011} (\cref{fig:ged_partial_sig}).
+The number of proportions to estimate is equal to the number of cell types $r$ times the number of samples $p$ ($r \times p$). 
+
+\item Estimating cell-type signatures from known proportions: this is also an
+overdetermined problem, separately for each gene, provided that
+there are more samples than estimated signatures.
+However, given the typical dimensions of gene expression data, with much more genes than samples, the estimation is expected to be less robust to measurement errors than in the previous case \cite{Erkkila2010}.
+The number of expression values to estimate is equal to the number of cell types $r$ times the number of genes $n$ ($r \times n$).
+
+\item Estimating both signatures and proportions is a very loosely constrained problem, which requires more advanced techniques \cite{Roy2006,Repsilber2010} or the incorporation of additional constraints, either technical \cite{Venet2001} or driven by biological knowledge, as proposed by \citet{Gaujoux2011, Kuhn2011}.
+\end{enumerate}
+
+Strictly speaking, even complete deconvolution methods require some prior knowledge, often in the form of sets of marker genes, i.e. genes which are -- essentially -- expressed by a single cell type, among those expected to contribute to each sample's expression profile.
+These markers are used either to assign \emph{a posteriori} estimated signatures to a given cell type \cite{Repsilber2010}, or \emph{a priori} to enforce expected expression patterns to ensure biologically relevant signatures are recovered \cite{Gaujoux2011}.
+\citet{Kuhn2011} did not enforce marker gene patterns, but computed the average expression of each set of markers, as proxies for the actual cell proportions.
+They then plugged these estimates into a standard linear regression analysis to correct for cell heterogeneity, and test for cell-specific differential expression between control and Huntington's disease human brain samples.  
+
+\begin{figure}[h!btp]
+\centering
+\setkeys{Gin}{width=0.45\textwidth}
+\subfloat[Partial deconvolution using available signatures]{%
+\label{fig:ged_partial_sig}
+\includegraphics{approach-with-signatures.png}%
+}%
+\hfill
+\subfloat[Partial deconvolution using available proportions]{%
+\label{fig:ged_partial_prop}
+\includegraphics{approach-with-proportions.png}%
+}%
+\\
+\subfloat[Complete deconvolution from global expression]{%
+\label{fig:ged_complete}
+\includegraphics{approach-full.png}
+}
+\\
+\vspace{2em}
+\raggedright
+\scriptsize{Graphic \subref{fig:ged_partial_prop} was extracted from \citet{Shen-Orr2010}, and modified to produce the other panels.}
+\caption{Partial vs. Complete gene expression deconvolution.\\
+Partial deconvolution methods assume that either signatures \protect\subref{fig:ged_partial_sig} or proportions \protect\subref{fig:ged_partial_prop} are available and use them to infer the unknown proportions and signatures respectively.
+Complete deconvolution methods \protect\subref{fig:ged_complete} infer both cell-type signatures and proportions from the global gene expression data.}
+\label{fig:ged_full_partial}
+\end{figure}
+
+\subsubsection{General formulation}
+
+Although the relationship between the expression levels of pure and mixed samples is known not to be strictly linear, previous work on gene expression deconvolution showed that the linearity assumption is reasonable \cite{Shen-Orr2010}.
+Moreover, all approaches assume that gene expression at the cell level is independent of the cell type proportions, although this is expected not to be the case for some genes.
+Hence, both partial and complete gene expression deconvolution problems are most commonly formulated as linear models, with, for the complete problem, latent variables corresponding to cell type specific signatures \cite{Venet2001,Lu2003,Wang2006a,Abbas2009,Clarke2010,Lahdesmaki2005,Erkkila2010,Shen-Orr2010,Repsilber2010,Gong2011}.
+That is that the global expression value of gene $i$ in sample $j$ is the sum of its expressions in the $r$ cell types:
+$$
+x_i = \sum_{k=1}^r w_{ik} h_{kj} + \varepsilon,
+$$ 
+where $w_{ik}$ is the specific gene expression in cell type $k$, and $h_{kj}$ the proportion of cell type $k$ in sample $j$.
+Considering all genes together, this aggregates into the following approximate matrix decomposition problem:
+\begin{equation}
+\label{eq:deconf}
+X \approx W H.
+\end{equation}
+
+Depending on the method, authors enforce additional constraints such as nonnegativity for gene expression values and proportions and sum to one constraints on proportions.
+As we have seen above, choosing a method to solve the problem in \cref{eq:deconf} may depend on the availability of other auxiliary data, such as known signatures or cell type proportions.
+In the following we review some of the methods that have been proposed in common data settings. 
+
+\subsubsection{Partial deconvolution methods}
+
+Partial deconvolution methods assume that either the signature matrix $W$ or the proportion matrix $H$ is available.
+
+\paragraph{From signatures} Most methods that estimate cell type proportions from quantitative cell type-specific signatures regress the global gene expression $X$ on the known matrix $W$ of cell-specific expression.
+\citet{Abbas2009} defined an optimised set of signatures for 17 different immune cell types, and proposed a heuristic algorithm based on standard linear regression to enforce nonnegative proportions, that are scaled to sum-up to one after fitting.
+We discuss the procedure used to build these signatures in more detail in \cref{sec:ged_basis}.
+They apply their method to white blood cell samples from a cohort of Systemic Lupus Erythematosus (SLE) and healthy patients, and found differences in proportions that were corroborated by FACS and clinical observations \cite{Abbas2009}.
+\citet{Gong2011} proposed an alternative algorithm that incorporates the
+sum-up to one constraint on the proportions within the fitting
+process, aiming at improving their estimation.
+This seems indeed a natural constraint to impose, however, we found that these
+may make the algorithm sensitive to scale discrepancies between
+the signatures and the global expression profiles (see discussion in
+\cref{sec:ged_blood} and \cref{fig:ged_blood_normalisation}). 
+Although they used the same set of signatures, they applied their algorithm to a different dataset, making it difficult to compare its performance with the original method from \citet{Abbas2009}.
+\citet{Lu2003} and \citet{Wang2006a} used similar approaches to, respectively, identify dynamics of yeast cells at different stages of the cell cycle, and correct for varying proportions of mammary gland cell types in global mammary gene expression data.
+\citet{Clarke2010} proposed a different approach, not based on linear regression, for the case of two cell types, that requires signatures from only one of them.
+
+\paragraph{From proportions}
+\citet{Jacobsen2006} proposed a method to correct the expression values of cell-specific genes for sample heterogeneity, with application to the detection of their differential expression.
+\citet{Shen-Orr2010} proposed a method (\emph{csSAM}) to perform differential analysis at the cell type levels, when proportions are available.
+Their approach consists in regressing the global gene expression on the proportions using standard linear regression, and incorporating the standard error estimates into a statistic that tests for differences in the estimated cell-specific expressions.
+\citet{Lahdesmaki2005} proposed an alternate least squares algorithm to optimise approximate estimates of proportions, as well as cross-validation and bootstrap methodologies to estimate the number of cell types and compute standard error estimates respectively.
+\citet{Erkkila2010} suggested a Bayesian method (\emph{DSection}) for the same problem, which incorporates uncertainty in the initial proportions using Dirichlet prior distributions on the proportions.
+The estimation is carried out by MCMC and Gibbs sampling.
+They showed that their method could correct noisy initial estimates of proportions to be more consistent with the observed expression data, and estimate standard errors that are less biased than those obtained by linear regression, making them more suitable for detecting cell-specific differential expression.
+
+\paragraph{From marker genes}
+Some genes, commonly called \emph{marker genes}, are known to be -- essentially -- expressed only in a given specific cell type/tissue.
+Very recently, a few methods have been proposed to estimate cell type proportions based on the expression of marker genes.
+\citet{Miller2011} proposed a variety of aggregation method, including one based
+on gene co-expression networks, to extract/compute a single representative measure
+from all marker gene expression profiles of each cell type, which is used as an estimate of proportions.
+\citet{Bolen2011} calculated enrichment scores \cite{Subramanian2005} of
+sets of marker genes in each individual sample expression profile, and used them
+as a proxy for cell type relative proportions, which was in turn used to predict
+the source of any given gene expression signature.
+
+\subsubsection{Complete deconvolution methods}
+
+\citet{Venet2001} pioneered the study of complete gene expression deconvolution, proposing an alternate nonnegative least-squares approach, using a heuristic to limit the correlations between the estimated cell type signatures.
+The same algorithm was subsequently used by \citet{Repsilber2010} and \citet{Lahdesmaki2005}, although not using the same type of constraints. 
+They applied their method to gene expression from normal and cancerous colon tissues, previously reported as being heterogeneous and containing varying proportions of muscle tissue \cite{Alon1999}.
+Using their method, they estimated a muscle tissue signature, whose corresponding proportion matched a muscle enrichment index that had been proved to correlate well with the samples' muscle content.
+
+\citet{Repsilber2010} proposed an Nonnegative Matrix Factorization (NMF) algorithm (\emph{deconf}) that corresponds exactly to \citeauthor{Venet2001}'s algorithm, dropping the correlation constraints.
+They evaluated their method using simulated data, in terms of power of detection of differential expression, sensibility to sample size and normalisation method, and proposed a strategy, based on random forest \cite{Breiman2001}, to apply the method as a classifier.
+In \cite{Gaujoux2011} we proposed another NMF algorithm, designed to estimate more meaningful signatures, which reflect prior knowledge of marker genes.
+\citet{Kuhn2011} used marker genes to first estimate a proxy for each cell type proportions 
+
+The formulation of gene expression deconvolution as in \cref{eq:deconf}, in addition to the physical nonnegativity constraints makes the NMF theoretical framework a natural choice for developing complete deconvolution algorithms.
+In fact, some authors did explicitly label their recent approach as NMF methods \cite{Repsilber2010,Gaujoux2011}.
+Even the algorithms proposed by \citeauthor{Venet2001} or \citeauthor{Lahdesmaki2005} are typical NMF algorithms, although not named as such, and use a classical alternate least-squares strategy.
+
+\subsection{Accuracy of deconvolution methods}
+
+The performance of computational deconvolution methods is generally assessed on datasets, for which the quantities to be determined, i.e. cell signatures or proportions, are known and used as a gold standard.
+These are typically data generated from titration experiments, where samples are artificial mixtures of pure cell types, or from experiments where physical separation has been performed for each sample.
+The comparison is commonly made in term of accuracy/precision (i.e. mean difference/variance) or Pearson correlation between the true and estimated quantities.
+We report here below the performances achieved by some of the deconvolution methods reviewed in the previous sections.  
+\\
+Using cell type signatures defined from pure samples, \citet{Abbas2009} achieved good accuracy (bias=2.4$\pm$1.4\%) and precision (s.d. 0.78$\pm$0.52\%) on a controlled mixture experiment of immune cell lines, and a mean bias of 1.3 \% when estimating the proportion of three T-cell subsets in PBMC samples.
+When applied to blood samples from SLE and healthy patients, their method a resonably good Pearson correlation of 0.5196 with measured CBC data, and could identify differences between cases and controls in the proportions of several immune subsets.
+The aggregated measures proposed by \citet{Miller2011} correlated well with actual proportions, when
+applied to both the controlled mixture experiment from \citet{Abbas2009} ($0.82\geq
+r \leq 0.99$), and real clinical blood samples from \citet{Grigoryev2010}, to a lower extend however ($0.4\geq
+r \leq 0.6$ in most cases).
+\citet{Bolen2011} applied their enrichment score approach to 161 PBMC samples collected from different studies, which showed relatively good correlations to proportions estimated using the partial deconvolution method from \citet{Abbas2009} ($0.65\geq
+r \leq 0.87$ for most cell types, but only $r=0.21$ for T-cells, which they attributed to the quality of the markers used for this particular cell type).
+We proposed ourselves a semi-supervised NMF approach \cite{Gaujoux2011}, which significantly improved Pearson correlations between true and estimated cell type proportions from about 0.5 to approximately 0.8, when compared to unsupervised NMF methods, using the controlled mixture dataset from \citet{Abbas2009}.
+Finally \citet{Kuhn2011}'s marker-based linear regression reconstructed cell-specific expression levels from a controlled mixture of pure brain cell expression profiles with Pearson correlations between 0.92-1.00.
+Moreover, they showed that using few markers is sufficient for computing an efficient proxy for cell proportions, from which moderate expression change can be detected, provided that sample-to-sample variations account for most of the total variance (compared to measurement noise).
+For instance, on simulated data, 5 markers were enough to detect a 1.5 log fold change, while using more markers increased power only marginally.
+
+\subsection{Benchmark gene expression datasets}
+
+For deconvolution algorithms to be developed, tested and validated, it is critical to be able to benchmark and compare their performances on real data.
+For this purpose, gene expression repositories such as the Gene Expression Omnibus (GEO) database \cite{Barrett2010} or ArrayExpress \cite{Parkinson2009} are extremely useful data sources.
+In the context of deconvolution, experiments that contain expression data from pure cell/tissue types, or from mixed samples with known controlled/measured mixture proportions are especially interesting.
+These provide robust ground truth references to calibrate and test deconvolution algorithms.
+As a matter of fact, several such datasets are publicly available, and have been used in this way in recent publications \cite{Shen-Orr2010,Erkkila2010,Gong2011,Miller2011,Gaujoux2011}.
+
+\subsubsection{The sample annotation issue}
+These datasets are stored in a standardised format, that can be can be conveniently accessed programmatically, e.g in R using the packages \citeBioCpkg{GEOquery} or \citeBioCpkg{ArrayExpress}.
+These packages can download datasets given their accession numbers in GEO and ArrayExpress respectively, and load them in a format that integrates well with other Bioconductor analysis routines.
+However, although being MIAME compliant \cite{Brazma2001}, associated sample phenotypic annotation data, such as experimental factors and in particular known cell proportions when available, are often encoded in annotation fields by the submitting users, with no fixed standard.
+ArrayExpress is more flexible than GEO with respect to the storage of such annotations, as multiple experimental factors and sample attributes are appropriately implemented in separate named data fields, with identified levels (i.e. the set of possible values for a given factor).
+Multiple sample annotations also have separate dedicated data fields in GEO, but
+these are generically named \emph{characteristics\_ch1}, \emph{characteristics\_ch1.1}, etc. and have no defined levels.
+The main issue however arises from the fact that annotations are often stored all into a single composite data field, possibly not even the appropriate one, e.g. in the fields normally dedicated to sample or source names. 
+Hence, even if the data structure exists, neither GEO nor ArrayExpress can automatically extract or infer all meaningful sample annotations from composite fields or fields other than the dedicated ones.
+\Cref{fig:sample_arrayexpress_pdata,fig:sample_geo_pdata} illustrate these issues for datasets \ArrayExpresshref{E-GEOD-19830}, \GEOhref{GSE19830} and \GEOhref{GSE5350}, where the cell proportions have to be extracted from composite data fields encoded in various different ways.
+
+Relevant phenotypic annotations are also frequently available as separate
+supplementary data, which can take a variety of more or less convenient formats
+(e.g. txt, csv, xls, doc, pdf files), possibly being ordered or identified with
+sample IDs in a different way than in the repository expression data.
+Other times the data is not directly available, but must be enquired of the authors.
+Overall, this means that these data are often not as straightforwardly usable as they could be, requiring some pre-processing in order to get, extract or split relevant phenotypic data into a more meaningful format.
+Researchers working with deconvolution methods would certainly benefit from easy access to suitably pre-formated benchmark datasets, which would alleviate pre-processing, and allow direct usage of data.
+
+\begin{figure}
+\includegraphics{E-GEOD-29832.png}
+\caption{Screenshot of the description page for dataset \emph{E-GEOD-29832} on ArrayExpress.
+Multiple sample attributes are correctly stored into separate data fields (blue frame), but mixture proportions are encoded into a single composite field (red highlighted text).
+}
+\label{fig:sample_arrayexpress_pdata}
+\end{figure}
+
+\begin{figure}
+<<GSE19830_pdata_fake, eval=FALSE>>=
+# Dataset: GSE19830 [Shen-Orr et al. (2010)]
+GSE19830 <- getGEO('GSE19830')[[1]]
+levels(GSE19830$characteristics_ch1)
+@
+<<GSE19830_pdata_load, echo=FALSE, cache=TRUE>>=
+local({
+	GSE19830 <- eset(gedData('GSE19830'))
+	levels(GSE19830$characteristics_ch1)
+})
+@
+
+\bigskip
+<<GSE5350_pdata_fake, eval=FALSE>>=
+# Dataset: GSE5350 (MACQ project) [HUMAN]
+GSE5350 <- getGEO('GSE5350')[[1]]
+# extract Affy Human dataset (i.e. GEO platform GPL570)
+i <- grep("GPL570", attr(GSE5350, "names"))
+GSE5350 <- GSE5350[[i]]
+# extract only mixture experiments
+GSE5350[, grep("^MAQC", GSE5350$source_name_ch1)]
+levels(droplevels(GSE5350$source_name_ch1))
+@
+<<GSE5350_pdata_load, echo=FALSE, cache=TRUE>>=
+local({
+	e <- eset(gedData('GSE5350'))
+	levels(head(e$source_name_ch1))
+})
+@
+\caption{Examples of encoded phenotypic data from GEO data fields \emph{characteristics\_ch1} or \emph{source\_name\_ch1} for datasets \code{GSE19830} and \code{GSE29832} respectively.
+Although the interesting data are present, the fields require pre-processing in order to extract the data of interest, the cell type proportions in this case.}
+\label{fig:sample_geo_pdata}
+\end{figure}
+
+\subsection{Cell/Tissue-specific quantitative signatures}
+\label{sec:ged_basis}
+Some partial gene expression deconvolution methods require the availability of a basis matrix, i.e. cell type-specific expression signatures.
+These are typically used within the standard linear regression framework, to estimate cell proportions in complex samples \cite{Lu2003,Wang2006a,Abbas2009,Gong2011}.
+Because there are usually much more probesets in the basis signatures than cell type proportions to estimate, these methods are potentially very robust and accurate.
+Even for the methods that do estimate the signatures \cite{Shen-Orr2010,Erkkila2010,Repsilber2010}, having reference basis signatures to compare with makes it possible to assign the estimated signatures and/or assess their meaningfulness.
+
+In many studies, the basis signatures are obtained from the complex samples themselves, by separating, purifying and assaying the constituting cell types of interest.
+However, one would ideally want signatures that are defined and optimised once for a given set of cell types, and may be used for partial deconvolution of expression data from other independent experiments, without the need for physical separation. 
+For this approach to be valid, such generic signatures must clearly be robust with regards to a variety of experimental factors.
+Moreover, an efficient probe identifier cross-platform conversion pipeline should be designed, so that gene expression data generated on a given platform can be deconvolved using signatures defined on another.  
+
+\subsubsection{The delicate choice of basis signatures}
+
+When defining signatures for murine mammary gland development stages, \citet{Wang2006a} left aside cell type specific genes that were highly regulated, as their expression could prove to be too sensitive to variations in biological conditions, and hamper the deconvolution accuracy.
+They first selected tissue type specific probesets using a combination of pairwise comparisons between all tissues (based on $t$-tests) and step-wise discriminant analysis, and computed the mean expression within each tissue, for each time point in their time-course experiment.
+Probesets whose expression did not correlate well with their associated tissue mean expression (Pearson correlation coefficient less than 0.5), were then removed from the signatures.
+
+<<loadAbbas, echo=FALSE>>=
+data(Abbas)
+@
+
+In order to design an efficient basis matrix for whole blood deconvolution, \citet{Abbas2009} considered the correlations between signatures and their collective ability to accurately deconvolve global gene expression. 
+\citet{Abbas2005} compiled microarray gene expression data for six key human immune cell types and their activated and differentiated states.
+They used these data to create the curated database Immune Response In Silico (IRIS) \footurl{http://share.gene.com/clark.iris.2004/iris/iris.html}, that is composed of genes selected for their specific expression in immune cells.
+Based on the same expression data, \citet{Abbas2009} developed a partial deconvolution method for estimating the proportions of \Sexpr{ncol(Abbas)} immune cell-types from microarray expression data from real blood samples, using only an optimised subset of genes.
+They observed that the accuracy of the proportion estimates was closely correlated with the condition number of the basis matrix: the lower the condition number the better the goodness of fit, suggesting its use as a predictive measure of the deconvolution power of a given set of signatures (see \cref{sec:ged_discussion}).
+After selecting and ranking the probesets according to their cell type specificity (using a $t$-test approach), they built a sequence of basis matrices, by including an increasing number of top probesets, and chose the one with the minimum condition number (\Sexpr{nrow(Abbas)} probesets).
+
+The deconvolution basis matrix designed by \citet{Abbas2009} proved to perform well on real clinical data.
+When used to deconvolve white blood cell samples from a cohort of 72 SLE and 45 healthy patients, the computed proportions of Lymphocytes, Monocytes and Neutrophils showed an average Pearson coefficient of 0.5196 with the corresponding measured abundance by CBC \cite{Abbas2009}.
+Using the same set of signatures on whole-blood samples from 28 Multiple Sclerosis (MS) patients and 10 healthy donors, \citet{Gong2011} achieved Pearson correlation coefficients of 0.85, 0.62 and 0.61 for each of these cell types respectively.
+Although the optimisation technique used in this case was different from the one used by \citet{Abbas2009}, it still fundamentally relies on the robustness of the set of basis signatures.
+Having such data integrated with appropriate partial deconvolution methods, would therefore enable the quick and detailed deconvolution of blood gene expression data.
+
+\subsection{Marker gene lists}
+
+To be applicable, some complete deconvolution methods requires a list of marker genes, known to be specifically expressed in different cell types or tissues.
+They used these marker genes \emph{a posteriori} to map the estimated signatures to known cell types \cite{Repsilber2010} or as prior knowledge to enforce expression patterns on \emph{de facto} assigned signatures, as in the semi-supervised method proposed in \citet{Gaujoux2011}.
+Known cell/tissue marker lists may also be used in classical enrichment analysis to assess, the pertinence or biological significance of given expression profiles.
+\citet{Bolen2011} used PBMC subset-specific genes for predicting the most likely cellular source of a predefined gene list from global PBMC expression data.
+The query gene list would typically consist of a disease gene signature, as generated by gene expression differential analysis of case vs. control patients in infectious disease studies.
+Using GSEA \cite{Subramanian2005}, they computed, for each sample, the enrichment score of the query gene list and each cell subset-specific gene set -- sorted by expression values.
+The cellular source of the disease signature was predicted to be the cell subset whose scores are the most correlated with the scores obtained for the query list.
+Finally, as already mentionned, \citet{Kuhn2011} used maker genes to directly estimate cell proportions, in a pre-step of their linear regression approach.
+
+\subsubsection{Public databases}
+A number of databases have been explicitly designed to provide cell/tissue specific gene level information, in a tissue-centred manner.
+We mentioned above the IRIS database, that focuses on immune cell types, providing marker genes\footnote{More precisely Affymetrix probesets} for B cells, dendritic cells, monocytes, neutrophils, Natural Killer (NK) cells and T cells, as well as for the lymphoid and myeloid lineages, and the general category of all these immune cells.
+TiGER \cite{Liu2008} stores tissue-specific expression profiles for UniGene clusters in 30 human tissues based on UniGene EST database \cite{Boguski1993}, with a focus on Transcription Factor (TF) interaction and cis-regulatory modules.
+TissueDistributionDB\footurl{http://genius.embnet.dkfz-heidelberg.de/menu/tissue_db} \cite{Kogenaru2009} is a repository of tissue-distribution profiles for 20 model organisms. 
+It combines tissue expression profiles from UniGene with the \emph{Tissue Ontology} available from BRENDA\footnote{\url{http://www.brenda-enzymes.org/} (Organism-related information $>$ Source Tissue)} \cite{Gremse2011}, to standardise tissue information and compute tissue specificity measures for each gene at four different anatomical levels of the ontology, from the more general (e.g. hematopoietic system) to the more specific localisation (e.g. blood platelet).
+TiSGeD\footurl{http://bioinf.xmu.edu.cn/databases/TiSGeD} \cite{Xiao2010} provides information on tissue-specific genes, compiled from multiple public microarray datasets (over 123 000 expression profiles from 107 human tissues, 67 mouse tissues and 30 rat tissues), and notably links to relevant literature.
+C-It\footurl{http://c-it.mpi-bn.mpg.de} \cite{Gellert2010} is a database of tissue-enriched genes from human, mouse, rat, chicken and zebrafish.
+Its specific objective is to integrate tissue information from UniGene from multiple organisms, together with microarray and SAGE data, as well as using specific methods for handling alternative splicing from exon array data. 
+The aim is to provide a more comprehensive view of transcriptional profiles, and reduce the number of false positive, given that evolutionary conservation of tissue specificity provides greater confidence.
+Although its main focus is on identifying uncharacterised genes, well characterised genes may be retrieved using loose filtering criteria on the number of associated publications and Medical Subject Headings (MeSH) terms.
+Finally, VeryGene\footurl{http://www.verygene.com} \cite{Yang2011} is a database for the annotation of human tissue-specific genes, with a primary focus on integration with disease association and drug targets.
+At the time of writing, it contains entries for 3960 genes covering 128 normal tissue/cell types compiled from the expression profiling of two large microarray datasets (around 4,000 samples combined) \cite{Su2004b,Liang2006}.
+
+The heterogeneity in format, accessibility and biological identifiers across these databases limits the potential of their data.
+Programmatic access to their complete data, together with a common data structure, would make their integration and use with different gene expression datasets easier, whether it is for gene expression deconvolution or enrichment analysis.
+
+\subsection{Availability of deconvolution algorithms}
+
+Gene expression deconvolution receives constant interest in bioinformatics research, and new methodologies are regularly published.
+We reviewed in \cref{sec:intro_gedmethods} the different deconvolution methods of which we are aware.
+Methods and algorithms related to gene expression deconvolution are often developed in \proglang{R}, and sometimes available as \proglang{R} packages, under relatively liberal license terms.
+From the point of view of access to the algorithms and free open-source software development, this is actually not too bad a situation. 
+
+\citet{Abbas2009} briefly described the main \proglang{R} functions they used in the implementation of their partial deconvolution approach.     
+The \emph{csSAM} algorithm\footurl{http://buttelab.stanford.edu/public:data} from \citet{Shen-Orr2010} and the semi-supervised approach\footurl{http://web.cbio.uct.ac.za/~renaud/paper/meegid-deconvolution} from \citet{Gaujoux2011} are available as \proglang{R} packages, although not on CRAN.
+The univariate strategy for predicting cell type abundances based on a single representative measurement of \citet{Miller2011} is available as part of the \CRANpkg{WGCNA} \cite{Langfelder2008}.  
+The cell subset prediction algorithm from \citet{Bolen2011} based on the Gene Set Enrichment Analysis (GSEA) algorithm \cite{Subramanian2005} is implemented via a web interface, that uses \proglang{R} to run the analysis at the backend.
+The \emph{DSection} algorithm and the quadratic programming approach from \citet{Gong2011}, however, are implemented in \matlab, with the complete code directly available for \emph{DSection} only.
+
+Given the variety of methods and implementations (i.e. of user interfaces), a standardised and unified interface for running easily a variety of deconvolution methods, in most common data settings, would be very useful.
+This would help popularise computational deconvolution, an inexpensive technique that can provide insights into underlying biological processes, at the cell type level.
+
+\medskip
+In order to facilitate the application and development of gene expression deconvolution methods, we developed an \proglang{R} package called \pkgname{CellMix}, the principal objectives of which are to provide 
+\begin{inparaenum}[\itshape a\upshape)]
+\item easy access to real benchmark data, and especially marker gene lists;
+\item implementations of some common methods;
+\item utilities for assessing results and developing new methods. 
+\end{inparaenum}
+
+\section{Results}
+
+The \Rpkg{CellMix} builds upon Bioconductor \cite{Gentleman2004} and the \Rpkg{NMF} \cite{Gaujoux2010}, to provide a flexible general framework for gene expression deconvolution methods.
+It aims at alleviating the challenges reviewed in the introduction of this vignette, by defining a rich programming interface around three internal extensible registries dedicated to benchmark datasets, marker gene lists and deconvolution methods respectively.
+This section describes the main features of the \Rpkg{CellMix}, and illustrates its capability with some concrete examples.
+More technical details on the implementation itself can be found in \cref{sec:ged_methods}.
+
+\subsection{Benchmark expression data}
+
+We designed a small internal repository of \Sexpr{length(gedData())} datasets compiled from a variety of published studies on cell/tissue specific gene expression or deconvolution methods.
+We typically looked for data that contain cell type specific signatures or samples with mixture proportions, and ideally both.
+We selected in particular data that have been used by -- multiple -- authors for validating deconvolution approaches, such as datasets \GEOhref{GSE11058} and \GEOhref{GSE19830} from \citet{Abbas2009} and \citet{Shen-Orr2010} respectively, also used by \citet{Miller2011,Gong2011,Gaujoux2011}.
+
+\Cref{tab:GEDdata} summarises the list of selected datasets together with some of their characteristics (size, number of cell/tissue type).
+Columns \emph{Basis} and \emph{Coef} indicate with a \checkmark which compositional data is available for each dataset -- a ``\emph{-}'' meaning that the data is not available in the registry.
+Since the datasets are already stored and available on public repositories, it would be inefficient to duplicate the data storage itself.
+Hence for each dataset, we defined a set of functions that together compose a pre-processing pipeline, that is applied to the original -- normalised -- data as available in public repositories.
+The pipeline combines the global expression data and, when available, its constituting cell type specific signatures and proportions, into a single data object (see \cref{sec:ged_methods_data}).
+These data objects are directly usable for benchmarking deconvolution methods, and implement the standard interfaces defined by the Bioconductor \BioCpkg{Biobase} and the \Rpkg{NMF}.
+
+For a given dataset, the complete pipeline can be performed in a single call, as illustrated in \cref{fig:ExpressionMix}, which shows sample code for loading dataset \emph{GSE11058}.
+When loaded for the first time, the data is downloaded from GEO, and stored locally, allowing for faster subsequent access, i.e. in a different R sessions.
+Moreover, sample annotations are directly accessible, dedicated methods enable to extract expression data for pure or mixed samples only, or access the known mixture proportion or cell type signatures when available.   
+
+\begin{figure}[hbtp]
+<<ExpressionMix_sample, cache=TRUE>>=
+## load data
+emix <- ExpressionMix('GSE11058')
+
+## get relevant sample annotation
+# cell type
+emix$Type
+# cell type of origin
+emix$CType
+
+## get the reference mixing proportions
+coef(emix)[, c(1,4,7,13:15)]
+## get the reference cell-type specific signatures
+head(basis(emix), 3)
+@
+\caption{Sample code for loading gene expression deconvolution datasets.
+The loaded data object combines both the global gene expression and composition data.
+It also contains relevant sample annotations, extracted from the original composite annotation sources.}
+\label{fig:ExpressionMix}
+\end{figure}
+
+\subsection{Whole blood deconvolution}
+\label{sec:ged_blood}
+
+The \Rpkg{CellMix} includes the deconvolution basis matrix from \citet{Abbas2009}, and provides a dedicated interface function (\code{gedBlood}) to easily estimate the proportions of 17 immune cell types from whole blood or white blood cell gene expression data.
+The interface also facilitates the aggregation of these detailed proportions into proportions of the more general cell type categories lymphocytes, monocytes, neutrophils.
+These aggregated proportions may be assessed by comparing them with actual CBC data when available, as it frequently is the case in recent clinical studies.
+\Cref{fig:ged_blood} shows sample code that illustrates how such proportions can be estimated straightforwardly for dataset \GEOhref{GSE20300}, which contains gene expression data of whole blood samples from stable and acute rejection pediatric kidney transplant, for which CBC data are available.
+These data where used by \citet{Shen-Orr2010} to illustrate the use of the \emph{csSAM} algorithm, and to identify differential expression between the two clinical groups of samples at the cell type level, by deconvolving their global gene expression based on the measured CBC proportions.
+We use it here the other way round, since we estimate proportions from independently defined cell-specific signatures.
+Because this dataset is included in \pkgname{CellMix} internal data registry, the CBC data are readily accessible and used transparently by the different specialised functions.
+
+By default, the proportions are estimated using the standard linear regression
+approach from \citet{Abbas2009}.
+Alternative estimation methods such as the quadratic programming approach from
+\citet{Gong2011} may also be used (see \cref{sec:ged_methods_algo}).
+Moreover, the signatures are log-transformed -- if the global expression is itself in log-scale -- and quantile-normalised together with the global expression data prior to estimation \cite{Bolstad2003}.
+Our experiments show that these pre-processing steps affect the accuracy and
+or correlation of the estimations as shown in
+\cref{fig:ged_blood_normalisation}, suggesting that scaling discrepancies must be taken into account in this kind of analysis.
+
+The scatter plot shows that the estimated proportions are remarkably well
+correlated with the actual measured proportions, to a lower extent for monocytes.
+These results are within the range of correlations reported by other authors using the same set of signatures on different datasets \cite{Abbas2009,Gong2011}, but achieve better separate correlations, probably due to the joint normalisation of the signatures and the target matrix.
+To our knowledge, this is the first time these data have been used in this way.
+The ease with which the results above are generated highlights the usefulness of the \Rpkg{CellMix}.
+
+\begin{figure}[hbtp]
+\small
+<<ged_blood, eval=-8, echo=TRUE, cache=TRUE, fig.keep='none'>>=
+# load data
+e <- ExpressionMix('GSE20300')
+# compute proportions (show processing) 
+res <- gedBlood(e, verbose=TRUE)
+# aggregate into CBC
+cbc <- asCBC(res)
+# plot against actual CBC
+profplot(e, cbc)
+@
+\centering
+<<ged_blood_plot, echo=FALSE, out.width="0.5\\textwidth">>=
+mar <- par('mar')
+mar[3] <- 1
+par(mar=mar)
+profplot(e, cbc, ylim=c(0,1), xlim=c(0,1)
+, main='', xlab="Actual CBC proportions", ylab='Computed proportions')
+@
+\caption{Computed proportions vs. Actual CBC proportions of lymphocytes, monocytes and neutrophils for dataset \emph{GSE20300}.
+The deconvolution is performed using the \code{qprog} algorithm in combination with the basis signature matrix from \citet{Abbas2009}.
+Computed proportions are obtained from the aggregation of proportions of the detailed subset of immune cells into their respective category.
+First diagonal is shown as a reference for perfect agreement.}
+\label{fig:ged_blood}
+\end{figure}
+
+\pagebreak
+\subsection{Marker gene lists}
+
+<<GEDmarker, echo=FALSE>>=
+n_GEDmarkers <- length(cellMarkers())
+@
+
+The \Rpkg{CellMix} includes \Sexpr{n_GEDmarkers} lists of marker probesets defined from public tissue-centred databases, as well as from three gene expression microarray studies of PBMC samples.
+These latter lists are valuable resources for the deconvolution of clinical human blood samples.
+They include the refined subset of immune genes that compose the basis
+deconvolution matrix from \citet{Abbas2009}, data from \citet{Palmer2006}, who
+defined markers for B-cells, CD4+ T-cells, CD8+ T-cells, lymphocytes and
+granulocytes using cDNA microarrays from purified cells, and data from
+\href{http://www.t1dbase.org/page/HaemAtlasView}{HaemAtlas}
+as generated by \citet{Watkins2009}, who more recently defined markers for CD4+
+T-cells and CD8+ T-cells, lymphocytes, CD14+ monocytes, CD19+ B-cells, CD56+ NK cells, and CD66b+ granulocytes, as well as for Erythroblasts (EBs) and Megakaryocytes (MKs), using Illumina BeadChip arrays.
+
+Similarly to the benchmark expression data, the marker lists are organised in an internal registry, that facilitates their management and the addition of new lists, as they become publicly available.
+For completeness and reproducibility, all the functions used to generate them from their respective original data files also available and documented in the package.
+Beside the markers' information itself (i.e. identifiers and possibly specificity scores), the registry contains important auxiliary data, such as the relevant annotation package that is required in practice for some marker lists to be used in combination with expression data, generated on different platforms (see example below).
+We also defined a specific data structure that provides a rich interface to create and manipulate these data in a convenient way, well integrated with R and Bioconductor standards.
+\Cref{tab:GEDmarkers} summarises the marker lists currently available in the \Rpkg{CellMix} along with their respective auxiliary data.
+
+\subsubsection{Specificity scores}
+Marker lists are stored as complete as possible, and each marker is associated with a specificity score (e.g. percentage expression, sparseness) when such value is available or can be computed.
+We designed the registry interface to make it possible to filter the lists based on these scores when retrieving the data from the registry, the default being to use some stringent threshold.
+\Cref{lst:ged_load_markers} shows sample code that illustrates how maker lists are loaded from the registry, and display the summary view of the returned data structure.
+The marker list shown was defined by \citet{Palmer2006}, for which the
+specificity scores (0.953208, 0.950334, etc.) corresponds to the correlations of each marker's expression profile with the theoretical relative abundance profile of their assigned cell type as provided by \citeauthor{Palmer2006}.
+
+\begin{figure}
+<<load_markers>>=
+m <- MarkerList('Palmer')
+summary(m)
+@
+\caption{Sample code for loading a marker gene list from the internal registry.}
+\label{lst:ged_load_markers}
+\end{figure}
+
+The list of markers derived from the \code{Abbas} dataset provides another example of specificity score, that we defined as the sparseness each marker's expression profile, as defined by \citet{Hoyer2004}:
+$$
+\mbox{sparseness}(x) = \frac{\sqrt{n} - \frac{\sum \|x_i\|}{\sqrt{\sum x_i^2}}}{\sqrt{n} - 1},
+$$
+for any vector $x$ in $\mathbb{R}^n$, i.e., here the vector of expression values of a given marker across all samples.
+
+The default is to extract only the probesets whose sparseness is greater than 0.8, which filters out probesets that are expressed by multiple cell types, but the complete list may be retrieved using a null sparseness threshold.
+The bar chart in \cref{fig:mAbbas_sparseness} illustrates the effect of this filtering step, by showing the expression profiles of six probesets across the immune cell samples from this dataset, chosen from both ends of the complete sparseness spectrum.
+The bars are coloured from dark red to dark blue by decreasing sparseness, shown in parenthesis in the legend.
+Probesets with low sparseness values (blue) are expressed relatively uniformly over almost all the cell types, while those with high sparseness values (red) are highly specific, in this case all to neutrophils.
+As a result, by default, the red probesets would be included in the marker list, while the blue would be excluded.
+
+\begin{figure}
+<<mAbbas_sparseness, echo=FALSE, fig.width=10>>=
+local({
+# load the Abbas dataset
+data(Abbas, envir=environment())
+# load the marker list derived from the Abbas dataset 
+m <- cellMarkers('Abbas', sparsity=0, id='SYMBOL')
+
+# select the 3 least/most sparse markers
+s <- sort(unlist2(m), decreasing=TRUE)
+s <- c(head(s, 3), tail(s, 3))
+pid <- names(s)
+
+# make legend
+f <- fData(Abbas)
+leg <- paste(pid, ' - ', f[pid,'SYMBOL'], ' (', round(s,2),')', sep='')
+
+# plot with divergent colors
+library(colorspace)
+cols <- rev(diverge_hcl(length(pid)+1)[-length(pid)/2-1])
+par(mar=c(7,6,1,1))
+barplot(exprs(Abbas[pid,]), las=2, beside=TRUE, col=cols, cex.names=0.9)
+title(ylab="Marker expression values", line=4)
+title(xlab="Immune cell types", line=5)
+legend('topleft', legend=leg, fill=cols, cex=0.9, inset=0.1, ncol=2)
+})
+@
+\caption{Expression profiles of six probesets with low/high sparseness from the \code{Abbas} dataset.
+Bars are coloured according to the sparseness value: shades of red (resp. blue) for high (resp. low) sparseness.
+Numbers in parenthesis show the sparseness values of each probeset.
+}
+\label{fig:mAbbas_sparseness}
+\end{figure}
+
+\begin{sidewaystable}
+\small
+\subfloat[]{%
+\begin{tabular}{rm{7cm}lllccccll}
+\hline
+<<GEDdata_table, echo=FALSE, results='asis'>>=
+print(xtable(gedDataInfo(FALSE), citet=TRUE), floating=FALSE, only.contents=TRUE
+		, sanitize.text.function=xsanitize("\\{}"))
+@
+\end{tabular}
+\label{tab:GEDdata}
+}
+\\
+\subfloat[]{%
+\begin{tabular}{rm{7cm}llllll}
+\hline
+<<GEDmarkers_table, echo=FALSE, results='asis'>>=
+print(xtable(cellMarkersInfo(FALSE), citet=TRUE), floating=FALSE, only.contents=TRUE
+	, sanitize.text.function=xsanitize("\\{}"))
+@
+\end{tabular}
+\label{tab:GEDmarkers}
+}
+\caption{Data available in the \Rpkg{CellMix}: 
+\protect\subref{tab:GEDdata} Benchmark and signature expression data, \protect\subref{tab:GEDmarkers} lists of tissue-specific marker genes/probesets.}
+\label{tab:GED_data_markers}
+\end{sidewaystable}
+
+\subsubsection{Using marker lists across platforms}
+
+In practice, gene expression data can be generated in multiple ways, using different technologies (e.g. microarrays, next generation sequencing) provided by different manufacturers (e.g. Affymetrix, Illumina, Roche).
+When working with microarray data in particular, one has to face the well known issue of probe annotation, which becomes all the more critical if one wants to integrate data from multiple platforms \cite{Draghici2006a,Mecham2004,Carter2005}.
+This issue is relevant in the context of deconvolution, as the global or tissue/cell specific expression data with which the marker gene lists are to be used may come from a different source, e.g. markers provided as UniGene or Affymetrix IDs with data generated on an Illumina chip.
+One may also want to compare marker lists generated for different organisms (hence different platforms), which would provide insights into the conservation of tissue/cell specific expression patterns or help build more refined and robust marker lists.
+
+The marker lists available in the \Rpkg{CellMix} were generated from diverse microarray datasets and/or the UniGene EST database.
+In order to keep as much information as possible from the original data source, the markers are stored using their original identifiers, which can be manufacturer probeset ids (e.g. '123456\_at', 'ILMN\_123456'), UniGene ids (e.g. 'Hs.123456', 'Rn.123456'), Entrez ids ( e.g. '123456') or gene symbols (e.g. 'FREB').
+Working with such an heterogeneous set of identifiers can be very tedious, particularly due to the lack of any definite one-to-one relationship between them.
+Consequently many online tools have been developed for mapping and converting ids between the different systems of keys \cite{Allen2011,Bussey2003,Diehn2003,Alibes2007}.
+We developed a flexible interface to run a pipeline based on Entrez ids and Bioconductor annotation packages \cite{Gentleman2004,Rpackage:annotate}, that converts marker gene lists -- and more generally biological/manufacturer identifier lists -- between different types of ids.
+This greatly facilitates the usage of maker lists across multiple microarray platforms or organisms.
+As starting point, we employed a relatively simple mapping strategy, which only allowed for retrieving either all matching probes or only the first one, including a slightly improved heuristic for Affymetrix probeset identifiers, whose format contains some information on the probeset specificity (e.g. '*\_s\_at' IDs designate probesets that share common probes among multiple transcripts from different genes).   
+However, we will look in the future at integrating more complex and robust mapping strategies, such as using BLAST alignment based annotations or consensus annotation \cite{Allen2011}, and investigate data-driven approaches, with the objective of optimising marker gene lists for use with a particular dataset (see \cref{sec:ged_discussion}).
+
+\paragraph{\underline{Example: from Illumina to Affymetrix}}
+
+We illustrate in the following the use of our conversion pipeline.
+For instance, suppose one has a marker list such as the ones from HaemAtlas
+\cite{Watkins2009}, whose original identifiers are probe IDs from the Illumina HumanWG6v2 chip, and wants to use it with data generated on an Affymetrix HG U133 Plus 2.0, such as the dataset \GEOurl{GSE11058} \cite{Abbas2009}.
+This dataset contains gene expression measurements for 4 cell lines of immune origin (Jurkat from T cells, Raji and IM-9 from B cells, and THP-1 from monocyte cells), that were hybridised either alone or in mixtures of known proportions.
+\Cref{lst:markers_convert} shows how this conversion can be carried out using the \Rpkg{CellMix}, in the same time illustrating usage of the registry for expression data and marker lists.
+We show in \cref{lst:markers_convert_verbose} the same example with verbose output, which provides more details on what happens during the mapping process.
+
+\begin{figure}
+\small
+<<markers_usecase, cache=TRUE>>=
+## PRELIMINARY: load data from the internal registries
+# load HaemAtlas markers 
+m <- MarkerList('HaemAtlas')
+summary(m)
+# load the data using its key
+# NB: require Internet access on first usage)
+e <- ExpressionMix('GSE11058')
+# probes are not from the same platform
+annotation(e)
+##
+
+# convert Illumina to the IDs used in the expression data (HGU133plus2)
+# -> this looks for a single match per probe, dropping non-primary affy probes
+m_affy <- convertIDs(m, e)
+summary(m_affy)
+@
+\caption{Sample code for converting the HaemAtlas marker list defined by
+\citet{Watkins2009}, from Illumina HumanWG6v2 probe identifiers to Affymetrix HG U133 Plus 2.0 probeset ids.
+This code also illustrates the usage of the internal registries for expression data and marker lists.}
+\label{lst:markers_convert}
+\end{figure}
+
+After conversion the marker list is indexed with Affymetrix IDs that match row names in the expression matrix, and may be used to access the markers' expression values, or in combination with some of the visualisation utilities included in the package.
+For example, \cref{fig:Wmarkers_contents} shows bar charts of the content of both the original (Illumina IDs) and converted (Affymetrix IDs) lists, in term of number of markers per cell type.
+The \proglang{R} code that generates the plots is also shown\footnote{For clarity purposes, some aesthetic processing is not shown in the code, e.g. setting graphical parameters \code{las=2, cex.axis=0.7}.}.
+Due to differences in the platform designs, it is expected that some of the probes cannot be uniquely matched, hence the smaller number of probes available for each cell type after conversion. 
+
+\begin{figure}[h]
+<<Wmarkers_contents_plot, fig.width=11, echo=8:9>>=
+mar <- par('mar')
+mar[3] <- 1
+par(cex.axis=0.7, las=2, mfrow=c(1,2), mar=mar)
+i <- grep("^T-", names(m), invert=TRUE)
+names(m)[i] <- sub("-.*$", "", names(m)[i])
+names(m_affy) <- names(m)
+#
+bp <- barplot(m, main=annotation(m))
+barplot(m_affy, ylim=bp$ylim, main=annotation(m_affy))
+@
+\caption{Number of markers for each cell type in the original HaemAtlas marker
+list from \citet{Watkins2009} that uses Illumina HumanWG6v2 probe IDs (left panel) and in the list converted to match probesets on Affymetrix HGU 133 Plus 2.0 (right panel).}
+\label{fig:Wmarkers_contents}
+\end{figure}
+
+\subsubsection{Assessing marker expressions in pure samples}
+
+Given the range of possible technical and biological variation between experiments, marker genes from a given list may show inconsistent or less cell type specific expression patterns on an independent dataset.
+When the considered dataset contains expression values from pure cell types, for which markers are present in the list, one may qualitatively evaluate their consistency with their respective markers, by visualising the expression profiles of these.
+We illustrate this assessment method using the same dataset and the same marker
+list as in the previous section, that is, respectively, the \GEOurl{GSE11058}
+dataset from \citet{Abbas2009}, in which the pure samples are from transformed
+cell lines from immune origin, and the list of markers from HaemAtlas \cite{Watkins2009}, which contains markers for a variety of blood cell types (T cells, B cells, Monocytes, etc.).
+Importantly, these markers were defined completely independently from the cell line dataset.
+Looking at the markers' expression across these samples, provides insight on how similar the cell lines are to their cell type of origin, and vice-versa.
+
+\cref{fig:Wmarkers_barplot}, shows for each cell type in HaemAtlas, the average expression values of the 50 most uniformly highly expressed markers in each cell line.
+More precisely, each marker is first attributed a measure of uniform expression, computed as the maximum of its minimum expression within each cell line, and then ordered decreasingly according to this value, within its respective cell type in the marker list.
+The \Rpkg{CellMix} makes these computations very easy, via the \code{reorder} function which implements by default this maximin score, and allows for custom scoring schema.
+The specialised subsetting operator \code{[]} defined for the marker list data structure, enables the 50 top scoring markers to be extracted separately for each cell type.
+Besides, because the dataset was retrieved from the internal registry which stored information about which sample is pure, the expression data for the pure samples only are readily extracted using the function \code{pureSamples}.
+
+The expression patterns in \cref{fig:Wmarkers_barplot} are very different from what would be expected given the cell type of origin of each cell line.
+Expression values for the complete list of markers, ordered in the same way, show similar patterns (\cref{fig:Wmarkers_barplot_ALL}).
+Erythroblast, Granulocyte and Megakaryocyte markers (yellow and greens) appear to be highly expressed at similar levels by all cell lines, with THP-1 cells -- which are from monocytes -- expressing Granulocyte markers at a relatively higher level.
+This is surprising since Erythroblast and Megakaryocyte are precursor cells for red blood cells and platelets respectively, which are completely different lineages from monocytes and lymphocytes.
+In terms of hematopoiesis, monocytes are closer to Granulocytes than B cells and T cells, but are still very distinct cell types (cf. the hematopoietic tree \cref{fig:hematopoietic} in \cref{sec:hemato}).
+In any case, the main concern here comes from the fact that \citet{Watkins2009} originally selected these markers for their ability to distinguish between all these cell types.
+Consequently, one would expect each cell line to express only the markers from their cell type of origin.
+This discrepancy could be explained by the fact that the cell lines Raji, Jurkat, THP-1 and IM-9 were originally cloned from cancer immune cells \cite{Tsuchiya1980,Epstein1966,Schneider1977,Fahey1971}, and are therefore not quite equivalent to primary immune cells, especially in terms of gene expression.
+Plots such as the bar chart in \cref{fig:Wmarkers_barplot} provide a way to visually assess how much they differ in reality, through the prism of known marker genes.
+
+This more generally raises a potential caveat of
+using marker genes for the analysis of gene expression in -- heterogeneous -- diseases.
+Indeed, the disease under study might well affect the expression of the
+\emph{a priori} chosen marker genes, possibly non uniformly across
+samples, even within disease groups due to unknown or unannotated disease
+subtypes.
+Clearly, including in the sets of markers genes whose expression is not
+cell type-specific in the particular conditions would jeopardise the estimation
+and identification of signatures and proportions.
+It is therefore important to -- be able to -- assess the discriminating power of
+a given list of genes in the context of the data to be deconvolve (see
+\cref{sec:ged_discussion}).
+
+As a control step, we plotted in \cref{fig:Wmarkers_barplot_Abbas} the expression values of markers from the same list in the basis signatures from \citet{Abbas2009}.
+We recall from \cref{sec:ged_blood}, that these signatures were defined by \citeauthor{Abbas2009} to represent the cell-specific gene expression of 6 immune cell types, in different activation states (e.g. helper T cells (Th), activated helper T cells (Th act)), optimised for performing accurate detailed deconvolution of blood samples.
+Importantly again, these signatures were defined from microarray gene expression
+data, completely independently from the marker genes in HaemAtlas.
+This time, the expression patterns are mainly as expected, with the exception of one Natural killer cell (NK) marker expressed by the cytotoxique T cell signature, and few Granulocyte markers expressed in the monocyte signatures.
+This increases confidence in both the considered marker gene list and signatures.
+
+\begin{figure}[h]
+\small
+<<Wmarkers_barplot, include=FALSE>>=
+# extract the pure samples only: Jurkat, Raji, IM-9, THP-1
+pure <- pureSamples(e)
+# reorder the markers by max-min score
+mo <- reorder(m_affy, pure, by=pure$Type)
+# plot mean expression of top 50 markers for each cell line
+avg <- rowMeansBy(pure, paste(pure$CType, pure$Type, sep=' - '))
+barplot(mo[,1:50], avg)
+@
+<<Wmarkers_barplot_plot, fig.width=10, echo=FALSE>>=
+mar <- par('mar')
+mar[3] <- 1
+par(mar=mar)
+barplot(mo[,1:50], avg, legend='topright')
+# save for appendix with explicit names
+Wmarkers <- mo; Wmarker_AVG <- avg
+@
+\caption{Expression values of the 50 genes of each cell type in HaemAtlas \cite{Watkins2009}, that are the most uniformly highly expressed in each immune cell line from dataset \code{GSE11058}.}
+\label{fig:Wmarkers_barplot}
+\end{figure}
+
+\begin{figure}[h!tbp]
+<<Wmarkers_Abbas_barplot, fig.width=10, echo=c(1:2, 4:5)>>=
+# convert Illumnina marker ids to match Abbas feature id type
+ma <- convertIDs(m, Abbas, method='all')
+par(mar=c(7,6,1,1))
+# plot markers expression values in Abbas dataset
+barplot(ma, Abbas, las=2, ylab='')
+title(ylab="Marker expression values", line=4)
+title(xlab="Immune cell types", line=5)
+@
+\caption{Expression values of the HaemAtlas marker genes \cite{Watkins2009} in
+the basis signature matrix from \citet{Abbas2009}.
+The bar chart shows the expression values for the \Sexpr{nmark(ma)} probesets in the basis matrix that could be mapped by Entrez ID to markers from the list.
+}
+\label{fig:Wmarkers_barplot_Abbas}
+\end{figure}
+
+\begin{figure}[h!tbp]
+<<markermaps, eval=FALSE>>=
+basismarkermap(mo[,1:50], avg, Rowv=NA)
+basismarkermap(ma, Abbas, Rowv=NA)
+@
+\subfloat[Cell lines from GSE11058]{%
+\label{fig:markermap_cellline}
+<<markermap_cellline, echo=FALSE, out.width="0.45\\textwidth">>=
+basismarkermap(mo[,1:50], avg, Rowv=NA)
+@
+}%
+\subfloat[Signatures from Abbas et al. (2009)]{%
+\label{fig:markermap_abbas}
+<<markermap_abbas, echo=FALSE, out.width="0.45\\textwidth">>=
+basismarkermap(ma, Abbas, Rowv=NA)
+@
+}%
+\caption{Heatmap of expression values of the HaemAtlas marker genes in cell lines from \code{GSE11058} and the basis signature matrix from \citet{Abbas2009}.
+\protect\subref{fig:markermap_cellline} shows the average expression values for 50 marker genes, as computed in \cref{fig:Wmarkers_barplot}.
+\protect\subref{fig:markermap_abbas} shows the expression values of all markers in each cell type included in the immune signatures.
+}
+\label{fig:markermap}
+\end{figure}
+
+\subsection{Deconvolution methods}
+
+The \Rpkg{CellMix} provides access to a range of gene expression deconvolution methods, in such a way that they can easily be applied on commonly available data.
+Combined with the framework developed for benchmark expression data and marker gene lists, this facilitates the comparison and development of methodologies.
+
+Amongst the methods we reviewed in \cref{sec:intro_gedmethods}, we included the quadratic programming method from \citet{Gong2011}, the \emph{csSAM} least-squares algorithm from \citet{Shen-Orr2010}, the Bayesian algorithm \emph{DSection} from \citet{Erkkila2010}, the unsupervised NMF method \emph{deconf} from \citet{Repsilber2010}, as well as our semi-supervised approach \cite{Gaujoux2011}.
+Again, all algorithms are stored in an extendible internal registry and convenient interface functions are provided.
+\Cref{tab:GEDalgorithm} lists all built-in algorithms, along with their respective requirements in terms of input data and iterations (i.e. single or multiple iterations), which is related to the associated computational cost.
+The first column contains the access key to run the algorithm in \Rpkg{CellMix}.
+Columns \emph{Basis}, \emph{Coef} and \emph{Markers} indicate which input data is required for running each algorithm (Required: \checkmark, Not required: \emph{-}).
+The last column indicates how many default iterations the algorithm performs to fit a model.
+A ``\emph{-}'' means that the algorithm is not iterative and generally runs relatively fast; a positive value means that an iterative process is used to estimate the unknown data and may be computationally intensive.
+For the MCMC algorithm \emph{DSection}, this corresponds to the number of samples performed after the burn-in period, which defaults to 4 times the number of samples.
+For the NMF algorithms \emph{deconf}, \emph{ssBrunet} and \emph{ssLee}, this corresponds to the number of block-descent minimising iterations. 
+
+\begin{table}[!h]
+\renewcommand{\arraystretch}{1.5}\addtolength{\tabcolsep}{-1pt}
+\begin{tabular}{rm{8cm}|c|c|c|c}
+\hline
+<<GEDalgorithm_table, echo=FALSE, results='asis'>>=
+print(xtable(gedAlgorithmInfo(FALSE, all=FALSE), citet=TRUE), floating=FALSE, only.contents=TRUE
+		, sanitize.text.function=xsanitize("\\{}$"))
+@
+\end{tabular}
+\caption{Algorithms for gene expression deconvolution available in the \Rpkg{CellMix}.
+The first column contains the access key to run the algorithm with the main interface function \code{ged}.
+Required data are indicated by a \checkmark.
+The values in column \emph{Iter} correspond to the default number of iterations performed.
+A ``-'' means no intensive iterative process is used.
+}
+\label{tab:GEDalgorithm}
+\end{table}
+
+\subsubsection{Automatic method selection}
+From a practical point of view, we notice that the choice of an applicable method is essentially determined by the type of data available and the computational resources one is prepared to use.
+This enables the implementation of a simple procedure for automatically choosing a suitable method, given the input data and the number of possible iterations, and performing gene expression deconvolution in all common situations.
+We describe here below this procedure, which is implemented within the main interface function \code{ged} that internally dispatches to the relevant method.
+Obviously, any deconvolution method may also be explicitly specified, which bypasses the automatic choice procedure.
+
+\paragraph{\underline{Known signatures}} 
+If reliable cell type-specific signatures are known, then estimating the mixture proportions using a standard least-squares approach to linearly regress the global gene expression on the signatures constitute a sensible choice, which has proven to lead to robust results \cite{Abbas2009,Gong2011}, for a small computational cost (see also \cref{fig:ged_blood}).
+The default in this case is to use the quadratic programming approach from \citet{Gong2011}, which is based on a more theoretically grounded constrained optimisation technique, which properly handles the nonnegativity and sum-up-to-one constraints on the proportions.
+
+\paragraph{\underline{Known proportions}} 
+If mixture proportions have been measured with good accuracy, then a similar linear regression approach for estimating the signatures may be applied.
+In this case, partial deconvolution is performed using the \emph{csSAM} algorithm from \citet{Shen-Orr2010}, which in addition is able to compute statistics of differential expression at the level of each cell-type if provided with two groups of samples (e.g. case/control).
+
+\paragraph{\underline{Uncertain proportions}}
+If mixture proportions are known only to a certain degree of confidence (e.g. measurement errors or rough \emph{a priori} estimation), then the Bayesian \emph{DSection} algorithm \cite{Erkkila2010} is applied using these prior estimates, to estimate cell-specific signatures, together with adjusted mixture proportions that are more consistent with the observed global expression data.
+If multiple groups of samples are defined, this algorithm computes signatures and standard error estimates for each group separately, suitable for performing  pairwise differential expression analysis.
+Note that it is technically not possible to decide which of the \emph{csSAM} or \emph{DSection} algorithms should be used, only based on the main input data (a matrix of proportions), whose accuracy is not intrinsically defined.
+The choice of methods then relies on the number of iterations requested by the user, requiring multiple iterations meaning that the proportions should be considered uncertain and used as priors in a Bayesian framework, rather than as accurate observations in a standard regression model.
+
+\paragraph{\underline{Known marker genes}}
+If only a list of marker genes is available, without their expression levels in each cell type, then complete deconvolution is performed using our semi-supervised approach \cite{Gaujoux2011}.
+Although the \emph{deconf} algorithm \cite{Repsilber2010} is also applicable in this case, we have shown the benefit of incorporating the marker information within the fitting process, as opposed to using it \emph{a posteriori} \cite{Gaujoux2011}.
+Moreover, as it is currently implemented, the \emph{deconf} algorithm is computationally too demanding on large datasets to be used by default.
+
+\paragraph{\underline{Global expression only}}
+Given the performances of the \emph{deconf} algorithm in a completely unsupervised setting \cite{Gaujoux2011}, it is used when no other data than the global expression measurements are available.
+Alternatively the \emph{ssBrunet} and \emph{ssLee} algorithms may be used in this situation.
+Since no markers are used in this case, they are equivalent to the standard NMF algorithms from \citet{Brunet2004} and \citet{Lee2001}, using the stationarity of the objective function as stopping criterion.
+
+%\begin{figure}
+%
+%%% Define block styles
+%%\tikzstyle{decision} = [diamond, draw, fill=blue!20, 
+%%    text width=4.5em, text badly centered, node distance=3cm, inner sep=0pt]
+%%\tikzstyle{block} = [rectangle, draw, fill=blue!20, 
+%%    text width=5em, text centered, rounded corners, minimum height=4em]
+%%\tikzstyle{line} = [draw, -latex']
+%%\tikzstyle{cloud} = [draw, ellipse,fill=red!20, node distance=3cm,
+%%    minimum height=2em]
+%%    
+%%\begin{tikzpicture}[node distance = 2cm, auto]
+%%    % Place nodes
+%%    \node [block] (init) {initialize model};
+%%    \node [cloud, left of=init] (expert) {expert};
+%%    \node [cloud, right of=init] (system) {system};
+%%    \node [block, below of=init] (identify) {identify candidate models};
+%%    \node [block, below of=identify] (evaluate) {evaluate candidate models};
+%%    \node [block, left of=evaluate, node distance=3cm] (update) {update model};
+%%    \node [decision, below of=evaluate] (decide) {is best candidate better?};
+%%    \node [block, below of=decide, node distance=3cm] (stop) {stop};
+%%    % Draw edges
+%%    \path [line] (init) -- (identify);
+%%    \path [line] (identify) -- (evaluate);
+%%    \path [line] (evaluate) -- (decide);
+%%    \path [line] (decide) -| node [near start] {yes} (update);
+%%    \path [line] (update) |- (identify);
+%%    \path [line] (decide) -- node {no}(stop);
+%%    \path [line,dashed] (expert) -- (init);
+%%    \path [line,dashed] (system) -- (init);
+%%    \path [line,dashed] (system) |- (evaluate);
+%%\end{tikzpicture}
+%\caption{Workflow to determine which deconvolution method to apply to a given set of input data.}
+%\label{fig:ged_workflow}
+%\end{figure}
+
+\subsubsection{Unified versatile interface}
+
+The main interface to run any deconvolution algorithms is implemented in the \code{ged} function, whose main arguments are 
+\begin{inparaenum}[(1)]
+\item the global gene expression data, supporting all commonly used \proglang{R} types for matrix-like objects (\code{matrix}, \code{data.frame}, \code{ExpressionSet});
+\item the input data, which can either be a matrix-like object containing known signatures or proportions, or a list of maker genes, or the number of cell/tissue from which signatures and/or proportions must be estimated; \label{arg:ged_x}
+\item the number of iterations to perform;
+\item optionally the name of the deconvolution method to use.
+\end{inparaenum}
+When no method is specified, it is inferred using the procedure described in the previous section, based on the type and dimensions of the input data (argument (\ref{arg:ged_x})) -- and in some cases the number of iterations (see above).
+
+\Cref{lst:ged_interface} shows sample code that deconvolves a given gene expression data object \code{X}, of dimension $n \times p$, using different kinds of input data.
+The objects \code{marks}, \code{sig} and \code{prop} are assumed to be respectively a list of marker genes for $r$ cell types, a matrix of expression signatures of dimensions $n \times r$, or a matrix of known proportions of dimension $r \times p$ -- with $r < p$.
+The last line illustrates how one can specify which method should be used and perform more complex calls.
+In this latter case, signatures and proportions for only the two first cell types in the marker list would be estimated by the method \emph{ssLee} -- that would normally not have been called given the kind of input data (default being to use \emph{ssBrunet}).
+The parameter \code{ratio} is specific to this method, and controls the expression level threshold of marker genes in their corresponding cell types (e.g. \code{ratio=2} requires each marker to be expressed by their respective cell type at least three times more than by other cell types).
+
+\begin{figure}
+<<ged_interface, eval=FALSE>>=
+# expression data only: deconf
+ged(X, 3)
+# with markers only: qprog
+ged(X, marks)
+# with markers only, iterative: ssBrunet
+ged(X, marks, maxIter=1000)
+# with known signatures: qprog
+ged(X, sig)
+# with known proportions: csSAM
+ged(X, prop)
+# with uncertain proportions, iterative: DSection
+ged(X, prop, maxIter=500)
+
+# force a given algorithm, with extra parameter: ssLee 
+ged(X, 2, method='ssLee', markers=marks, ratio=3)
+@
+\caption{Sample code for running any deconvolution algorithm.
+Each line results in a call to a different method, which is determined according to the input data and the number of desired iterations.
+The last line explicitly specifies a method and extra parameters to form a more complex call.}
+\label{lst:ged_interface}
+\end{figure}
+
+\section{Methods}
+\label{sec:ged_methods}
+
+This section provides relevant implementation details on the internal registries, how the data objects for benchmark datasets are effectively built from their original format, how the marker gene lists were built from the different public databases and microarray studies, and finally how each deconvolution method is implemented.
+
+\subsection{Internal registries}
+
+The \Rpkg{CellMix} makes an intensive usage of internal registries to organise, store and manage the different kind of data that are at the core of the package, i.e. benchmark datasets, market gene lists and deconvolution algorithms.
+For this purpose we use the \citeCRANpkg{registry} which provides the basic generic infrastructure for registries, with convenient access methods.
+This package allows to define sets of data fields, with the possibility to control their types, validity and access-rights.
+Its simplicity of use makes it very easy to integrate extensible features with plugin-like capabilities in any \proglang{R} package.
+
+\subsection{Loading pipeline for benchmark datasets}
+\label{sec:ged_methods_data}
+
+An internal registry stores for each benchmark dataset the following set of pre-processing functions that compose a pipeline which combines both global expression and cell type specific data into a single data object:
+{
+\addtolength{\itemsep}{-20pt}
+\begin{enumerate}
+\item Load the expression data, possibly downloading it from its web repository;\label{step:load}
+\item Filter (optional), e.g. to remove data not related to pure or mixtures samples;\label{step:filter}
+\item Extract/add phenotypic or feature annotation data, e.g. mixture proportions;\label{step:pheno}
+\item Create ground truth reference signatures.\label{step:signatures}
+\end{enumerate}
+}
+
+The loading step~(\ref{step:load}) is common to all datasets, and builds upon features from the \Rpkg{GEOquery}, that downloads files directly from the GEO repository.
+A transparent caching system reduces the loading time of subsequent access to the data, by storing the original expression data download locally as \emph{.rds} files (a compact binary R format).
+The optional filtering step~(\ref{step:filter}) enables to subset the original data, to only retain relevant features or samples.
+For example, the dataset \emph{GSE5350}\footnote{For this dataset, we only consider the data from the \emph{GPL570} platform, i.e. Affymetrix Human Genome U133 Plus 2.0 Array, that is accessible separately.} contains samples from a controlled mixture experiment, as well as from normal/tumour colon samples, which are removed by the filtering step, that in this case keeps only the samples whose source name starts with \code{'MAQC'} (see \cref{fig:sample_geo_pdata}).
+
+Once the data filtered, meaningful phenotypic information is extracted from different sources, prioritarily focusing on the constituting cell/tissue types and their mixture proportions.
+For controlled mixture or titration experiments, we extract mixture proportion data directly from the publicly available material (experiment description, data fields, supplementary data).
+For some of the clinical sample datasets however, CBC or flow cytometry data were not directly available online, or were available only as aggregated results (e.g. mean by case/control group), or with ID mapping issues.
+We obtained these from the authors, who quickly responded and provided us with the necessary information\footnote{We thank Stephen Popper, Alexander Abbas, Shai Shen-Orr and Alexei Grom for the data they provided.}.
+
+The last processing step consists in defining the ground truth reference gene expression signatures for each constituent, which are stored together as an NMF model.
+For simple experiment designs, that contain expression data from pure samples, these signatures are computed as the mean expression values among each cell type separately.
+No reference signatures were computed for experiments with more complex designs such as the time course experiments in \GEOhref{GSE22886} \cite{Abbas2005} and \GEOhref{GSE24223} \cite{Grigoryev2010}, but users can relatively easily compute condition-specific signatures, using the relevant phenotypic data made readily available by the annotation extraction step~(\ref{step:pheno}).
+
+\subsection{Marker gene lists}
+\label{sec:ged_methods_markers}
+<<load_TDDB, echo=FALSE>>=
+data(TissueDistributionDB_HS)
+data(TissueDistributionDB_RN)
+@
+Marker lists from the IRIS, TiGER and VeryGene databases were extracted from the complete data which can be downloaded from the respective websites.
+Each one of these database defines marker specificity scores, that are conserved in the internal registry.
+
+Marker lists for Human and Rat tissues from TissueDistributionDB were created using the web interface and the queries shown in \cref{fig:TDDB_queries}, which returned a total of \Sexpr{nrow(TissueDistributionDB_HS)} and \Sexpr{nrow(TissueDistributionDB_RN)} entries respectively.
+Each entry is constituted by a pair (UniGene ID, Tissue type), associated with two numeric values 
+\begin{inparaenum}[(1)]
+\item The percentage -- expression -- value\footurl{http://genome.dkfz-heidelberg.de/menu/tissue_db/faq.html\#percent}, which corresponds to the relative proportion of ESTs from the UniGene cluster in the tissue type, normalised across all tissues. 
+\item the tissue specificity index\footurl{http://genome.dkfz-heidelberg.de/menu/tissue_db/faq.html\#speci}, which indicates how many other tissues also express ESTs from the UniGene cluster.
+\end{inparaenum}
+The data for all these entries are available in the package's internal registry, including their respective percentage value and specificity index.   
+By default, marker genes for a given tissue are defined as those whose percentage value is greater than 99\%, i.e. those whose cumulated relative expression in all other tissues is at most 1 percent of the relative expression in the assigned tissue.
+Markers are then ordered by decreasing percentage value and increasing tissue specificity index.
+
+The marker list with access key \code{Abbas} was
+extracted from the refined subset of immune genes that compose the basis deconvolution matrix from \citet{Abbas2009}.
+We assigned each probeset to its most expressing cell type, and computed the sparseness of its expression profile across cell types, that is used as a specificity score and defined by \citet{Hoyer2004} as:
+$$
+Sparseness(x) = \frac{\sqrt{n} - \frac{\sum |x_i|}{\sqrt{\sum x_i^2}}}{\sqrt{n}-1},
+$$
+where in our case $x$ is the expression profile of a given probeset, and $n$ the number of cell types.  
+It is equal to 1 if and only if $x$ contains a single nonzero component, meaning that the gene is expressed by a single cell type, and is equal to 0 if and only if all components of \code{x} are equal, meaning that the gene is uniformly equally expressed by all cell types.
+
+The marker list from HaemAtlas \cite{Watkins2009} was extracted from the
+Supplementary Table 5 of the related paper\footurl{http://www.ncbi.nlm.nih.gov/pmc/articles/PMC2680378/bin/blood-2008-06-162958_TableS5.xls}.
+Curiously, although they are supposed to be relative to Illumina HumanWG-6
+version 2 Expression BeadChip arrays, none of the probe ids found in the table match the Illumina probe ids used in the corresponding \citeBioCAnnpkg{illuminaHumanv2.db} from Bioconductor.
+However, since these data provide the nucleotide sequence of each probe, we could uniquely match all of them by nuID \cite{Du2007} to the probe IDs from the annotation package.
+The latter were eventually used as identifiers in the marker gene list.
+No specificity score is available for this marker list.
+
+The marker list from \citet{Palmer2006} was extracted from the supplementary file associated with the paper\footurl{http://www.biomedcentral.com/content/supplementary/1471- 2164-7-115-S2.xls}.
+The internal registry contains for each marker two numeric values that may be used as specificity score:
+\begin{inparaenum}[(1)]
+\item the correlation with the theoretical abundance of the assigned cell type;
+\item expression fold-change from the differential analysis between cell types carried out by \citeauthor{Palmer2006}.
+\end{inparaenum}
+No default filtering is applied.
+
+\subsection{Deconvolution methods}
+\label{sec:ged_methods_algo}
+
+All algorithms are implemented within the framework defined by the \Rpkg{NMF} \cite{Gaujoux2010}, some purely in \proglang{R}, others using optimised \proglang{C++} routines, with the exception of \emph{DSection}, whose original \proglang{Matlab} code\footurl{http://www.cs.tut.fi/~erkkila2/software/dsection/DSection.m} was slightly adapted to make it compatible with \proglang{Octave} and is run through the \citeCRANpkg{RcppOctave}.
+Both the \emph{lsfit} and \emph{csSAM} algorithms are implemented using the \proglang{R}-core function \code{lsfit}, which can fit standard least-squares with multiple left-hand sides.
+The \emph{qprog} algorithm implements the approach from \citet{Gong2011} using the function \code{lsei} from the \CRANpkg{limSolve} \cite{Rpackage:limSolve,VandenMeersche2009}, which solves least-squares problems with equality and inequality constraints as a quadratic programming problem, using the algorithm from \citet{Haskell1981}.
+Each global expression profile is solved separately.
+Our implementation optionally allows for incomplete signatures, i.e. for some constituents to be absent from the signatures, by allowing the sum of the estimated proportions to be lower than 1 -- rather than equal to 1 in the standard case.
+The \emph{ssKL} and \emph{ssFrobenius} algorithms are modifications of NMF algorithms from \citet{Brunet2004} and \citet{Lee2001} respectively, as described in \cite{Gaujoux2011}.
+The \emph{deconf} algorithm uses the original implementation found in the \Rpkg{deconf}\footurl{http://www.biomedcentral.com/content/supplementary/1471-2105-11-27-s1.zip} from \citet{Repsilber2010}.
+
+\section{Discussion}
+\label{sec:ged_discussion}
+
+The use case examples shown in this vignette demonstrate that the \Rpkg{CellMix} provides a powerful flexible computational framework for gene expression deconvolution applications, whether one wants to simply estimate proportions and/or cell specific signatures from particular gene expression data, apply a specific method, or develop new methodologies.
+The internal registries offer an easy and managed access to several marker gene lists and real benchmark datasets that contain reference ground truth proportions and/or signatures, which greatly facilitates method comparisons and data integration from multiple sources.
+The unified interface for running deconvolution algorithms, combined with the automatic method selection, simplifies and improves the user experience, especially for non-advanced users.
+Moreover, the data structure we developed for storing marker gene lists, comes with a set of utility functions that help in the creation and manipulation of such data.
+In this section we discuss some possible improvements and challenges that remain to be addressed.  
+
+\subsubsection{Interface \& data}
+More advanced capabilities for comparing, combining and visualising the content of marker gene lists would be useful.
+Working towards the easy integration of multiple lists would help building more complete and robust lists.
+With respect to the implementation of these functionalities, the functions already available for the marker list data structures should provide a good base to build on.
+Existing strategies for handling multiple lists of genes produced by differential expression analysis should also be considered \cite{Yang2007,Lottaz2006}.
+
+It is also desirable that more datasets and marker lists are included in the package, as they become available.
+For immune cells in particular, primarily focus would be on integrating data from some of the specialised databases the listed in \citet{Gardy2009} -- of which we became aware only recently.
+A potential fruitful enhancement would be to enable the direct interaction with those databases that provide a programmatic interface, in a similar way the \Rpkg{GEOquery}, \Rpkg{ArrayExpress} or \citeBioCpkg{biomaRt} do with their respective online databases.
+
+\subsubsection{Deconvolution basis matrices}
+Given the good results achieved by the partial deconvolution approach from \citet{Abbas2009}, it would be interesting to build deconvolution basis matrices for other types of cells, tissues and organisms.
+This could be implemented as a generic pipeline run on extractions of the constantly growing compendium of public datasets available, and assessed based on studies where cell/tissue proportions are known.
+More generally, investigating methodologies to select and optimise the set of genes/probesets that compose such deconvolution basis matrices is of prime interest, so as to further increase the estimation accuracy.
+
+With respect to this, the approach based on the condition number of the deconvolution basis matrix used by \citeauthor{Abbas2009} deserves some attention.
+In general optimisation theory, the condition number is a notion associated with any optimisation problem, that measures the sensitivity of the solution(s) with respect to the data, and is related to numerical stability of computed solutions and backward error estimation \cite{Bertsekas1999,Higham1996}. 
+Essentially, the smaller the condition number, the more the solution computed by a given algorithm is likely to be robust to variations in the data, although strictly speaking the sensitivity to variations is intrinsically dependent on the algebraic and optimisation techniques used by the algorithm.
+In particular, the condition number of least-square problems is proportional to the condition number of the coefficient matrix \cite{Grcar2003}, i.e. the deconvolution basis matrix in the case of partial deconvolution. 
+This explains the correlation between accuracy and condition number observed by \citeauthor{Abbas2009}.
+Indeed, they built the different basis matrices using expression data from pure samples.
+Due to measurement errors and cell interactions \cite{Cobb2005,Palmer2006,Patocs2007}, global gene expression profiles from mixed samples deviate from the theoretical expression profiles, which consist of the exact mixture of the pure profiles (i.e. the columns of the basis matrix).
+Being associated with better conditioned optimisation problems, matrices with smaller condition numbers are therefore expected to estimate proportions that are closer to the actual proportions.
+   
+\subsubsection{Data-driven optimisation of marker gene lists}
+When pure samples are available in an experiment, the consistency of a given list of marker genes may be assessed by comparing the markers' expression profiles with the expectation of block expression patterns.
+Bar charts such as in \cref{fig:Wmarkers_barplot} or heatmaps such as in \cref{fig:markermap} help pinpoint inconsistencies.
+Quantitative measures would however be useful in this context, so that the consistency of each marker can be computed, and used to automatically select good markers.
+Differential expression statistics used to define markers can typically be used as consistency measures, although the usually small number of pure samples from each cell type might suggest the use of heuristic scoring schemas.
+
+However, a use case where marker gene lists are most needed is when the considered experiment contains no data from pure samples.
+One would therefore want to be able to refine a given marker gene list, so that it is consistent with the expression data of the mixed samples.
+Note that this would in fact be applicable and relevant even when pure samples are available.
+
+Very recently, \citet{Schneider2011} proposed a statistical test based on Kendall's W coefficient of concordance to identify concordant redundant probesets in expression microarray data.
+%Using a graph-based technique similar to co-expression network analysis \cite{Langfelder2008}, they group probesets annotated to represent a same gene into sub-groups whose expression profiles highly consistent, which provide clearer and more biologically meaningful signals, than if these probesets where considered separately or all together.
+Their approach, named Statistical Consolidation of Redundant Expression Measures (SCOREM), is based on the observation that groups of probesets annotated as representing the same gene may have discordant expression profiles, due to cross-hybridisation, misannotation or alternate-splicing.
+Traditional approaches use either one or all of these multiple probesets-per-gene to compute a single representative expression value for each gene, e.g. based on their individual variations or their connectivity in co-expression networks \cite{Miller2011}. 
+The actual expression data from many probesets are therefore not fully used, which lowers the power of detection of biologically meaningful expression patterns.
+By grouping these probesets into sub-groups whose expression profiles are highly consistent, SCOREM provides clearer biologically relevant signals, enhancing the results of downstream analysis.
+%To overcome this issue, SCOREM used a graph-searching algorithm to identify, for each gene, sub-groups of probesets that have the most statistically concordant expression profiles across samples.
+%Concordance of a given group of probeset is measured by Kendall's W coefficient of concordance, itself based on Spearman's rank correlation coefficient, for which there exists a statistical test of significance.
+%Once concordant sub-groups are defined, they are used to consolidate the results from classical differential expression analysis performed separately for all probesets, e.g. with \code{limma} \cite{Smyth2004}.
+%This results in the detection of more differentially expressed transcripts, with higher confidence, and detailed analysis of the discordant sub-groups for each gene enables the differential expression of alternative transcript isoforms to be distinguished.
+%Indeed they apply this method to detect tissue-specific alternative splicing.
+One interesting aspect of this approach is that it is dataset specific, considering each probeset in the context of its expression profiles in the given experimental conditions, rather than assuming globally applicable expression patterns, from which are derived generic annotation files.
+
+Drawing a parallel between groups of probesets used to represent the same gene, and groups of marker genes used to represent the same cell or tissue type, the SCOREM approach could be used to extract from a marker gene list the most suitable sub-groups of candidate markers for the deconvolution of a particular dataset.
+Indeed, regardless of the phenotypic characteristics of mixed samples present in the dataset (e.g. case/controls, tumour/normal), good marker genes in each cell/tissue type should have concordant expression profiles, being presumably well correlated with the cell/tissue relative proportion.
+Given a list of marker genes and expression data from mixed samples only (e.g. clinical blood samples), applying the SCOREM algorithm to each set of markers present in the dataset, and choosing the most concordant or biggest sub-group would create a (sub)list of markers optimised for that specific dataset.
+
+This strategy could prove to be very beneficial to deconvolution methods that make use of markers \cite{Repsilber2010,Gaujoux2011}, while other methods may achieve greater accuracy if applied on the global expression data of the subset of highly consistent markers only.
+Another interesting potential advantage is that this could solve altogether the issue of non-unique probe mapping when converting marker lists across platforms or organisms.
+One would simply perform this data-driven filtering directly on the list of all mapped probes (e.g. by Entrez IDs) within their respective cell-types.
+This is similar in essence to the approach used by \citet{Miller2011} for meta-analysis and cell proportion estimation, with the difference that one would search for multiple rather than single representative probesets.
+The approach may also be used to assess the consistency of estimated cell type-specific signatures.
+Future work will include evaluating and validating this approach, and eventually
+integrating it with the other tools provided by the
+\Rpkg{CellMix}\footnote{A first experimental implementation of the SCOREM
+approach applied to marker gene filtering is already available in
+\code{CellMix}}.
+
+\section{Conclusion}
+
+We developed the \Rpkg{CellMix}, a general framework for gene expression deconvolution, which provides an easy access to benchmark data, marker gene lists and a variety of deconvolution methods.
+This package dramatically facilitates deconvolution analysis, by addressing the common practical issues that arise when performing such analysis. 
+Overall, it allows for smoother and more generic analysis pipelines -- as well as a friendlier user experience.
+
+The \Rpkg{CellMix} is currently in alpha version and available on our CRAN-like repository \url{http://web.cbio.uct.ac.za/~renaud/CRAN}, from which it can be installed as a source package using the standard procedure. 
+We will eventually submit the package to Bioconductor\footurl{http://www.bioconductor.org} \cite{Gentleman2004}, where it should reach and benefit the wider bioinformatics research community. 
+
+\pagebreak
+\printbibliography[heading=bibintoc]
+
+\pagebreak
+\appendix
+
+\section{Hematopoietic tree}
+\label{sec:hemato}
+\begin{figure}[h!tb]
+\includegraphics{Hematopoiesis.pdf}\\
+{\scriptsize Modified version from an image from the public domain\footnotemark}
+\caption{Hematopoietic tree. 
+Schematic representation of the main lineages of blood cells. 
+The multipotential hematopoietic stem cell (Hemmocytoblast), differentiates into the common lymphoid progenitor (CLP) and common myeloid progenitor (CMP), from which arise the lymphoid and myeloid lineages respectively.
+CLPs are progenitors for all lymphocytes, further differentiating into Natural killer cells (NK), and B and T cells respectively.
+CMPs give rise to megakaryocytes (MK) and erythroblasts (EB) , that are progenitors for thrombocytes (platelets) and erythrocytes (red cells) respectively, and to myeloblasts that are progenitors for granulocytes and monocytes.
+Monocytes differentiate in tissues into macrophages and dendritic cells (DC).
+Some B cells differentiate on activation into plasma cells, i.e. effector B cells, that produce large amount of pathogen-specific antibodies, which scale up immune response and target pathogens \cite{Janeway2001,Ferreira2005}.
+Cell types that are underlined in red are those for which proportions are available in CBC data.}
+\label{fig:hematopoietic}
+\end{figure}
+\footnotetext{\url{http://commons.wikimedia.org/wiki/File:Hematopoiesis_simple.svg} published under the terms of the \href{http://commons.wikimedia.org/wiki/Commons:GNU_Free_Documentation_License_1.2}{GNU Free Documentation License}.}
+
+\pagebreak
+\section{Marker composition}
+
+\begin{figure}[h!]
+\scriptsize
+\begin{verbatim}
+# For Human (Homo Sapiens)
+(([hs_tissue_distribution-TissueType:*] & [hs_tissue_distribution-TissueLevel#5:5]) 
+	& [hs_tissue_distribution-TissueRank#1:1])
+
+# For Rat (Rattus Norvegicus)
+(([rn_tissue_distribution-TissueType:*] & [rn_tissue_distribution-TissueLevel#5:5]) 
+	& [rn_tissue_distribution-TissueRank#1:1])
+\end{verbatim}
+\caption{Queries used to extract the most tissue-specific UniGene EST clusters in Human and Rat from the TissueDistributionDB database.
+We selected only the EST clusters that ranked first in terms of tissue-specific expression (Rank 1) in the tissues defined by the more detailed tissue classification (Level 5).
+}
+\label{fig:TDDB_queries}
+\end{figure}
+
+\section{Marker IDs conversion pipeline}
+\begin{figure}[h!]
+\scriptsize
+<<markers_convert_verbose>>=
+# load data from registry
+m <- MarkerList('HaemAtlas')
+e <- ExpressionMix('GSE11058')
+
+# convert Affy IDs from HGU133A/B to HGUplus2 (showing details of the mapping process)
+m_affy_all <- convertIDs(m,e, verbose=4)
+@
+\caption{Sample code for converting the HaemAtlas marker list defined by
+\citet{Watkins2009}, from Illumina HumanWG6v2 probe identifiers to Affymetrix HG U133 Plus 2.0 probeset ids.
+This code is identical to the one shown in \cref{lst:markers_convert}, but uses verbose output, that shows more details on how the mapping is performed.}
+\label{lst:markers_convert_verbose}
+\end{figure}
+
+
+\pagebreak
+%% EFFECT OF NORMALIZATION IN BLOOD DECONVOLUTION
+\section{Effect of scaling and normalization method}
+
+\begin{figure}[h!]
+\small
+\begin{minipage}{0.49\textwidth}
+<<ged_blood_norm_def, echo=FALSE>>=
+# load data
+e <- ExpressionMix('GSE20300')
+pplot <- function(...)
+	profplot(..., ylim=c(0,1), xlim=c(0,1)
+			, xlab="Actual CBC proportions", ylab='Computed proportions')
+@
+<<ged_blood_qlog>>=
+# Quantile normalized - Log-scale
+res <- gedBlood(e)
+@
+<<ged_blood_qlog_plot, echo=FALSE>>=
+# plot against actual CBC
+pplot(e, asCBC(res), main="Quantile normalised - Log scale")
+@
+\end{minipage}
+\begin{minipage}{0.49\textwidth}
+<<ged_blood_qlin>>=
+# Quantile normalized - Linear scale 
+res <- gedBlood(expb(e, 2))
+@
+<<ged_blood_qlin_plot, echo=FALSE>>=
+# plot against actual CBC
+pplot(e, asCBC(res), main="Quantile normalised - Linear scale")
+@
+\end{minipage}
+\\
+\begin{minipage}{0.49\textwidth}
+<<ged_blood_l>>=
+# Log-transformed only
+res <- gedBlood(e, normalize=FALSE)
+@
+<<ged_blood_l_plot, echo=FALSE>>=
+# plot against actual CBC
+pplot(e, asCBC(res), main="No normalisation - Log scale")
+@
+\end{minipage}
+\begin{minipage}{0.49\textwidth}
+<<ged_blood_diff>>=
+# Linear scale
+res <- gedBlood(expb(e, 2), normalize=FALSE)
+@
+<<ged_blood_diff_plot, echo=FALSE>>=
+# plot against actual CBC
+pplot(e, asCBC(res), main="No normalisation - Linear scale")
+@
+\end{minipage}
+\caption{Computed proportions vs. Actual CBC proportions of lymphocytes, monocytes and neutrophils for dataset \emph{GSE20300}.
+The deconvolution is performed using the \code{qprog} algorithm in combination with the basis signature matrix from \citet{Abbas2009}.
+Computed proportions are obtained from the aggregation of proportions of the detailed subset of immune cells into their respective category.}
+\label{fig:ged_blood_normalisation}
+\end{figure}
+
+\pagebreak
+%% Cross-dataset Markers expression
+\section{Assessing marker expressions in pure samples}
+
+\begin{figure}[h!]
+<<Wmarkers_barplot_ALL, echo=FALSE, fig.width=10>>=
+barplot(Wmarkers, Wmarker_AVG, legend='topright')
+@
+\caption{Expression values of all the marker genes of each cell type in the list
+from HaemAtlas \cite{Watkins2009}, ordered by decreasing uniform expression in
+each immune cell line from dataset \code{GSE11058}.
+This figure is the full version of \cref{fig:Wmarkers_barplot}, where only the top 50 markers of each cell type were shown.}
+\label{fig:Wmarkers_barplot_ALL}
+\end{figure}
+
+\end{document}
+

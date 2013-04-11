@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>stack.MarkerList. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Converting Marker Lists into data.frames</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><span class="label label-success">S3</span> (MarkerList)
+`stack`(x, ...)
+
+<span class="label label-success">S3</span> (stackedMarkerList)
+`unstack`(x, ...)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>x</dt>
+      <dd>a <code><a href='MarkerList.html'>MarkerList</a></code> object for
+  <code>stack</code>, a <code>data.frame</code> as returned by
+  <code>stack</code> for <code>unstack</code>.</dd>
+      <dt>...</dt>
+      <dd>extra arguments not used</dd>
+    </dl>
+    
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>The S3 method <code>stack</code> allow to stack a
+  <code>MarkerList</code> object into a <code>data.frame</code>, which
+  may be a more convenient format to handle, depending on
+  the computation one wants to perform.</p>
+  
+      <p>The method <code>unstack</code> performs the reverse operation
+  of <code>stack</code>.</p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'>stack( rMarkerList(3, 3) )
+</div>
+<div class='output'>  values   ind names
+2     NA Type1     2
+4     NA Type1     4
+9     NA Type1     9
+1     NA Type2     1
+3     NA Type2     3
+5     NA Type2     5
+6     NA Type3     6
+7     NA Type3     7
+8     NA Type3     8
+</div><div class='input'>stack( rMarkerList(3, 3, names=TRUE) )
+</div>
+<div class='output'>         values   ind    names
+Marker.2     NA Type1 Marker.2
+Marker.1     NA Type1 Marker.1
+Marker.3     NA Type1 Marker.3
+Marker.6     NA Type2 Marker.6
+Marker.4     NA Type2 Marker.4
+Marker.5     NA Type2 Marker.5
+Marker.9     NA Type3 Marker.9
+Marker.7     NA Type3 Marker.7
+Marker.8     NA Type3 Marker.8
+</div><div class='input'>stack( rMarkerList(3, 3, values=TRUE) )
+</div>
+<div class='output'>             values   ind    names
+Marker.1 0.69678801 Type1 Marker.1
+Marker.2 0.57684927 Type1 Marker.2
+Marker.3 0.70571053 Type1 Marker.3
+Marker.4 0.46726945 Type2 Marker.4
+Marker.5 0.09969506 Type2 Marker.5
+Marker.6 0.34266102 Type2 Marker.6
+Marker.7 0.79456376 Type3 Marker.7
+Marker.8 0.78304625 Type3 Marker.8
+Marker.9 0.28578656 Type3 Marker.9
+</div><div class='input'>m <- rMarkerList(3, 3, values=TRUE)
+</div><div class='input'>sm <- stack(m)
+</div><div class='input'>identical(unstack(sm), m)
+</div>
+<div class='output'>[1] TRUE
+</div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>stack.MarkerList</li><li>unstack.stackedMarkerList</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

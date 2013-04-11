@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>subsetML. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Subsetting Data with MarkerList Objects</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre>subsetML(x, i, j, ..., drop = FALSE)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>drop</dt>
+      <dd>logical passed to the subset method
+  <code>'['</code> of <code>x</code>.</dd>
+      <dt>x</dt>
+      <dd> object from which to extract element(s) or in
+  which to replace element(s).  </dd>
+      <dt>i</dt>
+      <dd> indices specifying elements to extract or
+  replace.  Indices are <code>numeric</code> or <code>character</code>
+  vectors or empty (missing) or <code>NULL</code>.  Numeric
+  values are coerced to integer as by
+  <code><a href='http://www.inside-r.org/r-doc/base/integer'>as.integer</a></code> (and hence truncated towards
+  zero).  Character vectors will be matched to the
+  <code><a href='http://www.inside-r.org/r-doc/base/names'>names</a></code> of the object (or for
+  matrices/arrays, the <code><a href='http://www.inside-r.org/r-doc/base/dimnames'>dimnames</a></code>): see
+  &#145;Character indices&#146; below for further details.
+
+  For <code>[</code>-indexing only: <code>i</code>, <code>j</code>,
+  <code>...</code> can be logical vectors, indicating
+  elements/slices to select.  Such vectors are recycled if
+  necessary to match the corresponding extent.  <code>i</code>,
+  <code>j</code>, <code>...</code> can also be negative integers,
+  indicating elements/slices to leave out of the selection.
+
+  When indexing arrays by <code>[</code> a single argument
+  <code>i</code> can be a matrix with as many columns as there
+  are dimensions of <code>x</code>; the result is then a vector
+  with elements corresponding to the sets of indices in
+  each row of <code>i</code>.
+
+  An index value of <code>NULL</code> is treated as if it were
+  <code>integer(0)</code>.  </dd>
+      <dt>j</dt>
+      <dd> indices specifying elements to extract or
+  replace.  Indices are <code>numeric</code> or <code>character</code>
+  vectors or empty (missing) or <code>NULL</code>.  Numeric
+  values are coerced to integer as by
+  <code><a href='http://www.inside-r.org/r-doc/base/integer'>as.integer</a></code> (and hence truncated towards
+  zero).  Character vectors will be matched to the
+  <code><a href='http://www.inside-r.org/r-doc/base/names'>names</a></code> of the object (or for
+  matrices/arrays, the <code><a href='http://www.inside-r.org/r-doc/base/dimnames'>dimnames</a></code>): see
+  &#145;Character indices&#146; below for further details.
+
+  For <code>[</code>-indexing only: <code>i</code>, <code>j</code>,
+  <code>...</code> can be logical vectors, indicating
+  elements/slices to select.  Such vectors are recycled if
+  necessary to match the corresponding extent.  <code>i</code>,
+  <code>j</code>, <code>...</code> can also be negative integers,
+  indicating elements/slices to leave out of the selection.
+
+  When indexing arrays by <code>[</code> a single argument
+  <code>i</code> can be a matrix with as many columns as there
+  are dimensions of <code>x</code>; the result is then a vector
+  with elements corresponding to the sets of indices in
+  each row of <code>i</code>.
+
+  An index value of <code>NULL</code> is treated as if it were
+  <code>integer(0)</code>.  </dd>
+      <dt>...</dt>
+      <dd> indices specifying elements to extract or
+  replace.  Indices are <code>numeric</code> or <code>character</code>
+  vectors or empty (missing) or <code>NULL</code>.  Numeric
+  values are coerced to integer as by
+  <code><a href='http://www.inside-r.org/r-doc/base/integer'>as.integer</a></code> (and hence truncated towards
+  zero).  Character vectors will be matched to the
+  <code><a href='http://www.inside-r.org/r-doc/base/names'>names</a></code> of the object (or for
+  matrices/arrays, the <code><a href='http://www.inside-r.org/r-doc/base/dimnames'>dimnames</a></code>): see
+  &#145;Character indices&#146; below for further details.
+
+  For <code>[</code>-indexing only: <code>i</code>, <code>j</code>,
+  <code>...</code> can be logical vectors, indicating
+  elements/slices to select.  Such vectors are recycled if
+  necessary to match the corresponding extent.  <code>i</code>,
+  <code>j</code>, <code>...</code> can also be negative integers,
+  indicating elements/slices to leave out of the selection.
+
+  When indexing arrays by <code>[</code> a single argument
+  <code>i</code> can be a matrix with as many columns as there
+  are dimensions of <code>x</code>; the result is then a vector
+  with elements corresponding to the sets of indices in
+  each row of <code>i</code>.
+
+  An index value of <code>NULL</code> is treated as if it were
+  <code>integer(0)</code>.  </dd>
+    </dl>
+    
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>The function <code>subsetML</code> enables direct subsetting of
+  data objects with <code><a href='MarkerList.html'>MarkerList</a></code> objects, as
+  long as they have a suitable <code><a href='Bioc-generics.html'>featureNames</a></code>,
+  <code><a href='http://www.inside-r.org/r-doc/BiocGenerics/row_colnames'>rownames</a></code> or <code><a href='http://www.inside-r.org/r-doc/base/names'>names</a></code> method, as
+  well as a subset method <code>[</code>. It is used for defining
+  <code>'['</code> methods for <code><a href='http://www.inside-r.org/r-doc/NMF/NMF-class'>NMF-class</a></code> and
+  <code><a href='ExpressionMix-class.html'>ExpressionMix-class</a></code>.</p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'>data(sample.ExpressionSet)
+</div><div class='input'>e <- sample.ExpressionSet
+</div><div class='input'>annotation(e)
+</div>
+<div class='output'>[1] "hgu95av2"
+</div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>subsetML</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

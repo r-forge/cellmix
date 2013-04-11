@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>GEDdata-internals. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Internal Functions for the CellMix Dataset registry</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre>setGEDData(key, ...)
+
+removeGEDData(key, ...)
+
+meanBasis(var)
+
+pdataCoef(var, scale = 100)
+
+pureCoef(var)
+
+gedDataCheck(key = NULL, load = TRUE, cache = TRUE, save = FALSE, verbose = 3)
+
+.makeData()</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>key</dt>
+      <dd>accession key. Currently, only GEO accesion
+  keys are supported.</dd>
+      <dt>...</dt>
+      <dd>extra registry fields describing the dataset,
+  or arguments passed to
+  <code><a href='http://www.inside-r.org/r-doc/pkgmaker/regfetch'>pkgreg_remove</a></code>.</dd>
+    </dl>
+    
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>Internal Functions for the CellMix Dataset registry</p>
+  
+      <p><code>setGEDData</code> register a dataset in the <span class = "pkg">CellMix</span>
+  registry.</p>
+  
+      <p><code>removeGEDData</code> removes a dataset from the registry.
+  Note that it does not delete any local/cache file related
+  to this dataset.</p>
+  
+      <p><code>meanBasis</code> builds a basis matrix for a data entry
+  from one of its phenotypic data. It tries to match the
+  order of a coefficient matrix if any, or use the order of
+  the variable's levels, which must have corresponding
+  phenotypic variables.</p>
+  
+      <p><code>pdataCoef</code> builds a coefficient matrix for a data
+  entry from one of its phenotypic variables, whose levels
+  must correspond to numeric phenotypic variables, that
+  each contains proportions of one cell type that is
+  present in each samples.</p>
+  
+      <p><code>pureCoef</code> builds a coefficient matrix for a data
+  entry where all samples are pure, using one of its
+  phenotypic -- factor -- variable whose levels define the
+  cell type of origin of each sample.</p>
+  
+      <p><code>gedDataCheck</code> check if all or a given registered
+  dataset can be loaded.</p>
+  
+      <p><code>.makeData</code> remake some rda files shipped with
+  CellMix.</p>
+  
+    </div>
+      </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>gedDataCheck</li><li>GEDdata-internals</li><li>.makeData</li><li>meanBasis</li><li>pdataCoef</li><li>pureCoef</li><li>removeGEDData</li><li>setGEDData</li>
+    </ul>
+    <ul>
+      <li>internal</li>
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

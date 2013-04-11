@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>boxplotBy. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="
+  This function was adapted from the following post on
+  R-help:
+
+  &lt;a href = 'https://stat.ethz.ch/pipermail/r-help/2003-March/031046.html'&gt;https://stat.ethz.ch/pipermail/r-help/2003-March/031046.html&lt;/a&gt;
+">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Split Boxplot by Group</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre>boxplotBy(x, ...)
+
+<span class="label label-success">S3</span> (default)
+`boxplotBy`(x, by, scale = FALSE, col = rainbow(nlevels(by)), legend = TRUE, 
+  names = colnames(x), ...)
+
+<span class="label label-success">S3</span> (NMF)
+`boxplotBy`(x, by, scale = FALSE, ...)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>x</dt>
+      <dd>data matrix, with samples in column.
+
+  NB: in <code><a href='http://www.inside-r.org/r-doc/BiocGenerics/boxplot'>boxplot</a></code> <var>x</var> has samples in
+  rows.</dd>
+      <dt>by</dt>
+      <dd>grouping variable, coerced to a factor if
+  necessary. It is recycled if not of length the number of
+  columns in <var>x</var></dd>
+      <dt>col</dt>
+      <dd>spcecifies the colour to use for each group by
+  argument <var>by</var>.</dd>
+      <dt>legend</dt>
+      <dd>legend specification. If a logical, it
+  turns on/off the legend, if a character string, it
+  indicates the position of the legend, e.g.
+  <code>'topright'</code> (see <code><a href='http://www.inside-r.org/r-doc/graphics/legend'>legend</a></code> for possible
+  values).</dd>
+      <dt>...</dt>
+      <dd>extra arguments passed to the base
+  <code><a href='http://www.inside-r.org/r-doc/BiocGenerics/boxplot'>boxplot</a></code> function.</dd>
+      <dt>scale</dt>
+      <dd>logical that indicate if each data column
+  should be scaled so that it sums up to one.</dd>
+      <dt>names</dt>
+      <dd>group labels which will be printed under
+  each boxplot.  Can be a character vector or an
+  <a href='http://www.inside-r.org/r-doc/base/expression'>expression</a> (see <a href='http://www.inside-r.org/r-doc/grDevices/plotmath'>plotmath</a>).</dd>
+    </dl>
+    
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>Plots a boxplot with each data split into sub-boxplots,
+  defined according a factor variable.</p>
+  
+      <p>The default method plots each <strong>column</strong> using one
+  boxplot for each level in a factor.</p>
+  
+      <p>The method for <code><a href='http://www.inside-r.org/r-doc/NMF/NMF-class'>NMF-class</a></code> objects plots use
+  the data from the coefficient matrix.</p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'>x <- rmatrix(3, 20)
+</div><div class='input'>boxplotBy(x, gl(2, 10))
+</div><p><img src='boxplotBy-ex1.png' alt='' width='400' height='400' /></p></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>boxplotBy</li><li>boxplotBy.default</li><li>boxplotBy.NMF</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+    
+    <h2>Author</h2>
+    
+  This function was adapted from the following post on
+  R-help:
+
+  <a href = 'https://stat.ethz.ch/pipermail/r-help/2003-March/031046.html'>https://stat.ethz.ch/pipermail/r-help/2003-March/031046.html</a>
+
+    
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

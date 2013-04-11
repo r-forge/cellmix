@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>mapIDs. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Mapping Gene Identifiers</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre>mapIDs(keys, from, to, method = c("auto", "mauto", "all", "firstN", "1:1", "1:*", 
+  "affy"), mapper = biocann_map, verbose = FALSE, ...)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>keys</dt>
+      <dd>character vector of identifiers to map.</dd>
+      <dt>method</dt>
+      <dd>a specification of the filtering strategy.
+  See <code><a href='idFilter.html'>idFilter</a></code>.</dd>
+      <dt>mapper</dt>
+      <dd>mapper function, responsible to generate
+  the actual mappings between identifiers. See details.</dd>
+      <dt>from</dt>
+      <dd>specification of the type of identifiers of
+  <code>object</code>. This is only neeeded when the source type
+  cannot be inferred from <code>object</code> itself.</dd>
+      <dt>to</dt>
+      <dd>specification of the type of identifiers to
+  convert to.</dd>
+      <dt>verbose</dt>
+      <dd>a logical or integer that sets the
+  vverbosity level.</dd>
+      <dt>...</dt>
+      <dd>extra arguments to allow extension, which are
+  passed down to the workhorse method
+  <code>convertIDs,character,GeneIdentifierType,GeneIdentifierType</code>.
+  See each method's description for more details.</dd>
+    </dl>
+    
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>This function implements a generic mapping workflow that
+  enables mapping gene identifers between different types,
+  given a mapper function. The default mapper,
+  <code><a href='biocann_map.html'>biocann_map</a></code>, enables mapping identifiers
+  within or across platform, as well as across species.</p>
+  
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p>The mapper function passed in argument <code>mapper</code> is
+  responsible for providing a sequence of map(s) that are
+  sequentially applied, starting with the source gene
+  identifiers in <code>keys</code>. It must at least have the
+  following 4 arguments:</p>
+  
+      <p><ol>
+<li>fromsource gene identifier type, which
+  will be passed as a <code><a href='http://www.inside-r.org/r-doc/GSEABase/GeneIdentifierType-constructors'>GeneIdentifierType</a></code>)
+  object. </li>
+<li>tosource gene identifier type, which
+  will be passed as a <code><a href='http://www.inside-r.org/r-doc/GSEABase/GeneIdentifierType-constructors'>GeneIdentifierType</a></code>)
+  object. </li>
+<li>keysthe query keys to map, which may be
+  used to help generate maps specific to the query, e.g.,
+  for generating cross-species mappings. They may also be
+  ignored, if already compiled maps exist, e.g., maps in
+  standard annotation packages, as the returned map do not
+  need to be limited to the query keys. </li>
+<li>verbosea
+  logical or integer that toggles verbose messages at
+  different levels. </li>
+</ol></p>
+  
+      <p></p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'># some ENTREZ ids</div><div class='input'>ez <- as.character(1:1000)
+</div><div class='input'></div><div class='input'># convert into probe ids for Affymetrix Chip hgu133a</div><div class='input'>m <- mapIDs(ez, EntrezIdentifier('hgu133a.db'), AnnotationIdentifier('hgu133b.db'), verbose=2)
+</div>
+<div class='output'># Converting from EntrezId (hgu133a.db) to Annotation (hgu133b.db) ... 
+# Limiting query to EntrezId (hgu133a.db) ... [1000 -> 701 id(s)]
+# Loading map(s) from EntrezId (hgu133a.db) to Annotation (hgu133b.db) [x-platform/x-id] ... OK [1 step(s)]
+ # Mapping from EntrezId (hgu133b.db) to Annotation (hgu133b.db) [43059 entries] ...  [178/701 mapped (1:1-6 = 275)]
+OK [178/1000 mapped (1:1-6 = 275)]
+</div><div class='input'></div><div class='input'># keep primary affy probes only</div><div class='input'>m <- mapIDs(ez, EntrezIdentifier('hgu133a.db'), AnnotationIdentifier('hgu133b.db'), method='affy', verbose=2)
+</div>
+<div class='output'># Converting from EntrezId (hgu133a.db) to Annotation (hgu133b.db) ... 
+# Limiting query to EntrezId (hgu133a.db) ... [1000 -> 701 id(s)]
+# Loading map(s) from EntrezId (hgu133a.db) to Annotation (hgu133b.db) [x-platform/x-id] ... OK [1 step(s)]
+ # Mapping from EntrezId (hgu133b.db) to Annotation (hgu133b.db) [43059 entries] ...  [178/701 mapped (1:1-6 = 275)]
+ # Applying filtering strategy 'affy' ... (kept 65 2nd-affy probes)  [178/178 passed (1:1-6 = 275)]
+OK [178/1000 mapped (1:1-6 = 275)]
+</div><div class='input'></div><div class='input'># same but only keep 1:1 mapping, using a composed filtering strategy</div><div class='input'>m <- mapIDs(ez, EntrezIdentifier('hgu133a.db'), AnnotationIdentifier('hgu133b.db'), method=c('affy', '1:1'), verbose=2)
+</div>
+<div class='output'># Converting from EntrezId (hgu133a.db) to Annotation (hgu133b.db) ... 
+# Limiting query to EntrezId (hgu133a.db) ... [1000 -> 701 id(s)]
+# Loading map(s) from EntrezId (hgu133a.db) to Annotation (hgu133b.db) [x-platform/x-id] ... OK [1 step(s)]
+ # Mapping from EntrezId (hgu133b.db) to Annotation (hgu133b.db) [43059 entries] ...  [178/701 mapped (1:1-6 = 275)]
+ # Applying filtering strategy 'affy > 1:1' ... (kept 65 2nd-affy probes) (dropped 62 1:2+ maps)  [116/178 passed (1:1)]
+OK [116/1000 mapped (1:1)]
+</div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>mapIDs</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>biocann_object. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Retrieving Bioconductor Annotation Maps</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre>biocann_object(to, from = NULL, optional = FALSE)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>to</dt>
+      <dd>target annotation field as a character string,
+  e.g., &#147;ENTREZID&#148;, &#147;ENSEMBL&#148;, or an
+  annotation package or db which means that one wants to
+  retrieve a mapping to its corresponding primary
+  identifier. If <code>from</code> is missing, <code>to</code> must be
+  the name of an annotation package, i.e. ends with
+  &#147;db&#148;), in which case it tries loading the package
+  and return the whole annotation db object; or any
+  annotation package db or map object such as
+  <code>AnnDbBimap</code>, <code>ChipDb</code> or <code>OrgDb</code> objects,
+  which are returned unchanged.</dd>
+      <dt>from</dt>
+      <dd>source annotation package as a character
+  string e.g. <code>"hgu133a.db"</code>.</dd>
+      <dt>optional</dt>
+      <dd>logical that indicates if the function
+  should return <code>NULL</code> if the mapping cannot be found
+  (<code>TRUE</code>), or throw an error. Note that this does not
+  apply to the installation part: if a required annotation
+  package is missing, an error is thrown even if
+  <code>optional=TRUE</code>.</dd>
+    </dl>
+    
+    <div class="Value">
+      <h2>Value</h2>
+      
+      <p>a <code><a href='http://www.inside-r.org/r-doc/AnnotationDbi/Bimap'>ProbeAnnDbBimap</a></code> if annotation is not
+  missing, a <code>ProbeAnnDb</code> object otherwise.</p>
+  
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>The function <code>biocann_object</code> retrieves annotation
+  objects, like bimaps, from Bioconductor annotation
+  packages. It is similar to the function <code>getAnnMap</code>
+  from the <span class = "pkg">annotate</span> package, except that it also
+  accepts annotation -- bimap -- objects, and will try to
+  install missing packages if not found (see section
+  Details).</p>
+  
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p>If an annotation package is specified as a character
+  string, and is not found in the search path, and if R
+  runs in interactive mode, then the user is asked whether
+  one should try install the missing package. Default
+  response is 'yes' so that simply hitting return will
+  install the package via <code><a href='http://www.inside-r.org/r-doc/utils/install.packages'>install.packages</a></code>
+  and load it. An error is thrown if this eventually fails.</p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'># db package object</div><div class='input'>biocann_object('hgu133a.db')
+</div>
+<div class='output'>ChipDb object:
+| DBSCHEMAVERSION: 2.1
+| Db type: ChipDb
+| Supporting package: AnnotationDbi
+| DBSCHEMA: HUMANCHIP_DB
+| ORGANISM: Homo sapiens
+| SPECIES: Human
+| MANUFACTURER: Affymetrix
+| CHIPNAME: Human Genome U133 Set
+| MANUFACTURERURL: http://www.affymetrix.com/support/technical/byproduct.affx?product=hgu133
+| EGSOURCEDATE: 2012-Sep4
+| EGSOURCENAME: Entrez Gene
+| EGSOURCEURL: ftp://ftp.ncbi.nlm.nih.gov/gene/DATA
+| CENTRALID: ENTREZID
+| TAXID: 9606
+| GOSOURCENAME: Gene Ontology
+| GOSOURCEURL: ftp://ftp.geneontology.org/pub/go/godatabase/archive/latest-lite/
+| GOSOURCEDATE: 20120901
+| GOEGSOURCEDATE: 2012-Sep4
+| GOEGSOURCENAME: Entrez Gene
+| GOEGSOURCEURL: ftp://ftp.ncbi.nlm.nih.gov/gene/DATA
+| KEGGSOURCENAME: KEGG GENOME
+| KEGGSOURCEURL: ftp://ftp.genome.jp/pub/kegg/genomes
+| KEGGSOURCEDATE: 2011-Mar15
+| GPSOURCENAME: UCSC Genome Bioinformatics (Homo sapiens)
+| GPSOURCEURL: ftp://hgdownload.cse.ucsc.edu/goldenPath/hg19
+| GPSOURCEDATE: 2010-Mar22
+| ENSOURCEDATE: 2012-Jul31
+| ENSOURCENAME: Ensembl
+| ENSOURCEURL: ftp://ftp.ensembl.org/pub/current_fasta
+| UPSOURCENAME: Uniprot
+| UPSOURCEURL: http://www.uniprot.org/
+| UPSOURCEDATE: Thu Sep  6 14:10:54 2012
+</div><div class='input'></div><div class='input'># bimap from hgu133a probe id to ENTREZID</div><div class='input'>biocann_object('ENTREZID', 'hgu133a.db')
+</div>
+<div class='output'>ENTREZID map for chip hgu133a (object of class "ProbeAnnDbBimap")
+</div><div class='input'></div><div class='input'># reversed bimap from UNIGENE to hgu133a probe id</div><div class='input'>biocann_object('hgu133a.db', 'UNIGENE')
+</div>
+<div class='output'>revmap(UNIGENE) map for chip hgu133a (object of class "ProbeAnnDbBimap")
+</div><div class='input'># this is equivalent to using the annotation package object (no quotes),</div><div class='input'># when the package is already loaded (=> helpful in interactive session with auto-completion)</div><div class='input'>biocann_object(hgu133a.db, 'UNIGENE')
+</div>
+<div class='output'>revmap(UNIGENE) map for chip hgu133a (object of class "ProbeAnnDbBimap")
+</div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>biocann_object</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

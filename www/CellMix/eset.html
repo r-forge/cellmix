@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>eset. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Extracting Expression Data</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre>eset(object, ...)
+
+<span class="label label-important">S4</span> (GEDdata_entry)
+`eset`(object, load = TRUE, filter = TRUE, verbose = FALSE, save = TRUE, 
+  cache = TRUE)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>object</dt>
+      <dd>object from which to extract the expression
+  data</dd>
+      <dt>...</dt>
+      <dd>extra argument to allow extension. See each
+  method's description for more details,.</dd>
+      <dt>load</dt>
+      <dd>logical that indicates if the primary data
+  should be (re-)loaded, or a character string giving the
+  path of the file from where to load the data, which will
+  typically be the Matrix file as downloaded from GEO. If
+  <code>FALSE</code> the gene expression data is not loaded and
+  the result will be <code>NULL</code> if the dataset has not
+  already been loaded in a previous call.
+
+  If explicitly <code>TRUE</code> (i.e. not missing), then the
+  data is (re-)loaded from cache, or downloaded from a
+  public repository if it has not been previously cached.
+  In this case, the pre-processing pipeline is performed
+  again.</dd>
+      <dt>filter</dt>
+      <dd>logical that indicates if the preprocessing
+  pipeline should be applied to the "plain" data. If
+  <code>TRUE</code> then the processing/filtering function
+  associated with the data (registry field <code>'filter'</code>)
+  is applied. A custom pre-processing function may also be
+  passed.
+
+  If <code>FALSE</code>, no processing is performed on the data.</dd>
+      <dt>verbose</dt>
+      <dd>logical/number that toggles verbose
+  messages. To better monitor how the data is
+  generated/processed, it is recommended to toggle on
+  verbosity, and use numeric values at various levels (e.g.
+  <code>verbose=3</code>) to display more detailed outputs.</dd>
+      <dt>save</dt>
+      <dd>logical that indicates if the data should be
+  saved in in R binary format in the local GED cache, for
+  fast future loading -- possibly in a different R
+  session.</dd>
+      <dt>cache</dt>
+      <dd>logical that indicates if the data should be
+  retrieved from the local cache if present, or
+  re-downloaded. If <code>save=TRUE</code> (as default), the new
+  data will replace any previously downloaded data.</dd>
+    </dl>
+    
+    <div class="Value">
+      <h2>Value</h2>
+      
+      <p>an <code><a href='http://www.inside-r.org/r-doc/Biobase/class.ExpressionSet'>ExpressionSet</a></code> object.</p>
+  
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>Extracts expression data (usually as <code>ExpressionSet</code>
+  objects) from other objects.</p>
+  
+    </div>
+
+    <div class="Methods">
+      <h2>Methods</h2>
+      
+      <p><ol>
+<li>eset<code>signature(object = "ExpressionMix")</code>:
+  Extracts an ExpressionSet object from an
+  <code>ExpressionMix</code> object.</p>
+  
+      <p>Because <code><a href='ExpressionMix-class.html'>ExpressionMix-class</a></code> inherits from
+  <code><a href='http://www.inside-r.org/r-doc/Biobase/class.ExpressionSet'>ExpressionSet-class</a></code>, this methods simply
+  returns the object coerced as an <code>ExpressionSet</code>
+  object.</p>
+  
+      <p></li>
+<li>eset<code>signature(object = "GEDdata_entry")</code>:
+  Extracting Expression Data from CellMix Dataset Registry
+  Entry.</p>
+  
+      <p>Loads and extracts the expression data from a CellMix
+  registry dataset entry, as an <code><a href='http://www.inside-r.org/r-doc/Biobase/class.ExpressionSet'>ExpressionSet</a></code>
+  object.</p>
+  
+      <p>The first time the expression data is accessed, and if
+  argument <code>load=TRUE</code>, it is loaded from the local
+  storage if possible (cf. <code><a href='GEDsave.html'>GEDsave</a></code>), or
+  downloaded from GEO using <code><a href='GEDdownload.html'>GEDdownload</a></code>. It
+  is then pre-processed (see below) and the resulting value
+  (an <code>ExpressionSet</code> object) is cached in the
+  GEDdata_entry environment. Subsequent calls use the
+  cached value.</p>
+  
+      <p>The data pre-processing consists in filtering and
+  extraction/addition of phenotypic or feature annotation
+  data. The filtering is performed by the function stored
+  in element <code>object$filter</code>. The extra phenotypic
+  data is generated by the function stored in element
+  <code>object$pdata</code>. The extra feature data is generated
+  by the function stored in element <code>object$fdata</code>.
+  Note that the whole pre-processing pipeline is not
+  cached.</p>
+  
+      <p></li>
+</ol></p>
+  
+      <p></p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'>## <strong>Not run</strong>: </div><div class='input'># # get data from the registry</div><div class='input'># e <- gedData('GSE20300')</div><div class='input'># # this is an ExpressionMix object</div><div class='input'># e</div><div class='input'># # extract the ExpressionSet part</div><div class='input'># class(eset(e))</div><div class='input'># ## <strong>End(Not run)</strong></div><div class='input'></div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>eset</li><li>eset,ExpressionMix-method</li><li>eset,GEDdata_entry-method</li><li>eset-methods</li>
+    </ul>
+    <ul>
+      <li>methods</li>
+    </ul> -->
+      
+    <h2>See also</h2>
+    
+  <code><a href='http://www.inside-r.org/r-doc/Biobase/class.ExpressionSet'>ExpressionSet</a></code>
+
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

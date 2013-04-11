@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>idtype. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Identifying Gene or Probe ID Type</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre>idtype(object, ...)
+
+<span class="label label-important">S4</span> (missing)
+`idtype`(object, def = FALSE)
+
+<span class="label label-important">S4</span> (ProbeAnnDbBimap)
+`idtype`(object, limit = 500L, ...)
+
+<span class="label label-important">S4</span> (ChipDb)
+`idtype`(object, limit = 500L, ...)
+
+<span class="label label-important">S4</span> (MarkerList)
+`idtype`(object, each = FALSE, ...)
+
+<span class="label label-important">S4</span> (vector)
+`idtype`(object, each = FALSE, limit = NULL, no.match = "")</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>object</dt>
+      <dd>an R object that contains the gene
+  identifiers whose type is to be determined.</dd>
+      <dt>...</dt>
+      <dd>extra argument to allow extension, generally
+  passed down to <code>idtype,character-method</code>. See each
+  method's description for more details.</dd>
+      <dt>def</dt>
+      <dd>a logical or a subsetting vector, used when
+  <code>object</code> is missing, which indicates that the result
+  should contain the definition of the matching
+  pattern/function of each type, or which type's deifnition
+  should be included in the result list.</dd>
+      <dt>each</dt>
+      <dd>logical indicating whether the type of each
+  element should be returned (<code>TRUE</code>) or only the type
+  of the vector as a whole (default).</dd>
+      <dt>limit</dt>
+      <dd>specification for limiting which elements
+  are used to detect the type of identifiers. If a single
+  numeric, then only the first <code>limit</code> elements are
+  used. Otherwise it must be a subsetting logical or
+  numeric vector.</dd>
+      <dt>no.match</dt>
+      <dd>character string that specifies the
+  string to use when the type cannot be determined.
+
+  The IDs can be either: <ul>
+<li>probe IDs (e.g.
+  123456_at or ILMN_123456 for Affymetrix or Illumina chips
+  respectively), the type starts with a dot <code>'.'</code>,
+  allowing the subsequent handling of such IDs as a group.
+  </li>
+<li>other biological ID types, the result are character
+  strings such as those used as attributes in Bioconductor
+  annotation packages (e.g. <code>"ENTREZID"</code> or
+  <code>"ENSEMBL"</code>) </li>
+<li>Names of annotation packages
+  e.g. <code>"hgu133plus2.db"</code>. </li>
+</ul>
+
+
+  This function is able to identify the following ID types
+  using regular expression patterns or dedicated function:
+  <ul>
+<li> ENSEMBL = "^ENSG[0-9]+$" </li>
+<li>
+  ENSEMBLTRANS = "^ENST[0-9]+$" </li>
+<li> ENSEMBLPROT =
+  "^ENSP[0-9]+$" </li>
+<li> ENTREZID = "^[0-9]+$" </li>
+<li> IMAGE =
+  "^IMAGE:[0-9]+$" </li>
+<li> GOID = "^GO:[0-9]+$" </li>
+<li> PFAM =
+  "^PF[0-9]+$" </li>
+<li> REFSEQ = "^N[MP]_[0-9]+$" </li>
+<li> ENZYME
+  = "^[0-9]+(\.(([0-9]+)|-)+)3$" </li>
+<li> MAP =
+  "^[0-9XY]+((([pq])|(cen))(([0-9]+(\.[0-9]+)?)|(ter))?(-([0-9XY]+)?(([pq]?)|(cen))((ter)|([0-9]+(\.[0-9]+)?))?)?)?$"
+  </li>
+<li> GENEBANK (Nucleotide) = "^[A-Z][0-9]5$" |
+  "^[A-Z]2[0-9]6$" </li>
+<li> GENEBANK (Protein) =
+  "^[A-Z]3[0-9]5$" </li>
+<li> GENEBANK (WGS) =
+  "^[A-Z]4[0-9]8[0-9]?[0-9]?$" </li>
+<li> GENEBANK (MGA) =
+  "^[A-Z]5[0-9]7$" </li>
+<li> GENENAME = " " </li>
+<li>
+  .Affymetrix =
+  "(^AFFX-)|(^[0-9]+_([abfgilrsx]_)?([as]t)|(i))$" </li>
+<li>
+  .Illumina = "^ILMN_[0-9]+$" </li>
+<li> .Agilent =
+  "^A_[0-9]+_P[0-9]+$" </li>
+<li> .nuID = use the function
+  <code><a href='nuIDdecode.html'>nuIDdecode</a></code> to try converting the ids into
+  nucleotide sequences. Identification is positive if no
+  error is thrown during the conversion. </li>
+</ul>
+</dd>
+    </dl>
+    
+    <div class="Value">
+      <h2>Value</h2>
+      
+      <p>a single character string (possibly empty) if
+  <code>each=FALSE</code> (default) or a character vector of the
+  same "length" as <code>object</code> otherwise.</p>
+  
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>The S4 generic <code>idtype</code> automatically determine the
+  type of gene/feature identifiers stored in objects, based
+  on a combination of regular expression patterns and test
+  functions.</p>
+  
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p>It uses a heuristic based on a set of regular expressions
+  and functions that uniquely match most common types of
+  identifiers, such as Unigene, entrez gene, Affymetrix
+  probe ids, Illumina probe ids, etc..</p>
+  
+    </div>
+
+    <div class="Methods">
+      <h2>Methods</h2>
+      
+      <p><ol>
+<li>idtype<code>signature(object = "missing")</code>:
+  Method for when <code>idtype</code> is called with its first
+  argument missing, in which case it returns all or a
+  subset of the known type names as a character vector, or
+  optionally as a list that contains their definition, i.e.
+  a regular expression or a matching function.</p>
+  
+      <p></li>
+<li>idtype<code>signature(object = "matrix")</code>:
+  Detects the type of identifiers used in the row names of
+  a matrix.</p>
+  
+      <p></li>
+<li>idtype<code>signature(object = "ExpressionSet")</code>:
+  Detects the type of identifiers used in the feature names
+  of an <code>ExpressionSet</code> object.</p>
+  
+      <p></li>
+<li>idtype<code>signature(object = "NMF")</code>: Detects
+  the type of identifiers used in the rownames of the basis
+  matrix of an <code>NMF</code> model.</p>
+  
+      <p></li>
+<li>idtype<code>signature(object =
+  "ProbeAnnDbBimap")</code>: Detects the type of the primary
+  identifiers of a probe annotation bimap object.</p>
+  
+      <p>To speedup the identification, only the first 500 probes
+  are used by default, since the IDs are very likely to
+  have been curated and to be of the same type. This can be
+  changed using argument <code>limit</code>.</p>
+  
+      <p></li>
+<li>idtype<code>signature(object = "ChipDb")</code>:
+  Detects the type of the identifiers of a chip annotation
+  object.</p>
+  
+      <p>To speedup the identification, only the first 500 probes
+  are used by default, since the IDs are very likely to
+  have been curated and to be of the same type. This can be
+  changed using argument <code>limit</code>.</p>
+  
+      <p></li>
+<li>idtype<code>signature(object =
+  "GeneIdentifierType")</code>: Returns the type of identifier
+  defined by a <code><a href='http://www.inside-r.org/r-doc/GSEABase/GeneIdentifierType-constructors'>GeneIdentifierType</a></code> object.
+  Note that this methods is a bit special in the sense that
+  it will return the string &#147;ANNOTATION&#148; for
+  annotation based identifiers, but will not tell which
+  platform it is relative to. This is different to what
+  <code>idtype</code> would do if applied to the primary
+  identifiers of the corresponding annotation package.</p>
+  
+      <p></li>
+<li>idtype<code>signature(object = "list")</code>: Detects
+  the type of all elements in a list, but provides the
+  option of detecting the type of each element separately.</p>
+  
+      <p></li>
+<li>idtype<code>signature(object = "NULL")</code>: Dummy
+  method -- defined for convenience -- that returns
+  <code>''</code></p>
+  
+      <p></li>
+<li>idtype<code>signature(object = "vector")</code>: This
+  is the workhorse method that determine the type of ids
+  contained in a character vector.</p>
+  
+      <p></li>
+</ol></p>
+  
+      <p></p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'># all known types</div><div class='input'>idtype()
+</div>
+<div class='output'> [1] "UNIGENE"      "ENSEMBL"      "ENSEMBLTRANS" "ENSEMBLPROT"  "ENTREZID"    
+ [6] "IMAGE"        "GOID"         "PFAM"         "REFSEQ"       "ENZYME"      
+[11] "MAP"          "GENEBANK"     "GENEBANK"     "GENEBANK"     "GENEBANK"    
+[16] "GENENAME"     ".Affymetrix"  ".Illumina"    ".Agilent"     ".nuID"       
+</div><div class='input'># with their definitions</div><div class='input'>idtype(def=TRUE)
+</div>
+<div class='output'>$UNIGENE
+[1] "^[A-Z][a-z]\\.[0-9]+$"
+
+$ENSEMBL
+[1] "^ENSG[0-9]+$"
+
+$ENSEMBLTRANS
+[1] "^ENST[0-9]+$"
+
+$ENSEMBLPROT
+[1] "^ENSP[0-9]+$"
+
+$ENTREZID
+[1] "^[0-9]+$"
+
+$IMAGE
+[1] "^IMAGE:[0-9]+$"
+
+$GOID
+[1] "^GO:[0-9]+$"
+
+$PFAM
+[1] "^PF[0-9]+$"
+
+$REFSEQ
+[1] "^[XYN][MPR]_[0-9]+$"
+
+$ENZYME
+[1] "^[0-9]+(\\.(([0-9]+)|-)+){3}$"
+
+$MAP
+[1] "^(([0-9]{1,2})|([XY]))((([pq])|(cen))(([0-9]+(\\.[0-9]+)?)|(ter))?(-([0-9]{1,2})|([XY]))?(([pq]?)|(cen))((ter)|([0-9]+(\\.[0-9]+)?))?)?)?$"
+
+$GENEBANK
+[1] "^[A-Z][0-9]{5}$"    "^[A-Z]{2}[0-9]{6}$"
+
+$GENEBANK
+[1] "^[A-Z]{3}[0-9]{5}$"
+
+$GENEBANK
+[1] "^[A-Z]{4}[0-9]{8}[0-9]?[0-9]?$"
+
+$GENEBANK
+[1] "^[A-Z]{5}[0-9]{7}$"
+
+$GENENAME
+[1] " "
+
+$.Affymetrix
+[1] "(^AFFX[-_])|(^[0-9]+_([abfgilrsx]_)?([as]t)|(i))$"
+
+$.Illumina
+[1] "^ILMN_[0-9]+$"
+
+$.Agilent
+[1] "^A_[0-9]+_P[0-9]+$"
+
+$.nuID
+function (x) 
+!is.na(nuIDdecode(x, error = NA))
+<environment: 0xb730b2c>
+
+</div><div class='input'>idtype(def='ENTREZID')
+</div>
+<div class='output'>[1] "^[0-9]+$"
+</div><div class='input'>idtype(def=c('ENTREZID', 'ENSEMBLTRANS'))
+</div>
+<div class='output'>$ENTREZID
+[1] "^[0-9]+$"
+
+$ENSEMBLTRANS
+[1] "^ENST[0-9]+$"
+
+</div><div class='input'># from GeneIdentifierType objects</div><div class='input'>idtype(NullIdentifier())
+</div>
+<div class='output'>[1] ""
+</div><div class='input'>idtype(AnnotationIdentifier('hgu133a.db'))
+</div>
+<div class='output'>"ANNOTATION"
+</div><div class='input'># but</div><div class='input'>## <strong>Not run</strong>: </div><div class='input'># 	library(hgu133a.db)</div><div class='input'># 	idtype(hgu133a.db)</div><div class='input'># ## <strong>End(Not run)</strong></div><div class='input'>idtype("12345_at")
+</div>
+<div class='output'>[1] ".Affymetrix"
+</div><div class='input'>idtype(c("12345_at", "23232_at", "555_x_at"))
+</div>
+<div class='output'>[1] ".Affymetrix"
+</div><div class='input'># mixed types</div><div class='input'>ids <- c("12345_at", "23232_at", "Hs.1213")
+</div><div class='input'>idtype(ids) # not detected
+</div>
+<div class='output'>[1] ""
+</div><div class='input'>idtype(ids, each=TRUE)
+</div>
+<div class='output'>     12345_at      23232_at       Hs.1213 
+".Affymetrix" ".Affymetrix"     "UNIGENE" 
+</div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>idtype</li><li>idtype,ChipDb-method</li><li>idtype,ExpressionSet-method</li><li>idtype,GeneIdentifierType-method</li><li>idtype,list-method</li><li>idtype,MarkerList-method</li><li>idtype,matrix-method</li><li>idtype-methods</li><li>idtype,missing-method</li><li>idtype,NMF-method</li><li>idtype,NULL-method</li><li>idtype,ProbeAnnDbBimap-method</li><li>idtype,vector-method</li>
+    </ul>
+    <ul>
+      <li>methods</li>
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

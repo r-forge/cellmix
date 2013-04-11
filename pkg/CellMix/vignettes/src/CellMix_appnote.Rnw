@@ -1,0 +1,241 @@
+%\VignetteIndexEntry{CellMix: A Comprehensive Toolbox for Gene Expression Deconvolution}
+%\VignetteDepends{CellMix,knitr,hgu133plus2.db}
+%\VignetteCompiler{knitr}
+
+\documentclass{bioinfo}
+
+\copyrightyear{2012}
+\pubyear{2012}
+
+% add preamble from pkgmaker
+<<pkgmaker_preamble, echo=FALSE, results='asis'>>=
+pkgmaker::latex_preamble()
+@
+
+\usepackage[colorlinks=true]{hyperref}
+\hypersetup{
+ citecolor=black,% 
+ filecolor=black,% 
+ linkcolor=black,% 
+ urlcolor=black
+}
+%\newcommand{\CellMixURL}{\url{http://www.bioconductor.org/bioc/2.11/CellMix}}
+\newcommand{\CellMixURL}{\url{http://web.cbio.uct.ac.za/~renaud/CRAN/web/CellMix}}
+% inline lists
+\usepackage{paralist}
+
+\DeclareGraphicsExtensions{.pdf,.eps}
+\begin{document}
+\firstpage{1}
+
+\title[CellMix]{CellMix: A Comprehensive Toolbox for Gene Expression Deconvolution}
+\author[Gaujoux and Seoighe]{%
+Renaud Gaujoux\,$^{1}$,
+Cathal Seoighe\,$^{2}$\footnote{to whom correspondence should be addressed}%
+} 
+\address{%
+$^{1}$Computational Biology Group, Institute of Infectious Diseases and Molecular Medicine, University of Cape Town, South Africa\\
+$^{2}$National University of Ireland Galway, Ireland}
+
+\history{Received on XXXXX; revised on XXXXX; accepted on XXXXX}
+
+\editor{Associate Editor: XXXXXXX}
+
+\maketitle
+
+\begin{abstract}
+
+\section{Summary:}
+Gene expression data are typically generated from heterogeneous biological samples that are composed of multiple cell or tissue types, in varying proportions, each contributing to global gene expression.
+This heterogeneity is a major confounder in standard analysis such as differential expression analysis, where differences in the relative proportions of the constituent cells may prevent or bias the detection of cell-specific differences.  
+Computational deconvolution of global gene expression is an appealing alternative to costly physical sample separation techniques, and enables  a more detailed analysis of the underlying biological processes, at the cell type level.
+To facilitate and popularise the application of such methods, we developed \proglang{CellMix}, an \proglang{R} package that incorporates most state of the art deconvolution methods, into an intuitive and extendible framework, providing a single entry point to explore, assess and disentangle gene expression data from heterogeneous samples.
+
+\section{Availability and Implementation:}
+The \Rpkg{CellMix} builds upon R/BioConductor and is available from \CellMixURL.
+It will eventually be included in \proglang{BioConductor}.
+The package's vignettes notably contain additional information, examples and references.
+
+\section{Contact:} \href{renaud@cbio.uct.ac.za}{renaud@cbio.uct.ac.za}
+
+\end{abstract}
+
+\section{Gene expression deconvolution}
+
+The vast majority of gene expression data are generated from biological samples that are composed of multiple cell or tissue types that contribute to different extents to the global gene expression, according to their relative proportions.
+Heterogeneity in sample composition is commonly acknowledged as a major confounder in classical gene expression analysis like differential expression analysis, specially in clinical studies \citep{Zhao2010}.
+%This specially applies to clinical studies, where samples primary derive from blood, which is highly heterogeneous due to both the great variety of cell it contains and its dynamic composition, which is also of biological relevance.
+In this context, being able to disentangle the effects due to cell-specific expression and/or varying proportions provides finer insights into the biological processes of interest, by enabling the data to be explored at the cell type level.
+
+Gene expression deconvolution receives constant interest in bioinformatics research, with new methodologies published regularly \citep{Zhao2010}.
+While all methods apply to global expression data, they differ in the type of auxiliary data they required, such as cell proportion measurements/estimates, cell-specific signatures or sets of marker genes.
+Having a standardised and unified interface for running a variety of deconvolution methods that can adapt to most common data settings, would therefore be very useful, and help popularise computational deconvolution.
+
+In order to facilitate the application and development of gene expression deconvolution methods, we developed an \proglang{R} package called \pkgname{CellMix}, whose principal objectives are to provide 
+\begin{inparaenum}[\itshape a\upshape)]
+\item implementations of some common methods;
+\item easy access to real auxiliary and benchmark data, and especially marker gene lists;
+\item utilities for assessing results and developing new methods.
+\end{inparaenum}
+
+This paper briefly describes the main features of the \pkgname{CellMix} package, and illustrates its capability with some concrete examples.
+More examples, as well as thorough documentation, references and implementation details are available in the package's vignettes.
+
+\begin{methods}
+\section{The \pkgname{CellMix} package: overview}
+
+The \pkgname{CellMix} package builds upon the Bioconductor project \citep{Gentleman2004} and the \pkgname{NMF} package \citep{Gaujoux2010}, to provide a flexible general framework for gene expression deconvolution methods.
+It defines a rich programming interface around three internal extendible registries dedicated to deconvolution methods, marker gene lists and benchmark datasets, respectively.
+
+\subsection{Deconvolution methods}
+
+\pkgname{CellMix} provides access to a range of 7 gene expression deconvolution methods, in such a way that they can easily be applied to commonly available data, via a unique interface function called \code{ged}.
+In particular, we implemented a default method selection scheme, which chooses a sensible deconvolution method based on the type of input and auxiliary data that are provided.
+%For example, the standard least-squares-based method \emph{csSAM} \citep{Shen-Orr2010} estimates cell signatures from proportions, while the semi-supervised NMF methods requires marker genes \citep{Gaujoux2011}.
+
+\subsection{Cell signatures and marker gene sets}
+
+In the context of gene expression deconvolution and sample heterogeneity in general, marker genes constitute a critical asset.
+For example, they can provide cell-specific signals that can be used to estimate cell-specific signatures and/or cell proportions, or detect cell type-related differential expression \citep{Gaujoux2011,Kuhn2011,Bolen2011}.
+The \pkgname{CellMix} package includes a set of 8 marker gene lists, compiled from previous studies and public databases, and provides many convenient filtering or plotting functions for such type of data.
+Moreover, it implements a very flexible general pipeline to convert gene identifiers, including across platform or species, which greatly simplifies the use of both marker genes and datasets from one study in another. 
+
+\subsection{Benchmark datasets}
+
+\pkgname{CellMix} ships with a curated repository of 11 public datasets compiled from a variety of published studies on cell/tissue specific gene expression or deconvolution methods.
+These datasets were chosen because they contain not only global gene expression from mixed samples, but also data such as cell type specific signatures and/or measured mixture proportions for each sample, making them ideal for developing and validating deconvolution approaches. 
+Each dataset can be loaded in a single call, which applies a pre-processing pipeline to the original -- normalised -- data, downloaded from public repositories.
+In particular, data relevant for deconvolution are extracted from sample annotations and processed into a single data objects, from which mixed/pure sample expression profiles and/or cell proportions can be easily retrieved.
+
+\end{methods}
+
+<<options, echo=FALSE, include=FALSE>>=
+library(knitr)
+opts_chunk$set(dev=c('cairo_ps', 'pdf'), fig.path='./fig-', size='scriptsize', fig.align='center', out.width="0.35\\textwidth")
+library(CellMix)
+@
+
+\section{Example: blood sample deconvolution}
+
+The dataset \emph{GSE20300} contains gene expression data (on Affymetrix HGU133Plus2) of whole blood samples from stable and acute rejection pediatric kidney transplant, for which Complete Blood Count (CBC) data are available \citep{Shen-Orr2010}.
+The following code estimates these proportions using an optimised set of immune cell type signatures (on Affymetrix HGU133A/B) \citep{Abbas2009} and produces the scatter plot in Figure~\ref{fig:cellmix}.
+Both these data are available in the \pkgname{CellMix} package.
+Importantly, sensible probeset mapping or joint data transformation and normalisation are transparently handled via a -- customisable -- pre-processing pipeline.
+To our knowledge, this is the first time these data have been used in this way.
+The ease with which the results are generated highlights the usefulness of the \Rpkg{CellMix}.
+<<gedblood_code, eval=FALSE>>=
+# load benchmark data
+acr <- ExpressionMix('GSE20300')
+# compute proportions 
+res <- gedBlood(acr)
+# plot against actual CBC
+profplot(acr, asCBC(res))
+@
+
+\vspace{-2em}
+\section{Example: working with marker genes}
+In this example, we illustrate how \pkgname{CellMix} simplifies working with marker genes lists.  
+The consistency of expression profiles from 4 transformed immune cell lines
+contained in dataset \emph{GSE11058} (on Affymetrix HGU133Plus2)
+\citep{Abbas2009} is graphically assessed using the marker gene list from
+\href{http://www.t1dbase.org/page/HaemAtlasView}{HaemAtlas}, which contains
+markers for 8 immune cell types derived by \cite{Watkins2009} in an independent
+study (on Illumina Human V2).
+The following code generates the heatmap on Figure \ref{fig:cellmix}, which shows, for each cell line, the average expression profile (computed from 3 replicates each) of the 50 marker genes in each cell type in the list with the highest maximum average expression.
+Rows are scaled into relative expression separately (i.e. sum up to one).
+The row annotation columns on the right hand side highlight the cell line in which each marker is expressed at the highest level.
+They show that some markers are highly expressed by cell types other than their own, which suggests either an altered expression profile of these cell lines, or an inadequacy of these markers for this particular dataset. 
+
+%\begin{inparaenum}[\itshape 1\upshape)]
+%\item loads the pure samples expression profiles, 
+%\item loads and map marker gene ids from Illumina to Affymetrix probeset ids,
+%\item compute average expression profiles (there are 3 replicates in each cell line), 
+%\item reorder the markers according to their maximum average expression,
+%\item finally plots a heatmap showing the average expression of each marker, as well as their maximum expressing cell line. 
+%\end{inparaenum}
+
+<<markers_code, eval=FALSE>>=
+# load/extract expression data
+pure <- pureSamples(ExpressionMix('GSE11058'))
+# load/convert HaemAtlas markers
+m <- convertIDs(cellMarkers('HaemAtlas'), pure)
+# reorder/plot markers based on maximum average expression
+avg <- rowMeansBy(pure, pure$LType)
+m <- reorder(m, avg, fun=max)
+basismarkermap(m[,1:50], avg)
+@
+
+<<gedblood, include=FALSE, fig.keep='last'>>=
+<<gedblood_code>>
+profplot(acr, asCBC(res), xlab='Measured CBC proportions', ylab='Estimated proportions')
+@
+<<markers, include=FALSE, fig.keep='last'>>=
+<<markers_code>>
+basismarkermap(m[,1:50], avg, annCol=list(Origin=c("B", "B", "Monocyte", "T")), labCol="/^[^-]+-(.*)$/")
+@
+
+\vspace{-2em}
+\begin{figure}[!htpb]%figure1
+\setkeys{Gin}{width=0.23\textwidth}
+\includegraphics{fig-gedblood}
+\includegraphics{fig-markers}
+\caption{(left) Blood sample deconvolution: estimated versus measured proportions (CBC).
+(right) Heatmap of average marker gene expression in pure cell lines}\label{fig:cellmix}
+\end{figure}
+
+%\begin{table}[!t]
+%\processtable{This is table caption\label{Tab:01}}
+%{\begin{tabular}{llll}\toprule
+%head1 & head2 & head3 & head4\\\midrule
+%row1 & row1 & row1 & row1\\
+%row2 & row2 & row2 & row2\\
+%row3 & row3 & row3 & row3\\
+%row4 & row4 & row4 & row4\\\botrule
+%\end{tabular}}{This is a footnote}
+%\end{table}
+
+
+
+%\begin{figure}[!tpb]%figure1
+%%\centerline{\includegraphics{fig01.eps}}
+%\caption{Caption, caption.}\label{fig:01}
+%\end{figure}
+
+%\begin{figure}[!tpb]%figure2
+%%\centerline{\includegraphics{fig02.eps}}
+%\caption{Caption, caption.}\label{fig:02}
+%\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%     please remove the " % " symbol from \centerline{\includegraphics{fig01.eps}}
+%     as it may ignore the figures.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\vspace{-3em}
+\section{Conclusion}
+
+The \pkgname{CellMix} package provides a comprehensive set of functionalities that together facilitate the exploration, assessment and deconvolution of gene expression data generated from heterogeneous biological samples.
+It integrates multiple tissue/cell-specific gene databases, a set of curated benchmark public gene expression datasets, and most of the state of the art deconvolution algorithms, into a single unified framework.
+The package is designed to be intuitive and extendible, as well as to integrate well with standard \proglang{R/BioConductor} packages.
+Being suitable for both data analysis and algorithm implementation, such a toolbox will hopefully help and encourage researchers to explore gene expression data at the cell-type level, as well as to develop new deconvolution methodologies.
+
+
+%\section*{Acknowledgement}
+
+\paragraph{Funding\textcolon} CS is funded by Science Foundation Ireland (grant number 07/SK/M1211b) 
+
+\bibliographystyle{natbib}
+%\bibliographystyle{achemnat}
+%\bibliographystyle{plainnat}
+%\bibliographystyle{abbrv}
+%\bibliographystyle{bioinformatics}
+%
+%\bibliographystyle{plain}
+%
+{\scriptsize
+\bibliography{/home/renaud/Documents/articles/library}
+}
+
+\end{document}

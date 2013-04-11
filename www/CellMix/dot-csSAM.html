@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>.csSAM. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="
+  Original function: Shai Shen-Orr, Rob Tibshirani,
+  Narasimhan Balasubramanian, David Wang
+
+  Adaptation for &lt;span class = &quot;pkg&quot;&gt;CellMix&lt;/span&gt;: Renaud Gaujoux
+">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Cell-specific Differential Expression with csSAM</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre>.csSAM(Y, x, data = NULL, nperms = 200, alternative = c("two.sided", "greater", "less"), 
+  standardize = TRUE, medianCenter = TRUE, logRm = FALSE, logBase = 2, nonNeg = TRUE, 
+      verbose = lverbose())</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>Y</dt>
+      <dd>target global gene expression matrix (n x p),
+  with samples in columns, ordered in the same order at the
+  cell proportions data in <var>x</var>.</dd>
+      <dt>x</dt>
+      <dd>known cell proportions as a matrix (k x p) or an
+  <code><a href='http://www.inside-r.org/r-doc/NMF/NMF-class'>NMF-class</a></code> model containing the cell
+  proportions in the coefficient matrix -- and a normally
+  empty basis matrix. The proportions must be ordered in
+  the same order as the samples in the target matrix.
+
+  For <code>csTopTable</code>, a csSAM fit as return by
+  <code><a href='ged.html'>ged</a></code>.</dd>
+      <dt>data</dt>
+      <dd>specification of the sample groups. If not
+  missing, it must be a factor or coercible to a factor,
+  with length the number of samples, i.e. columns, in the
+  target matrix.</dd>
+      <dt>nperms</dt>
+      <dd>The number of permutations to perform. It
+  is only used when computing cell-specific differential
+  expression between groups specified in argument
+  <code>data</code>.</dd>
+      <dt>verbose</dt>
+      <dd>logical that indicates if verbose messages
+  should be shown.</dd>
+      <dt>alternative</dt>
+      <dd>two.sided less greater</dd>
+      <dt>standardize</dt>
+      <dd>Standardize sample or not. Default is
+  TRUE.</dd>
+      <dt>medianCenter</dt>
+      <dd>Median center rhat distributions.
+  Default is TRUE.</dd>
+      <dt>logRm</dt>
+      <dd>Exponentiate data for deconvolution stage.
+  Default is FALSE</dd>
+      <dt>logBase</dt>
+      <dd>Base of logaritm used to determine
+  exponentiation factor. Default is 2</dd>
+      <dt>nonNeg</dt>
+      <dd>For single channel arrays. Set any
+  cell-specific expression estimated as negative, to a
+  ceiling of 0. It is conservative in its study of
+  differential expression. Default is FALSE.</dd>
+    </dl>
+    
+    <div class="Value">
+      <h2>Value</h2>
+      
+      <p>Returns an NMF model object, with the cell specific
+  signatures stored in the <code><a href='http://www.inside-r.org/r-doc/NMF/basis-coef-methods'>basis</a></code> matrix, and
+  the following miscellaneous slots that store details
+  about the csSAM fit (accessible via <code>$</code>):
+  deconvA list object containing a fit (cell-type
+  specific expression) for each group. Each element in the
+  list is an object returned by csFit. fdr.csSAM A
+  list output of the fdrCsSAM function.
+  sigGene.csSAMA list of significant genes.</p>
+  
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>This function is adapted from the function
+  <code><a href='http://www.inside-r.org/r-doc/csSAM/csSamWrapper'>csSamWrapper</a></code> in the
+  <code><a href='http://www.inside-r.org/r-doc/csSAM/csSAM'>csSAM</a></code> package, to integrate the csSAM
+  algorithm from <cite>Shen-Orr et al. (2010)</cite> into the
+  <span class = "pkg">CellMix</span> framework of deconvolution algorithms.</p>
+  
+    </div>
+
+    <div class="References">
+      <h2>References</h2>
+      
+      <p>Shen-Orr SS, Tibshirani R, Khatri P, Bodian DL, Staedtler
+  F, Perry NM, Hastie T, Sarwal MM, Davis MM and Butte AJ
+  (2010). "Cell type-specific gene expression differences
+  in complex tissues." _Nature methods_, *7*(4), pp. 287-9.
+  ISSN 1548-7105, <URL:
+  http://dx.doi.org/10.1038/nmeth.1439>, <URL:
+  http://www.ncbi.nlm.nih.gov/pubmed/20208531>.</p>
+  
+    </div>
+      </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>.csSAM</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+    <h2>See also</h2>
+    
+  <code><a href='http://www.inside-r.org/r-doc/csSAM/csfit'>csfit</a></code>,<code><a href='http://www.inside-r.org/r-doc/csSAM/csSAM'>csSAM</a></code>,<code><a href='http://www.inside-r.org/r-doc/csSAM/fdrCsSAM'>fdrCsSAM</a></code>
+
+    
+    <h2>Author</h2>
+    
+  Original function: Shai Shen-Orr, Rob Tibshirani,
+  Narasimhan Balasubramanian, David Wang
+
+  Adaptation for <span class = "pkg">CellMix</span>: Renaud Gaujoux
+
+    
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

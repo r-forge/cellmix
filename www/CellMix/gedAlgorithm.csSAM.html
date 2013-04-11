@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>gedAlgorithm.csSAM. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Partial Gene Expression Deconvolution with csSAM</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre>gedAlgorithm.csSAM(Y, x, data = NULL, nperms = 200, alternative = c("two.sided", 
+  "greater", "less"), standardize = TRUE, medianCenter = TRUE, logRm = FALSE, logBase = 2, 
+      nonNeg = TRUE, verbose = lverbose())
+
+<span class="label label-success">S3</span> (ged_csSAM)
+`csTopTable`(x, ...)
+
+<span class="label label-success">S3</span> (ged_csSAM)
+`csplot`(x, types = NULL, xlab = "# called", ylab = "FDR", ylim = c(0, 
+      1), ...)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>types</dt>
+      <dd>index or names of the type to plot. They
+  need to be found in the fit data.</dd>
+      <dt>Y</dt>
+      <dd>target global gene expression matrix (n x p),
+  with samples in columns, ordered in the same order at the
+  cell proportions data in <var>x</var>.</dd>
+      <dt>x</dt>
+      <dd>known cell proportions as a matrix (k x p) or an
+  <code><a href='http://www.inside-r.org/r-doc/NMF/NMF-class'>NMF-class</a></code> model containing the cell
+  proportions in the coefficient matrix -- and a normally
+  empty basis matrix. The proportions must be ordered in
+  the same order as the samples in the target matrix.
+
+  For <code>csTopTable</code>, a csSAM fit as return by
+  <code><a href='ged.html'>ged</a></code>.</dd>
+      <dt>data</dt>
+      <dd>specification of the sample groups. If not
+  missing, it must be a factor or coercible to a factor,
+  with length the number of samples, i.e. columns, in the
+  target matrix.</dd>
+      <dt>nperms</dt>
+      <dd>The number of permutations to perform. It
+  is only used when computing cell-specific differential
+  expression between groups specified in argument
+  <code>data</code>.</dd>
+      <dt>alternative</dt>
+      <dd>two.sided less greater</dd>
+      <dt>standardize</dt>
+      <dd>Standardize sample or not. Default is
+  TRUE.</dd>
+      <dt>medianCenter</dt>
+      <dd>Median center rhat distributions.
+  Default is TRUE.</dd>
+      <dt>logRm</dt>
+      <dd>Exponentiate data for deconvolution stage.
+  Default is FALSE</dd>
+      <dt>logBase</dt>
+      <dd>Base of logaritm used to determine
+  exponentiation factor. Default is 2</dd>
+      <dt>nonNeg</dt>
+      <dd>For single channel arrays. Set any
+  cell-specific expression estimated as negative, to a
+  ceiling of 0. It is conservative in its study of
+  differential expression. Default is FALSE.</dd>
+      <dt>verbose</dt>
+      <dd>logical that indicates if verbose messages
+  should be shown.</dd>
+      <dt>...</dt>
+      <dd>extra parameters passed to subsequent calls.</dd>
+      <dt>xlab</dt>
+      <dd>a label for the x axis, defaults to a
+  description of <code>x</code>.</dd>
+      <dt>ylab</dt>
+      <dd>a label for the y axis, defaults to a
+  description of <code>y</code>.</dd>
+      <dt>ylim</dt>
+      <dd>the y limits of the plot.</dd>
+    </dl>
+    
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>Estimates cell/tissue proportions given a known set of
+  cell/tissue-specific expression signatures, using
+  standard least-squares, as implemented by the package
+  <code><a href='http://www.inside-r.org/r-doc/csSAM/csSAM'>csSAM</a></code>.</p>
+  
+      <p>The S3 method <code>csTopTable</code> for csSAM fits returns,
+  for each feature, the false discovery rates of
+  differential expression between groups of samples within
+  each cell type, as computed by
+  <code><a href='http://www.inside-r.org/r-doc/csSAM/csSAM'>fdrCsSAM</a></code> when running csSAM. These
+  are returned as a list, whith one element per cell type.</p>
+  
+      <p>The S3 method <code>csplot</code> for csSAM fits plots
+  cell-specific fdr cumulative distributions.</p>
+  
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p>All regressions are fitted using the function
+  <code><a href='http://www.inside-r.org/r-doc/stats/lsfit'>lsfit</a></code>.</p>
+  
+    </div>
+
+    <div class="References">
+      <h2>References</h2>
+      
+      <p>Shen-Orr SS, Tibshirani R, Khatri P, Bodian DL, Staedtler
+  F, Perry NM, Hastie T, Sarwal MM, Davis MM and Butte AJ
+  (2010). "Cell type-specific gene expression differences
+  in complex tissues." _Nature methods_, *7*(4), pp. 287-9.
+  ISSN 1548-7105, <URL:
+  http://dx.doi.org/10.1038/nmeth.1439>, <URL:
+  http://www.ncbi.nlm.nih.gov/pubmed/20208531>.</p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'># random global expression</div><div class='input'>x <- rmix(3, 100, 20)
+</div><div class='input'>basisnames(x) <- paste('Cell', 1:nbasis(x))
+</div><div class='input'># extract true proportions</div><div class='input'>p <- coef(x)
+</div><div class='input'></div><div class='input'># deconvolve using csSAM</div><div class='input'>res <- ged(x, p, 'csSAM')
+</div><div class='input'>head(basis(res))
+</div>
+<div class='output'>          Cell 1    Cell 2   Cell 3
+gene_1 14.904380  7.302067 7.468591
+gene_2 15.421772  7.822874 4.223157
+gene_3  5.889809  1.697394 1.879031
+gene_4 18.115828  3.112732 9.106662
+gene_5 17.087112  8.567335 8.246638
+gene_6  6.749257 16.564898 2.021393
+</div><div class='input'># proportions are not updated</div><div class='input'>identical(coef(res), p)
+</div>
+<div class='output'>[1] TRUE
+</div><div class='input'></div><div class='input'></div><div class='input'># estimate cell-specific differential expression between 2 groups</div><div class='input'>gr <- gl(2, 10)
+</div><div class='input'>res <- ged(x, p, 'csSAM', data = gr, nperms=20, verbose=TRUE)
+</div>
+<div class='output'>  Using ged algorithm: “csSAM”
+   Groups: 1=10L | 2=10L
+   Fitting cell-specific linear model ...    OK
+   Computing csSAM model statistics ...    OK
+   Computing fdr using 20 permutations ...    OK
+   Finding signature genes ...    OK
+  Timing:
+   user  system elapsed 
+  0.508   0.000   0.509 
+  GED final wrap up ...   OK
+</div><div class='input'>head(basis(res))
+</div>
+<div class='output'>            Cell 1     Cell 2     Cell 3
+gene_1 -0.66878820  0.5356998 -0.1518649
+gene_2 -0.06208674 -1.5574655  0.1770388
+gene_3  1.22202213 -0.7268541 -0.1377018
+gene_4  0.21687196  0.2001415  0.1688434
+gene_5 -0.61873810  0.2361388 -0.1912592
+gene_6 -0.17319605 -0.6734038  0.3090709
+</div><div class='input'># plot FDRs</div><div class='input'>csplot(res)
+</div><p><img src='gedAlgorithm.csSAM-ex1.png' alt='' width='400' height='400' /></p><div class='input'># extract fdr for top differentially expressed gene in each cell type</div><div class='input'>t <- csTopTable(res)
+</div><div class='input'>str(t)
+</div>
+<div class='output'>List of 3
+ $ Cell 1: Named num [1:100] 0.2 0.275 0.275 0.275 0.56 0.6 0.6 1 1 1 ...
+  ..- attr(*, "names")= chr [1:100] "gene_47" "gene_51" "gene_62" "gene_92" ...
+ $ Cell 2: Named num [1:100] 0.91 0.91 0.91 0.91 0.91 0.91 0.91 0.91 0.91 0.91 ...
+  ..- attr(*, "names")= chr [1:100] "gene_2" "gene_13" "gene_18" "gene_32" ...
+ $ Cell 3: Named num [1:100] 0.467 0.467 0.467 0.8 0.8 ...
+  ..- attr(*, "names")= chr [1:100] "gene_51" "gene_63" "gene_68" "gene_17" ...
+</div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>csplot.ged_csSAM</li><li>csSAM-ged</li><li>csTopTable.ged_csSAM</li><li>gedAlgorithm.csSAM</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+    <h2>See also</h2>
+    
+  <code><a href='http://www.inside-r.org/r-doc/csSAM/fdrCsSAM'>fdrCsSAM</a></code>, <code><a href='csTopTable.html'>csTopTable</a></code>
+
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>uq_requirePackage. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Require a Package with User Interaction</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre>uq_requirePackage(package, lib = NULL, ..., load = TRUE, msg = NULL, quiet = TRUE, 
+  prependLF = FALSE)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>package</dt>
+      <dd>name of the package</dd>
+      <dt>lib</dt>
+      <dd>path to the directory (library) where the
+  package is to be looked for and installed if agreed by
+  the user.</dd>
+      <dt>...</dt>
+      <dd>extra arguments passed to
+  <code><a href='http://www.inside-r.org/r-doc/utils/install.packages'>install.packages</a></code>.</dd>
+      <dt>load</dt>
+      <dd>a logical that indicates if the package
+  should be loaded, possibly after installation.</dd>
+      <dt>msg</dt>
+      <dd>message to display in case the package is not
+  found when first trying to load/find it. This message is
+  appended to the string &#147;Package '<packagename>' is
+  required&#148;.</dd>
+      <dt>quiet</dt>
+      <dd>logical that indicates if loading a package
+  should be done quietly with <code><a href='http://www.inside-r.org/r-doc/pkgmaker/require.quiet'>require.quiet</a></code>
+  or normally with <code><a href='http://www.inside-r.org/r-doc/base/library'>require</a></code>.</dd>
+      <dt>prependLF</dt>
+      <dd>logical that indicates if the message
+  should start at a new line.</dd>
+    </dl>
+    
+    <div class="Value">
+      <h2>Value</h2>
+      
+      <p><code>TRUE</code> if the package was successfully loaded/found
+  (installed), <code>FALSE</code> otherwise.</p>
+  
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>Try loading/finding a package and ask the user if it
+  should be installed if not found.</p>
+  
+    </div>
+      </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>uq_requirePackage</li>
+    </ul>
+    <ul>
+      <li>internal</li>
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

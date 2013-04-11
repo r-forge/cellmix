@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>is.annpkg. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Annotation Tools</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre>is.annpkg(x)
+
+is.anndb(x)
+
+biocann_mapname(annotation, map, all = FALSE)
+
+biocann_pkgname(x, noext = FALSE)
+
+biocann_pkgobject(x)
+
+<span class="label label-important">S4</span> (character)
+`revmap`(x, ..., simplify = TRUE)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>x</dt>
+      <dd>an R object, either a character string or an
+  annotation object.</dd>
+      <dt>annotation</dt>
+      <dd>names of an annotation package, with
+  &#147;.db&#148; suffix or not.</dd>
+      <dt>map</dt>
+      <dd>name of a map, e.g., &#147;ENTREZID&#148;.</dd>
+      <dt>all</dt>
+      <dd>logical that indicates if all possible names
+  should be returned, and only the simple concatenation of
+  the annotation package's name without &#147;.db&#148; and
+  the map name.</dd>
+      <dt>noext</dt>
+      <dd>logical that indicates if returned package
+  names should contain the extension '.db'.</dd>
+      <dt>simplify</dt>
+      <dd>a logical that indicates if the reverse
+  mapping should be returned as a character vector whenever
+  possible (<code>TRUE</code>), i.e. when this mapping is 1:1 --
+  which can happen even if the original mapping is not 1:1.
+  Otherwise the mapping is returned as a list.</dd>
+      <dt>...</dt>
+      <dd>extra arguments passed to
+  <code><a href='http://www.inside-r.org/r-doc/AnnotationDbi/Bimap-direction'>revmap,list-method</a></code>.</dd>
+    </dl>
+    
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>The <span class = "pkg">CellMix</span> package contains a few utility
+  functions to facilitate working with Bioconductor
+  annotations, which extends or enhance functions available
+  in packages such as <span class = "pkg">annotate</span>.</p>
+  
+      <p><code>is.annpkg</code> tells if an object is the name of an
+  annotation package.</p>
+  
+      <p><code>is.anndb</code> tells if an object is an annotation db
+  object such as <code>hgu133a.db</code>.</p>
+  
+      <p><code>biocann_mapname</code> returns the name of a map in an
+  annotation package.</p>
+  
+      <p><code>biocann_pkgname</code> returns the name of an annotation
+  package, formated from character strings or extracted
+  from annotation objects.</p>
+  
+      <p><code>biocann_pkgobject</code> retrieve the <code>AnnotationDb</code>
+  object for an annotation package given as a string. The
+  package does not need to be already loaded but needs to
+  be installed in a library that is in the search path.</p>
+  
+    </div>
+
+    <div class="Methods">
+      <h2>Methods</h2>
+      
+      <p><ol>
+<li>revmap<code>signature(x = "character")</code>: The
+  method <code>revmap</code> for character vectors revert a
+  mapping provided as a named character vector.</p>
+  
+      <p></li>
+</ol></p>
+  
+      <p></p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'># check annotation pkg name</div><div class='input'>is.annpkg('aaa.db')
+</div>
+<div class='output'>[1] TRUE
+</div><div class='input'>is.annpkg(c('bbb.db', 'ccc.db'))
+</div>
+<div class='output'>[1] TRUE
+</div><div class='input'>is.annpkg(c('ddd', 'eee.db'))
+</div>
+<div class='output'>[1] FALSE
+</div><div class='input'># check AnnotationDb object</div><div class='input'>library(hgu133a.db)
+</div>
+<strong class='message'>Loading required package: org.Hs.eg.db</strong>
+<strong class='message'>Loading required package: DBI</strong>
+<strong class='message'></strong>
+<strong class='message'></strong><div class='input'>is.anndb(hgu133a.db)
+</div>
+<div class='output'>[1] TRUE
+</div><div class='input'># build annotation bimap object names</div><div class='input'>biocann_mapname('hgu133a.db', 'ENTREZID')
+</div>
+<div class='output'>[1] "hgu133aENTREZID"
+</div><div class='input'># '.db' extension is skipped</div><div class='input'>biocann_mapname('hgu133a', 'ENTREZID')
+</div>
+<div class='output'>[1] "hgu133aENTREZID"
+</div><div class='input'># get all possible map names</div><div class='input'>biocann_mapname('hgu133a.db', 'ENTREZID', all=TRUE)
+</div>
+<div class='output'>[1] "hgu133aENTREZID"  "hgu133a2ENTREZID"
+</div><div class='input'># annotation package name</div><div class='input'>biocann_pkgname('aa')
+</div>
+<div class='output'>[1] "aa.db"
+</div><div class='input'># extract the package name from annotation objects</div><div class='input'>biocann_pkgname(hgu133a.db)
+</div>
+<div class='output'>[1] "hgu133a.db"
+</div><div class='input'>biocann_pkgname(hgu133aENTREZID)
+</div>
+<div class='output'>[1] "hgu133a.db"
+</div><div class='input'># get AnnotationDb object</div><div class='input'>biocann_pkgobject('hgu133a') # extension can be skipped
+</div>
+<div class='output'>ChipDb object:
+| DBSCHEMAVERSION: 2.1
+| Db type: ChipDb
+| Supporting package: AnnotationDbi
+| DBSCHEMA: HUMANCHIP_DB
+| ORGANISM: Homo sapiens
+| SPECIES: Human
+| MANUFACTURER: Affymetrix
+| CHIPNAME: Human Genome U133 Set
+| MANUFACTURERURL: http://www.affymetrix.com/support/technical/byproduct.affx?product=hgu133
+| EGSOURCEDATE: 2012-Sep4
+| EGSOURCENAME: Entrez Gene
+| EGSOURCEURL: ftp://ftp.ncbi.nlm.nih.gov/gene/DATA
+| CENTRALID: ENTREZID
+| TAXID: 9606
+| GOSOURCENAME: Gene Ontology
+| GOSOURCEURL: ftp://ftp.geneontology.org/pub/go/godatabase/archive/latest-lite/
+| GOSOURCEDATE: 20120901
+| GOEGSOURCEDATE: 2012-Sep4
+| GOEGSOURCENAME: Entrez Gene
+| GOEGSOURCEURL: ftp://ftp.ncbi.nlm.nih.gov/gene/DATA
+| KEGGSOURCENAME: KEGG GENOME
+| KEGGSOURCEURL: ftp://ftp.genome.jp/pub/kegg/genomes
+| KEGGSOURCEDATE: 2011-Mar15
+| GPSOURCENAME: UCSC Genome Bioinformatics (Homo sapiens)
+| GPSOURCEURL: ftp://hgdownload.cse.ucsc.edu/goldenPath/hg19
+| GPSOURCEDATE: 2010-Mar22
+| ENSOURCEDATE: 2012-Jul31
+| ENSOURCENAME: Ensembl
+| ENSOURCEURL: ftp://ftp.ensembl.org/pub/current_fasta
+| UPSOURCENAME: Uniprot
+| UPSOURCEURL: http://www.uniprot.org/
+| UPSOURCEDATE: Thu Sep  6 14:10:54 2012
+</div><div class='input'># the package needs to be installed</div><div class='input'>try( biocann_pkgobject('aaa') )
+</div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>biocann_mapname</li><li>biocann_pkgname</li><li>biocann_pkgobject</li><li>is.anndb</li><li>is.annpkg</li><li>revmap,character-method</li>
+    </ul>
+    <ul>
+      <li>methods</li>
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

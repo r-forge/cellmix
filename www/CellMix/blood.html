@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>gedBlood. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Blood Sample Deconvolution</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre>gedBlood(object, ..., normalize = TRUE, verbose = FALSE)
+
+asCBC(object, ...)
+
+<span class="label label-important">S4</span> (character)
+`asCBC`(object, drop = FALSE, quiet = FALSE)
+
+<span class="label label-important">S4</span> (NMF)
+`asCBC`(object, drop = TRUE, ...)
+
+refCBC
+
+gCBC(n = 1, sampleNames = NULL, counts = NULL)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>object</dt>
+      <dd>target data, specified in any format
+  supported by <code><a href='ged.html'>ged</a></code>. For <code>asCBC</code>, an
+  object for with suitable <code>asCBC</code> method defined.</dd>
+      <dt>...</dt>
+      <dd>extra arguments passed to
+  <code><a href='gedProportions.html'>gedProportions</a></code>.</dd>
+      <dt>drop</dt>
+      <dd>logical that indicates if elements in
+  <code>object</code> that cannot be mapped to a cell type should
+  be removed from the returned mapping.</dd>
+      <dt>quiet</dt>
+      <dd>logical that indicates that the mapping
+  should be performed quietly. If <code>FALSE</code>, then an
+  error is thrown if none of the elements can be mapped,
+  or, if in addition <code>drop=FALSE</code>, a warning is thrown
+  if only some of the elements could be mapped.</dd>
+      <dt>n</dt>
+      <dd>number of samples in the generated CBC matrix</dd>
+      <dt>sampleNames</dt>
+      <dd>names of the samples, recycled or
+  truncated if necessary, to match <code>n</code>.</dd>
+      <dt>counts</dt>
+      <dd>CBC data to use instead of the defaults. It
+  must be a numeric vector.</dd>
+      <dt>normalize</dt>
+      <dd>character string that specifies the
+  normalisation method to apply jointly to the combined
+  data (signatures,data). The normalisation is performed
+  after transforming the data and/or signatures if
+  necessary.</dd>
+      <dt>verbose</dt>
+      <dd>logical that toggles verbosity. A number
+  (integer) can be passed to specify the verbosity level
+  (the higher the more messages are output). Passing
+  <code>verbose=Inf</code> toggles debug mode (all messages).
+  Note that because it appears after <code>...</code> it must be
+  fully named.</dd>
+    </dl>
+    
+    <div class="Format">
+      <h2>Format</h2>
+      
+      <p>Named num [1:5] 0.005 0.295 0.03 0.57 0.1
+ - attr(*, "names")= chr [1:5] "Basophils" "Lymphocytes" "Eosinophils" "Neutrophils" ...</p>
+  
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>The functions described here are dedicated to gene
+  expression deconvolution of blood samples (i.e. whole
+  blood or PBMCs).</p>
+  
+      <p><code>gedBlood</code> uses the methodology defined by
+  <cite>Abbas et al. (2009)</cite>, which uses a fixed set of 17
+  cell type-specific signatures to estimate cell
+  proportions in blood samples. Each signature corresponds
+  to a white blood cell in resting or activated state (See
+  section Details).</p>
+  
+      <p><code>asCBC</code> has methods defined for <code>NMF</code> models
+  and <code>Markerlist</code> objects. See each method's
+  description for more details.</p>
+  
+      <p><code>refCBC</code> is a numeric vector that contains average
+  Complete Blood Count proportions (CBC) in healthy
+  persons, based on empirical studies in healthy patients.
+  It contains proportions for Basophils, Lymphocytes,
+  Eosinophils, Neutrophils and Monocytes.</p>
+  
+      <p><code>gCBC</code> generates a matrix of average Complete Blood
+  Count proportions (CBC) for a given number of samples.
+  The default proportions are based on empirical studies in
+  healthy patients (see <code><a href='blood.html'>refCBC</a></code>), and each
+  sample get assigned the same proportions.</p>
+  
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p>The signatures used by <code>gedBlood</code> were designed by
+  <cite>Abbas et al. (2009)</cite> to optimise their
+  deconvolution power. They are available in the
+  <span class = "pkg">CellMix</span> as dataset <code><a href='Abbas.html'>Abbas</a></code>.</p>
+  
+      <p><code>gedBlood</code> is essentially a shortcut for
+  <code>gedProportions(object, Abbas, ...)</code>, see
+  <code><a href='gedProportions.html'>gedProportions</a></code> for details on the possible
+  arguments.</p>
+  
+      <p>Currently <code>asCBC</code> methods will correctly work only
+  on objects that have cell types that match exactly names
+  of signatures in the <code><a href='Abbas.html'>Abbas</a></code> dataset.</p>
+  
+    </div>
+
+    <div class="Methods">
+      <h2>Methods</h2>
+      
+      <p><ol>
+<li>asCBC<code>signature(object = "character")</code>: This
+  is the workhorse method that maps immune/blood cell type
+  names to the CBC cell types: Monocytes, Basophils,
+  Lymphocytes, Neutrophils and Eosinophils.</p>
+  
+      <p>It returns a factor, whose names are elements of
+  <code>object</code> and the values are their corresponding CBC
+  cell type. If <code>drop=FALSE</code> the result is of the same
+  length as <code>object</code>, otherwise it only contains
+  elements that could be mappped to a cell type.</p>
+  
+      <p></li>
+<li>asCBC<code>signature(object = "NMF")</code>: The result
+  of gene expression deconvolution performed by
+  <code><a href='ged.html'>ged</a></code> are stored in
+  <code><a href='http://www.inside-r.org/r-doc/NMF/NMFstd-class'>NMFstd-class</a></code> model objects, which contain
+  the cell type-specific signatures and/or cell relative
+  proportions.</p>
+  
+      <p>This method aggregates, i.e. sums up, the cell
+  proportions and averages the signatures of cell types
+  from each of the CBC groups that are available in the
+  data.</p>
+  
+      <p></li>
+<li>asCBC<code>signature(object = "MarkerList")</code>:
+  This method combines markers of cell types that belong to
+  the same CBC group.</p>
+  
+      <p></li>
+</ol></p>
+  
+      <p></p>
+  
+    </div>
+
+    <div class="References">
+      <h2>References</h2>
+      
+      <p>Abbas AR, Wolslegel K, Seshasayee D, Modrusan Z and Clark
+  HF (2009). "Deconvolution of blood microarray data
+  identifies cellular activation patterns in systemic lupus
+  erythematosus." _PloS one_, *4*(7), pp. e6098. ISSN
+  1932-6203, <URL:
+  http://dx.doi.org/10.1371/journal.pone.0006098>, <URL:
+  http://www.ncbi.nlm.nih.gov/pubmed/19568420>.</p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'># load kidney transplant data (Shen-Orr et al. (2010))</div><div class='input'>eset <- ExpressionMix('GSE20300')
+</div><div class='input'></div><div class='input'># true CBC proportions are stored as -- mixture -- coefficients</div><div class='input'>cbc <- coef(eset)
+</div><div class='input'>head(cbc)
+</div>
+<div class='output'>            GSM508883 GSM508884 GSM508885 GSM508886 GSM508887 GSM508888
+Neutrophils     0.764     0.380     0.707     0.621     0.905     0.658
+Lymphocytes     0.194     0.475     0.171     0.203     0.020     0.250
+Monocytes       0.036     0.124     0.118     0.146     0.048     0.073
+Eosinophils     0.004     0.014     0.001     0.025     0.024     0.014
+Basophils       0.002     0.008     0.003     0.005     0.003     0.005
+            GSM508889 GSM508890 GSM508891 GSM508892 GSM508893 GSM508894
+Neutrophils     0.392     0.585     0.605     0.894     0.436     0.913
+Lymphocytes     0.371     0.280     0.278     0.063     0.440     0.016
+Monocytes       0.141     0.096     0.083     0.037     0.058     0.046
+Eosinophils     0.092     0.033     0.028     0.001     0.065     0.025
+Basophils       0.004     0.006     0.006     0.005     0.000     0.000
+            GSM508895 GSM508896 GSM508897 GSM508898 GSM508899 GSM508900
+Neutrophils     0.554     0.145     0.810     0.634     0.501     0.548
+Lymphocytes     0.313     0.615     0.179     0.231     0.306     0.152
+Monocytes       0.084     0.219     0.004     0.116     0.181     0.278
+Eosinophils     0.046     0.013     0.006     0.016     0.012     0.016
+Basophils       0.003     0.008     0.001     0.003     0.000     0.006
+            GSM508901 GSM508902 GSM508903 GSM508904 GSM508905 GSM508906
+Neutrophils     0.477     0.538     0.599     0.770     0.304     0.478
+Lymphocytes     0.378     0.372     0.326     0.185     0.520     0.397
+Monocytes       0.121     0.084     0.058     0.041     0.094     0.066
+Eosinophils     0.016     0.004     0.015     0.002     0.077     0.047
+Basophils       0.008     0.002     0.003     0.002     0.005     0.012
+</div><div class='input'>profplot(cbc, lab='')
+</div><p><img src='blood-ex1.png' alt='' width='400' height='400' /></p><div class='input'></div><div class='input'># devonvolve using basis signature matrix from Abbas et al. (2009)</div><div class='input'>res <- gedBlood(eset, verbose=TRUE)
+</div>
+<div class='output'>Loading basis signature from Abbas et al. (2009) ... OK [359 features x 17 cell types]
+Mapping signature ids onto target ids (method: auto) ... OK [322 features x 17 cell types]
+Limit/reorder to common set of features ... OK [322 features x 17 cell types]
+Checking data dimension compatibility ... OK [322 features x 17 cell types]
+Checking log-scale ... data:YES - signatures:NO
+Applying log-transform to signatures (base 2) ... OK
+Normalizing signatures and target together (method: quantiles) ... OK
+ Using ged algorithm: “lsfit”
+  Estimating cell proportions from cell-specific signatures [lsfit]
+ Timing:
+   user  system elapsed 
+  0.872   0.028   0.901 
+ GED final wrap up ...  OK
+</div><div class='input'># estimated proportions are stored as -- mixture -- coefficients</div><div class='input'>p <- coef(res)
+</div><div class='input'>str(p)
+</div>
+<div class='output'> num [1:17, 1:24] 0.0622 0 0.0826 0 0.0366 ...
+ - attr(*, "dimnames")=List of 2
+  ..$ : chr [1:17] "Th" "Th act" "Tc" "Tc act" ...
+  ..$ : chr [1:24] "GSM508883" "GSM508884" "GSM508885" "GSM508886" ...
+</div><div class='input'># the Abbas basis matrix includes detailed immune cell types</div><div class='input'>rownames(p)
+</div>
+<div class='output'> [1] "Th"       "Th act"   "Tc"       "Tc act"   "B"        "B act"   
+ [7] "B aIgM"   "Mem IgG"  "Mem IgM"  "PC"       "NK"       "NK act"  
+[13] "mono"     "mono act" "DC"       "DC act"   "neutro"  
+</div><div class='input'># or: basisnames(res)</div><div class='input'></div><div class='input'># aggregate into CBC</div><div class='input'>ecbc <- asCBC(res)
+</div><div class='input'># plot Estimated vs. Measured CBC</div><div class='input'>profplot(cbc, ecbc)
+</div><p><img src='blood-ex2.png' alt='' width='400' height='400' /></p><div class='input'># default proportions</div><div class='input'>gCBC()
+</div>
+<div class='output'>             [,1]
+Basophils   0.005
+Lymphocytes 0.295
+Eosinophils 0.030
+Neutrophils 0.570
+Monocytes   0.100
+</div><div class='input'></div><div class='input'># for 5 samples</div><div class='input'>gCBC(5)
+</div>
+<div class='output'>             [,1]  [,2]  [,3]  [,4]  [,5]
+Basophils   0.005 0.005 0.005 0.005 0.005
+Lymphocytes 0.295 0.295 0.295 0.295 0.295
+Eosinophils 0.030 0.030 0.030 0.030 0.030
+Neutrophils 0.570 0.570 0.570 0.570 0.570
+Monocytes   0.100 0.100 0.100 0.100 0.100
+</div><div class='input'></div><div class='input'># setting sample names</div><div class='input'>gCBC(5, sampleNames = letters[1:10]) # names are truncated if necessary
+</div>
+<div class='output'>                a     b     c     d     e
+Basophils   0.005 0.005 0.005 0.005 0.005
+Lymphocytes 0.295 0.295 0.295 0.295 0.295
+Eosinophils 0.030 0.030 0.030 0.030 0.030
+Neutrophils 0.570 0.570 0.570 0.570 0.570
+Monocytes   0.100 0.100 0.100 0.100 0.100
+</div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>asCBC</li><li>asCBC,character-method</li><li>asCBC,MarkerList-method</li><li>asCBC-methods</li><li>asCBC,NMF-method</li><li>gCBC</li><li>gedBlood</li><li>refCBC</li>
+    </ul>
+    <ul>
+      <li>datasets</li><li>methods</li>
+    </ul> -->
+      
+    <h2>See also</h2>
+    
+  <code><a href='gedProportions.html'>gedProportions</a></code>, <code><a href='ged.html'>ged</a></code>
+
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>gedAlgorithm. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Managing Gene Expression Deconvolution Algorithms</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre>gedAlgorithm(key, error = TRUE, exact = FALSE, all = FALSE, ...)
+
+gedAlgorithmInfo(show = TRUE, all = !show)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>key</dt>
+      <dd>algorithm access key, as a single character
+  string. If missing the function returns the list of
+  registered keys, as a character vector.</dd>
+      <dt>error</dt>
+      <dd>a logical that indicates whether an error
+  should be thrown if the key is not found in the registry
+  or match multiple lists. If <code>FALSE</code> then function
+  returns <code>NULL</code> if the key is not found or <code>NA</code>
+  in case of multiple matches.</dd>
+      <dt>exact</dt>
+      <dd>logical that indicates if one should use
+  exact matching or partial matching to match the provided
+  access key against all registered keys.</dd>
+      <dt>all</dt>
+      <dd>logical that is only used when <code>key</code> is
+  missing and indicates if all registered keys should be
+  returned, including the internal one -- whose key starts
+  with a '.'.</dd>
+      <dt>...</dt>
+      <dd>extra arguments used internally, not to be
+  used by the end user.</dd>
+      <dt>show</dt>
+      <dd>logical that indicates if the registry object
+  should be printed (<code>FALSE</code>) or only returned
+  invisibly (<code>FALSE</code>).</dd>
+    </dl>
+    
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p><code>gedAlgorithm</code> provides access to the registered
+  gene expression deconvolution algorithms.</p>
+  
+      <p><code>gedAlgorithmInfo</code> prints information about the
+  registered gene expression deconvolution or returns --
+  invisibly -- the complete algorithm registry, as a
+  <code>registry</code> object.</p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'>gedAlgorithm()
+</div>
+<div class='output'> [1] "lsfit"       "cs-lsfit"    "nnls"        "cs-nnls"     "qprog"      
+ [6] "cs-qprog"    "DSA"         "csSAM"       "DSection"    "ssKL"       
+[11] "ssFrobenius" "meanProfile" "deconf"     
+</div><div class='input'>gedAlgorithm('ssKL')
+</div>
+<div class='output'><Object of class: GEDStrategy>
+Key: ssKL
+Require: Marker
+Reference: Gaujoux et al. (2011)
+</div><div class='input'>gedAlgorithm('csSAM')
+</div>
+<div class='output'><Object of class: GEDStrategy>
+Key: csSAM
+Require: Coef
+Reference: Shen-Orr et al. (2010)
+</div><div class='input'># show algorithms and properties</div><div class='input'>gedAlgorithmInfo()
+</div>
+<div class='output'>                                                                                                           Description
+lsfit                                                Partial deconvolution of proportions using standard least-squares
+cs-lsfit                                         Partial deconvolution of cell signatures using standard least-squares
+nnls             Partial deconvolution of proportions or signatures using fast combinatorial nonnegative least-squares
+cs-nnls                         Partial deconvolution of signatures using fast combinatorial nonnegative least-squares
+qprog                               Estimates proportions from known expression signatures using quadratic programming
+cs-qprog    Estimates constrained cell-specific signatures from proportions using quadratic programming [experimental]
+DSA                                                             Complete deconvolution using Digital Sorting Algorithm
+csSAM                                       Estimates cell/tissue specific signatures from known proportions using SAM
+DSection                                                      Estimates proportions from proportions priors using MCMC
+ssKL                                               Semi-supervised NMF algorithm for KL divergence, using marker genes
+ssFrobenius                                   Semi-supervised NMF algorithm for Euclidean distance, using marker genes
+meanProfile                                                     Compute proportion proxies as mean expression profiles
+deconf                                           Alternate least-square NMF method, using heuristic constraints [fast]
+            Basis  Coef Marker Iter     Reference
+lsfit        TRUE FALSE  FALSE    1     Abbas2009
+cs-lsfit    FALSE  TRUE  FALSE    1              
+nnls         TRUE FALSE  FALSE    1              
+cs-nnls     FALSE  TRUE  FALSE    1              
+qprog        TRUE FALSE  FALSE    1      Gong2011
+cs-qprog    FALSE  TRUE  FALSE    1              
+DSA         FALSE FALSE   TRUE    1     Zhong2013
+csSAM       FALSE  TRUE  FALSE    1  Shen-Orr2010
+DSection    FALSE  TRUE  FALSE  500   Erkkila2010
+ssKL        FALSE FALSE   TRUE 3000   Gaujoux2011
+ssFrobenius FALSE FALSE   TRUE 3000   Gaujoux2011
+meanProfile FALSE FALSE   TRUE    1              
+deconf      FALSE FALSE  FALSE 1000 Repsilber2010
+</div><div class='input'>class(gedAlgorithmInfo(show=FALSE))
+</div>
+<div class='output'>[1] "GEDalgorithm_registry"       "algorithms_package_registry"
+[3] "package_registry"            "registry"                   
+</div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>gedAlgorithm</li><li>gedAlgorithmInfo</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

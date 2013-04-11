@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>[,MarkerList,ANY,ANY-method. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Subsetting Marker Lists</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><span class="label label-important">S4</span> (MarkerList,ANY,ANY)
+`[`(x, i, j, ..., drop = FALSE)
+
+<span class="label label-important">S4</span> (MarkerList,list,ANY)
+`[`(x, i, j, ..., match.names = TRUE, drop = FALSE)
+
+<span class="label label-important">S4</span> (MarkerList,missing,list)
+`[`(x, i, j, ..., drop = FALSE)
+
+<span class="label label-important">S4</span> (MarkerList)
+`subset`(x, subset, select, filter = NULL, skip = 0, total = FALSE, invert = FALSE, 
+  fixed = TRUE, ignore.case = FALSE, verbose = FALSE, ...)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>drop</dt>
+      <dd>logical that indicates if one should drop
+  empty cell types before returning the result -- as a
+  <code>MarkerList</code>.</dd>
+      <dt>match.names</dt>
+      <dd>logical that indicates one should try
+  to match the names of <code>x</code> and <code>i</code> before
+  subsetting/re-ordering.</dd>
+      <dt>subset</dt>
+      <dd>the reference set in which the markers are
+  looked-up. It can be a character vector, a matrix, or
+  <code>NMF</code> or <code>ExpressionSet</code> objects.</dd>
+      <dt>select</dt>
+      <dd>a character, integer or logical vector
+  specifying which set/cell-type to keep. If a single
+  string and <code>fixed=FALSE</code>, it is used as a regular
+  expression to match against the set names.</dd>
+      <dt>filter</dt>
+      <dd>a single integer specifying the maximum
+  number of markers per cell-type</dd>
+      <dt>skip</dt>
+      <dd>a single integer specifying the number of top
+  markers to skip in each cell type</dd>
+      <dt>total</dt>
+      <dd>logical that inidicates if argument
+  <var>filter</var> specifies the total number of markers or the
+  maximum number of markers per cell type.</dd>
+      <dt>invert</dt>
+      <dd>logical used when <code>select</code> that
+  indicates that one selects the set (cell type) that do
+  not satisfy the condition defined by argument
+  <code>select</code>.</dd>
+      <dt>fixed</dt>
+      <dd>logical used only when <code>select</code> is a
+  single string to specify that it should be interpreted as
+  a regular expression to match against the set names.</dd>
+      <dt>ignore.case</dt>
+      <dd>logical used only when <code>select</code>
+  is a single string to specify that the match should
+  <strong>not</strong> be case-sensitive.</dd>
+      <dt>verbose</dt>
+      <dd>verbosity level, usually <code>TRUE</code> or
+  <code>FALSE</code>.</dd>
+      <dt>...</dt>
+      <dd>extra arguments passed to
+  <code><a href='convertIDs.html'>convertIDs</a></code> if necessary.</dd>
+      <dt>x</dt>
+      <dd> object from which to extract element(s) or in
+  which to replace element(s).  </dd>
+      <dt>i</dt>
+      <dd> indices specifying elements to extract or
+  replace.  Indices are <code>numeric</code> or <code>character</code>
+  vectors or empty (missing) or <code>NULL</code>.  Numeric
+  values are coerced to integer as by
+  <code><a href='http://www.inside-r.org/r-doc/base/integer'>as.integer</a></code> (and hence truncated towards
+  zero).  Character vectors will be matched to the
+  <code><a href='http://www.inside-r.org/r-doc/base/names'>names</a></code> of the object (or for
+  matrices/arrays, the <code><a href='http://www.inside-r.org/r-doc/base/dimnames'>dimnames</a></code>): see
+  &#145;Character indices&#146; below for further details.
+
+  For <code>[</code>-indexing only: <code>i</code>, <code>j</code>,
+  <code>...</code> can be logical vectors, indicating
+  elements/slices to select.  Such vectors are recycled if
+  necessary to match the corresponding extent.  <code>i</code>,
+  <code>j</code>, <code>...</code> can also be negative integers,
+  indicating elements/slices to leave out of the selection.
+
+  When indexing arrays by <code>[</code> a single argument
+  <code>i</code> can be a matrix with as many columns as there
+  are dimensions of <code>x</code>; the result is then a vector
+  with elements corresponding to the sets of indices in
+  each row of <code>i</code>.
+
+  An index value of <code>NULL</code> is treated as if it were
+  <code>integer(0)</code>.  </dd>
+      <dt>j</dt>
+      <dd> indices specifying elements to extract or
+  replace.  Indices are <code>numeric</code> or <code>character</code>
+  vectors or empty (missing) or <code>NULL</code>.  Numeric
+  values are coerced to integer as by
+  <code><a href='http://www.inside-r.org/r-doc/base/integer'>as.integer</a></code> (and hence truncated towards
+  zero).  Character vectors will be matched to the
+  <code><a href='http://www.inside-r.org/r-doc/base/names'>names</a></code> of the object (or for
+  matrices/arrays, the <code><a href='http://www.inside-r.org/r-doc/base/dimnames'>dimnames</a></code>): see
+  &#145;Character indices&#146; below for further details.
+
+  For <code>[</code>-indexing only: <code>i</code>, <code>j</code>,
+  <code>...</code> can be logical vectors, indicating
+  elements/slices to select.  Such vectors are recycled if
+  necessary to match the corresponding extent.  <code>i</code>,
+  <code>j</code>, <code>...</code> can also be negative integers,
+  indicating elements/slices to leave out of the selection.
+
+  When indexing arrays by <code>[</code> a single argument
+  <code>i</code> can be a matrix with as many columns as there
+  are dimensions of <code>x</code>; the result is then a vector
+  with elements corresponding to the sets of indices in
+  each row of <code>i</code>.
+
+  An index value of <code>NULL</code> is treated as if it were
+  <code>integer(0)</code>.  </dd>
+    </dl>
+    
+    <div class="Value">
+      <h2>Value</h2>
+      
+      <p>an <code>MarkerList</code> object</p>
+  
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p><code>MarkerList</code> objects have convenient subset methods,
+  that allow to subset the list not only along the sets
+  (first dimension) but also along the markers, which
+  proves to be very useful to subset markers list based on
+  another set of identifier, e.g., the genes present in
+  some expression data, or in another marker list.</p>
+  
+      <p>The method <code>`[`</code> works performs basic strict subsets
+  using integer, character and logical subsetting vectors.</p>
+  
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p>For <code>`[`</code>, argument <code>i</code> must be a
+  <strong>valid</strong> indexes, i.e. a character vector
+  containing only strings that match exactly some names of
+  <code>x</code>, or an integer with indexes in the range of the
+  length of <code>x</code>, or a logical vector not longer than
+  <code>x</code>.</p>
+  
+      <p>The second argument <code>j</code> is allowed not to match
+  exactly, and may be used to subset the list against
+  another set of identifiers, or limit each set to the top
+  first markers.</p>
+  
+    </div>
+
+    <div class="Methods">
+      <h2>Methods</h2>
+      
+      <p><ol>
+<li>[<code>signature(x = "MarkerList", i = "list", j
+  = "ANY")</code>: This method subsets/reorders each set of
+  marker using a subset specification found in</p>
+  
+      <p></li>
+<li>[<code>signature(x = "MarkerList", i = "missing",
+  j = "list")</code>: This method is equivalent to <code>x[i, ,
+  ..., match.names=FALSE]</code>, i.e. that each element of the
+  marker list <code>x</code> are subset/reordered as its
+  corresponding one in <code>j</code>, following the lists' order
+  -- with no attempt to match their elements names before
+  subsetting.</p>
+  
+      <p></li>
+<li>subset<code>signature(x = "MarkerList")</code>:
+  <code>subset</code> subset a <code>MarkerList</code> object keeping
+  only the markers that are present with a given reference
+  set, which can be a character vector, the rownames of a
+  matrix or an <code>NMF</code> object, or the feature names of
+  an <code>ExpressionSet</code>. The markers are matched using
+  the function <code>matchIndex</code>, and gene identifier
+  conversion is performed if necessary.</p>
+  
+      <p></li>
+</ol></p>
+  
+      <p></p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'># load IRIS markers and Abbas signature data</div><div class='input'>m <- MarkerList('IRIS')
+</div><div class='input'>m
+</div>
+<div class='output'><object of class: MarkerList>
+Types: B, T, ..., Multiple (total: 9)
+Mode: numeric
+setName: IRIS 
+geneIds: 205267_at, 211048_s_at, ..., 229026_at (total: 2270)
+geneIdType: Annotation (hgu133a.db, hgu133b.db)
+collectionType: Null 
+geneValues: 6.8842, 5.2979, ..., 0.0279 
+details: use 'details(object)'
+</div><div class='input'># only keep the markers present in a dataset</div><div class='input'>data(Abbas)
+</div><div class='input'>m[, featureNames(Abbas)]
+</div>
+<div class='output'><object of class: MarkerList>
+Types: B, T, ..., Multiple (total: 9)
+Mode: numeric
+setName: IRIS 
+geneIds: 39318_at, 220068_at, ..., 230036_at (total: 121)
+geneIdType: Annotation (hgu133a.db, hgu133b.db)
+collectionType: Null 
+geneValues: 1.8556, 1.2185, ..., 0.3732 
+details: use 'details(object)'
+</div><div class='input'># NB: this could also be done with subset(m, Abbas)</div><div class='input'></div><div class='input'># take top 10 (or smaller)</div><div class='input'>summary(m[,1:10])
+</div>
+<div class='output'><object of class MarkerList>
+Types: 9 ['B', 'T', ..., 'Multiple'] 
+Mode: numeric
+Markers: 90 
+IDtype: .Affymetrix ['205267_at', '211048_s_at', ..., '235242_at'] 
+Values: [6.8842, 5.2979, ..., 3.1445]
+Source: hgu133a.db, hgu133b.db 
+Breakdown:
+         B          T         NK  Dendritic   Monocyte Neutrophil   Lymphoid 
+        10         10         10         10         10         10         10 
+   Myeloid   Multiple 
+        10         10 
+</div><div class='input'></div><div class='input'># take markers with associated score >= 0.9</div><div class='input'>nmark(m[m >= 0.9])
+</div>
+<div class='output'>[1] 371
+</div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>[,MarkerList,ANY,ANY-method</li><li>[,MarkerList,list,ANY-method</li><li>[,MarkerList,missing,list-method</li><li>subset,MarkerList-method</li>
+    </ul>
+    <ul>
+      <li>methods</li>
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

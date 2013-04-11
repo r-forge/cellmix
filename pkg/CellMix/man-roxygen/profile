@@ -1,0 +1,4 @@
+# Roxygen package-specific profile
+
+# register parser alias for setClassRegistry
+register.srcref.parser('setClassRegistry', 'setClass')

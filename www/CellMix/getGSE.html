@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>getGSE. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Downloading GSE Datasets from GEO</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre>getGSE(GEO = NULL, filename = NULL, destdir = GEDtmp(), ..., simplify = TRUE)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>...</dt>
+      <dd>extra parameters passed to
+  <code><a href='http://www.inside-r.org/r-doc/GEOquery/getGEO'>getGEO</a></code>.</dd>
+      <dt>simplify</dt>
+      <dd>logical that indicates if the result for
+  GSEs that contain only one dataset should be simplified
+  and returned as an <code>ExpressionSet</code> object
+  (<code>TRUE</code>) or as a list.</dd>
+      <dt>GEO</dt>
+      <dd>A character string representing a GEO object
+  for download and parsing.  (eg.,
+  'GDS505','GSE2','GSM2','GPL96')</dd>
+      <dt>filename</dt>
+      <dd>The filename of a previously downloaded
+  GEO SOFT format file or its gzipped representation (in
+  which case the filename must end in .gz).  Either one of
+  GEO or filename may be specified, not both.  GEO series
+  matrix files are also handled.  Note that since a single
+  file is being parsed, the return value is not a list of
+  esets, but a single eset when GSE matrix files are
+  parsed.</dd>
+      <dt>destdir</dt>
+      <dd>The destination directory for any
+  downloads.  Defaults to the architecture-dependent
+  tempdir.  You may want to specify a different directory
+  if you want to save the file for later use.  Doing so is
+  a good idea if you have a slow connection, as some of the
+  GEO files are HUGE!</dd>
+    </dl>
+    
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>This function acts as a wrapper for
+  <code><a href='http://www.inside-r.org/r-doc/GEOquery/getGEO'>getGEO</a></code>, to download the matrix
+  files of gene expression datasets from the <code>GEO</code>
+  database. It fixes two issues:</p>
+  
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p><ul>
+<li> if the user is behind a proxy that
+  modifies the content of GEO's dataset index plain text
+  pages into HTML pages, then plain <code>getGEO</code> breaks
+  with an error like:</p>
+  
+      <p><code>Error in scan(file, what, nmax, sep, dec, quote,
+  skip, nlines, na.strings, : line 1 did not have 6
+  elements</code> </li>
+<li> plain <code>getGEO</code> do not honour the
+  destination directory for GPL files. </li>
+</ul></p>
+  
+      <p>Moreover, this function installs GEOquery if necessary.</p>
+  
+      <p>This function calls <code><a href='http://www.inside-r.org/r-doc/GEOquery/getGEO'>getGEO</a></code> in a
+  special environment, where a custom modified version of
+  <code><a href='GEO.html'>getAndParseGSEMatrices</a></code> is defined to cope
+  with the annoying proxy case.</p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'>## <strong>Not run</strong>: </div><div class='input'># dir.create('testGSE')</div><div class='input'># getGSE('GSE19830', destdir='testGSE')</div><div class='input'># ## <strong>End(Not run)</strong></div><div class='input'></div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>getGSE</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

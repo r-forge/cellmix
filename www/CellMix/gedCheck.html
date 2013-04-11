@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>gedCheck. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Checking a Deconvolution Method</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre>gedCheck(method, ..., maxIter = 5L, verbose = 3L)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>method</dt>
+      <dd>algorithm specification</dd>
+      <dt>...</dt>
+      <dd>other arguments passed to <code><a href='ged.html'>ged</a></code>.</dd>
+      <dt>maxIter</dt>
+      <dd>maximum number of iterations. Note that it
+  is fixed to a small default value for the purpose of the
+  check, which is likely to make no sense for real
+  application.</dd>
+      <dt>verbose</dt>
+      <dd>defines verbosity level (<code>FALSE/TRUE</code>
+  or a number).</dd>
+    </dl>
+    
+    <div class="Value">
+      <h2>Value</h2>
+      
+      <p>returns invisibly the result of running the algorithm,
+  which usually is an <code>NMFfit</code> object.</p>
+  
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>This function runs a given algorithm on a small random
+  toy dataset, to check that the algorithm works correctly</p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'>gedCheck('deconf')
+</div>
+<div class='output'>  Using ged algorithm: “deconf”
+</div>
+<strong class='message'>NMF algorithm: 'deconf'</strong>
+<strong class='message'>NMF seeding method: rprop</strong>
+<div class='output'>    Algorithm version 'fast'
+    Scaling Strategy - coef: yes | signatures: yes
+Iterations: 0/5Iterations: 1/5 Iterations: 1/5 Iterations: 1/5 Iterations: 1/5 Iterations: 1/5 Iterations: 1/5 Iterations: 1/5 Iterations: 1/5 Iterations: 1/5 Iterations: 1/5 Iterations: 1/5 Iterations: 1/5 Iterations: 1/5 Iterations: 1/5 Iterations: 1/5Iterations: 2/5 Iterations: 2/5 Iterations: 2/5 Iterations: 2/5 Iterations: 2/5 Iterations: 2/5 Iterations: 2/5 Iterations: 2/5 Iterations: 2/5 Iterations: 2/5 Iterations: 2/5 Iterations: 2/5 Iterations: 2/5 Iterations: 2/5 Iterations: 2/5Iterations: 3/5 Iterations: 3/5 Iterations: 3/5 Iterations: 3/5 Iterations: 3/5 Iterations: 3/5 Iterations: 3/5 Iterations: 3/5 Iterations: 3/5 Iterations: 3/5 Iterations: 3/5 Iterations: 3/5 Iterations: 3/5 Iterations: 3/5 Iterations: 3/5Iterations: 4/5 Iterations: 4/5 Iterations: 4/5 Iterations: 4/5 Iterations: 4/5 Iterations: 4/5 Iterations: 4/5 Iterations: 4/5 Iterations: 4/5 Iterations: 4/5 Iterations: 4/5 Iterations: 4/5 Iterations: 4/5 Iterations: 4/5 Iterations: 4/5Iterations: 5/5 Iterations: 5/5 Iterations: 5/5 Iterations: 5/5 Iterations: 5/5 Iterations: 5/5 Iterations: 5/5 Iterations: 5/5 Iterations: 5/5 Iterations: 5/5 Iterations: 5/5 Iterations: 5/5 Iterations: 5/5 Iterations: 5/5 Iterations: 5/5
+DONE (stopped at 5/5 iterations)
+</div>
+<strong class='message'># NMF computation exit status ... OK</strong>
+<div class='output'>  Timing:
+   user  system elapsed 
+  0.788   0.012   0.802 
+  GED final wrap up ...   OK
+</div><div class='input'>gedCheck('DSA', log=FALSE)
+</div>
+<div class='output'>  Using ged algorithm: “DSA”
+</div>
+<strong class='message'>NMF algorithm: 'qprog'</strong>
+<strong class='message'>NMF seeding method: none</strong>
+<div class='output'>    Estimating basis and mixture coefficients matrices from marker features [DSA]
+    Using 15/15 markers to estimate cell proportions: 
+ CL_1 CL_2 CL_3 
+    5    5    5 
+    Checking data scale ...     NOTE [log]
+     Estimating basis matrix from mixture coefficients [qprog]
+    Building data range constraint matrices:     0.02 <= x <= 19.68
+     Not using any marker constraints
+</div>
+<strong class='message'># NMF computation exit status ... OK</strong>
+<div class='output'>  Timing:
+   user  system elapsed 
+  0.456   0.004   0.461 
+  GED final wrap up ...   OK
+</div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>gedCheck</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,34 @@
+Package: CellMix
+Type: Package
+Title: A Comprehensive Toolbox for Gene Expression Deconvolution
+Version: 1.4.2
+Date: 2013-03-31
+Authors@R: c( person("Renaud", "Gaujoux", role=c('aut', 'cre'), email='renaud@mancala.cbio.uct.ac.za') , person("Cathal",
+              "Seoighe", role='ths') , person("S.", "Schneider", role = "ctb", comment='SCOREM code') , person("D.",
+              "Repsilber", role = "ctb", comment='method: deconf') , person("Shai", "Shen-Orr", role='ctb', comment='method:
+              csSAM + discussion/testing') , person("T.", "Gong", role = "ctb", comment='method: quadratic programming'))
+Author: Renaud Gaujoux, Cathal Seoighe
+Maintainer: Renaud Gaujoux <renaud@mancala.cbio.uct.ac.za>
+Description: This package contains methods and utilities for performing gene
+    expression deconvolution, i.e. estimating cell type proportions and/or
+    cell-specific gene expression signatures from global expression data in
+    heterogeneous samples.
+    One of its central objectives is to provide a unified and user-friendly
+    interface to easily run such analyses.
+License: GPL (>=2)
+Depends: R (>= 2.15.2), methods, pkgmaker (>= 0.14), NMF (>= 0.14), csSAM (>= 1.2.1), registry, stats, stringr, GSEABase,
+              Biobase, matrixStats
+Imports: graphics, BiocGenerics, annotate, genefilter, AnnotationDbi, RSQLite, DBI, GEOquery, preprocessCore, limSolve,
+              quadprog, corpcor, xtable, gtools, csSAM, beeswarm, graph, genefilter
+Suggests: limSolve, RcppOctave, RUnit, lumi, hgu133a.db, hgu133b.db, hgu133plus2.db, illuminaHumanv2.db, rat2302.db,
+              hom.Hs.inp.db, GEOmetadb, xlsx, ArrayExpress
+Collate: 'options.R' 'devutils.R' 'utils.R' 'GEOquery.R' 'log.R' 'stats.R' 'constraints.R' 'registry.R' 'AllClasses.R'
+              'AllGenerics.R' 'MarkerSetCollection-class.R' 'MarkerList-class.R' 'MarkerList-factory.R' 'bioc-extra.R'
+              'Bioc.R' 'markers.R' 'extractMarkers.R' 'ExpressionMix-class.R' 'ExpressionMix-methods.R' 'data-utils.R'
+              'registry-data.R' 'data.R' 'registry-markers.R' 'registry-algorithms.R' 'algorithm-common.R'
+              'GEDStrategy-class.R' 'ged.R' 'blood.R' 'algorithm-ls.R' 'algorithm-qprog.R' 'algorithm-dsa.R' 'plots.R'
+              'algorithm-csSAM.R' 'algorithm-dsection.R' 'simulations.R' 'algorithm-semi.R' 'algorithm-meanProfile.R'
+              'algorithm-deconf.R' 'tests.R' 'assign.R' 'package.R' 'csstats.R' 'scorem.R'
+BuildVignettes: no
+LinkingTo: Rcpp
+Packaged: 2013-04-02 10:36:29 UTC; renaud

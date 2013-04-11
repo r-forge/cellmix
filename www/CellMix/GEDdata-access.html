@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>GEDdata-access. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Accessing Data from CellMix Dataset</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><span class="label label-important">S4</span> (GEDdata_entry)
+`exprs`(object)
+
+<span class="label label-important">S4</span> (GEDdata_entry)
+`dims`(object)
+
+<span class="label label-important">S4</span> (GEDdata_entry)
+`basis`(object)
+
+<span class="label label-important">S4</span> (GEDdata_entry)
+`coef`(object)
+
+<span class="label label-important">S4</span> (GEDdata_entry)
+`nbasis`(x)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>object</dt>
+      <dd>an object of class <code>GEDdata_entry</code> as
+  returned by <code>GEDdata_registry$get_entry</code>.</dd>
+      <dt>x</dt>
+      <dd>an object of class <code>"<a href='http://www.inside-r.org/r-doc/stats/factanal'>factanal</a>"</code> or
+  <code>"<a href='http://www.inside-r.org/r-doc/stats/princomp'>princomp</a>"</code> or the <code>loadings</code> component
+  of such an object.</dd>
+    </dl>
+    
+    <div class="Value">
+      <h2>Value</h2>
+      
+      <p>a numeric matrix</p>
+  
+      <p>a matrix</p>
+  
+      <p>an integer</p>
+  
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>Funtions to access data from the benchmark dataset
+  registry entries</p>
+  
+    </div>
+
+    <div class="Methods">
+      <h2>Methods</h2>
+      
+      <p><ol>
+<li>basis<code>signature(object = "GEDdata_entry")</code>:
+  <code>basis</code> access/compute the signatures and mixture
+  Proportions.</p>
+  
+      <p></li>
+<li>coef<code>signature(object = "GEDdata_entry")</code>:
+  <code>coef</code> returns the mixture coefficient matrix (i.e.
+  the proportions) available for the data.</p>
+  
+      <p></li>
+<li>dims<code>signature(object = "GEDdata_entry")</code>:
+  <code>dims</code> gets the dimensions of an ExpressionMix
+  object. It returns a 3-length integer vector, containing
+  the number of features, samples and components
+  respectively.</p>
+  
+      <p></li>
+<li>exprs<code>signature(object = "GEDdata_entry")</code>:
+  <code>exprs</code> loads and extracts the expression matrix
+  from a registry data entry.</p>
+  
+      <p></li>
+<li>nbasis<code>signature(x = "GEDdata_entry")</code>:
+  <code>nbasis</code> returns the number of constituents
+  signatures available in the data.</p>
+  
+      <p></li>
+</ol></p>
+  
+      <p></p>
+  
+    </div>
+      </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>basis,GEDdata_entry-method</li><li>coef,GEDdata_entry-method</li><li>dims,GEDdata_entry-method</li><li>exprs,GEDdata_entry-method</li><li>GEDdata-access</li><li>nbasis,GEDdata_entry-method</li>
+    </ul>
+    <ul>
+      <li>methods</li>
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

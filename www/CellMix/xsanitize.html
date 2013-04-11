@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>xsanitize. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Partial Sanitizer for xtable</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre>xsanitize(skip)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>skip</dt>
+      <dd>character string that contain the character
+  not to sanitize.</dd>
+    </dl>
+    
+    <div class="Value">
+      <h2>Value</h2>
+      
+      <p>a function that can be used in argument
+  <code>sanitize.text.function</code> of <code>print.xtable</code>.</p>
+  
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>Text sanitizing function to use in argument
+  <code>sanitize.text.function</code> of
+  <code><a href='http://www.inside-r.org/r-doc/xtable/print.xtable'>print.xtable</a></code>. This function is used in
+  <span class = "pkg">CellMix</span> to format the content internal registries
+  for inclusion in vignettes, as they contain citation
+  commands (\cite).</p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'>library(xtable)
+</div><div class='input'>print(xtable(gedAlgorithmInfo(show=FALSE), citet=TRUE), sanitize.text.function=xsanitize("\\{}$"))
+</div>
+<div class='output'>% latex table generated in R 2.15.3 by xtable 1.7-1 package
+% Tue Apr  2 13:31:29 2013
+\begin{table}[ht]
+\centering
+\begin{tabular}{rlllll}
+  \hline
+ & Description & Basis & Coef & Marker & Iter \\ 
+  \hline
+lsfit & Partial deconvolution of proportions using standard least-squares (\citet{Abbas2009}) & \checkmark & - & - & - \\ 
+  cs-lsfit & Partial deconvolution of cell signatures using standard least-squares & - & \checkmark & - & - \\ 
+  nnls & Partial deconvolution of proportions or signatures using fast combinatorial nonnegative least-squares & \checkmark & - & - & - \\ 
+  cs-nnls & Partial deconvolution of signatures using fast combinatorial nonnegative least-squares & - & \checkmark & - & - \\ 
+  qprog & Estimates proportions from known expression signatures using quadratic programming (\citet{Gong2011}) & \checkmark & - & - & - \\ 
+  cs-qprog & Estimates constrained cell-specific signatures from proportions using quadratic programming [experimental] & - & \checkmark & - & - \\ 
+  DSA & Complete deconvolution using Digital Sorting Algorithm (\citet{Zhong2013}) & - & - & \checkmark & - \\ 
+  csSAM & Estimates cell/tissue specific signatures from known proportions using SAM (\citet{Shen-Orr2010}) & - & \checkmark & - & - \\ 
+  DSection & Estimates proportions from proportions priors using MCMC (\citet{Erkkila2010}) & - & \checkmark & - & 500 \\ 
+  ssKL & Semi-supervised NMF algorithm for KL divergence, using marker genes (\citet{Gaujoux2011}) & - & - & \checkmark & 3000 \\ 
+  ssFrobenius & Semi-supervised NMF algorithm for Euclidean distance, using marker genes (\citet{Gaujoux2011}) & - & - & \checkmark & 3000 \\ 
+  meanProfile & Compute proportion proxies as mean expression profiles & - & - & \checkmark & - \\ 
+  deconf & Alternate least-square NMF method, using heuristic constraints [fast] (\citet{Repsilber2010}) & - & - & - & 1000 \\ 
+   \hline
+\end{tabular}
+\end{table}
+</div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>xsanitize</li>
+    </ul>
+    <ul>
+      <li>internal</li>
+    </ul> -->
+      
+    <h2>See also</h2>
+    
+  <code>print.xtable</code>
+
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

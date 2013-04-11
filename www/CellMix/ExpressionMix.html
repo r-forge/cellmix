@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>ExpressionMix. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Factory Method for ExpressionMix Objects</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre>ExpressionMix(object, ...)
+
+<span class="label label-important">S4</span> (ExpressionMix)
+`show`(object)
+
+<span class="label label-important">S4</span> (ExpressionSet)
+`ExpressionMix`(object, ..., composition = nmfModel(object))
+
+<span class="label label-important">S4</span> (matrix)
+`ExpressionMix`(object, ..., composition = nmfModel(object))
+
+<span class="label label-important">S4</span> (character)
+`ExpressionMix`(object, no.pure = FALSE, verbose = FALSE, ...)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>object</dt>
+      <dd>main input data. See possible values in
+  section <em>Methods</em>.</dd>
+      <dt>...</dt>
+      <dd>extra arguments to allow extension. See each
+  method's description for more details.</dd>
+      <dt>composition</dt>
+      <dd>an <code><a href='http://www.inside-r.org/r-doc/NMF/NMF-class'>NMF-class</a></code> object,
+  that contains the mixture data (signatures and/or
+  proportions).</dd>
+      <dt>no.pure</dt>
+      <dd>a logical that indicates if the pure
+  samples should be filtered out.</dd>
+      <dt>verbose</dt>
+      <dd>logical that indicates if log messages
+  should be shown.</dd>
+    </dl>
+    
+    <div class="Value">
+      <h2>Value</h2>
+      
+      <p>an <code><a href='ExpressionMix-class.html'>ExpressionMix-class</a></code> object</p>
+  
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>This is a generic function that creates instances of
+  <code><a href='ExpressionMix-class.html'>ExpressionMix-class</a></code> objects from common
+  input data.</p>
+  
+    </div>
+
+    <div class="Methods">
+      <h2>Methods</h2>
+      
+      <p><ol>
+<li>ExpressionMix<code>signature(object =
+  "ExpressionSet")</code>: Creates an ExpressionMix object from
+  an ExpressionSet object.</p>
+  
+      <p></li>
+<li>ExpressionMix<code>signature(object = "matrix")</code>:
+  Creates an ExpressionMix object using the matrix
+  <code>object</code> as the expression matrix.</p>
+  
+      <p></li>
+<li>ExpressionMix<code>signature(object =
+  "character")</code>: Creates an ExpressionMix object from the
+  accession key of a registered dataset.</p>
+  
+      <p>The expression data is first loaded with
+  <code><a href='gedData.html'>gedData</a></code> -- as an ExpressionSet object. The
+  mixture data is then built as an <code><a href='http://www.inside-r.org/r-doc/NMF/NMF-class'>NMF-class</a></code>
+  object and put together with the expression data into a
+  new <code><a href='ExpressionMix-class.html'>ExpressionMix-class</a></code> object.</p>
+  
+      <p></li>
+</ol></p>
+  
+      <p></p>
+  
+    </div>
+      </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>ExpressionMix</li><li>ExpressionMix,character-method</li><li>ExpressionMix,ExpressionSet-method</li><li>ExpressionMix,matrix-method</li><li>ExpressionMix-methods</li><li>show,ExpressionMix-method</li>
+    </ul>
+    <ul>
+      <li>methods</li>
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

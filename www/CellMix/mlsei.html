@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>mlsei. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Multivariate Least Squares with Equalities and Inequalities</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre>mlsei(A, B, ..., fulloutput = FALSE, verbose = TRUE)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>A</dt>
+      <dd>numeric matrix containing the coefficients of
+  the quadratic function to be minimised, <code class = 'eq'>||Ax-B||^2</code>;
+  if the columns of <code>A</code> have a names attribute, they
+  will be used to label the output.</dd>
+      <dt>B</dt>
+      <dd>numeric matrix containing the right-hand side of
+  the quadratic function to be minimised.</dd>
+      <dt>fulloutput</dt>
+      <dd>if <code>TRUE</code>, also returns the
+  covariance matrix of the solution and the rank of the
+  equality constraints -- only used if <code>type = 1</code> (see
+  <code><a href='http://www.inside-r.org/r-doc/limSolve/lsei'>lsei</a></code>).</dd>
+      <dt>verbose</dt>
+      <dd>logical that toggles verbose messages</dd>
+      <dt>...</dt>
+      <dd>extra arguments all passed to
+  <code><a href='http://www.inside-r.org/r-doc/limSolve/lsei'>lsei</a></code>.</dd>
+    </dl>
+    
+    <div class="Value">
+      <h2>Value</h2>
+      
+      <p>If <code>fulloutput=TRUE</code>, a list whose elements are the
+  results returned by <code>lsei</code> on each column of
+  <code>B</code>, otherwise a list with the following elements:
+  Xa matrix of dimension <code>ncol(B) x ncol(A)</code>
+  that contain the estimated solution of the least-square
+  problem. IsErrora logical that indicates if an
+  error occured typethe string "lsei", such that
+  how the solution was obtained can be traced
+  solutionNorma vector, whose elements are the sum
+  of absolute values of residuals of equalities and
+  violated inequalities, as computed for each column of
+  <code>B</code>. solutionNorma vector, whose elements
+  are the values of the minimised quadratic function at the
+  solution, i.e. the value of ||Ax-b||^2, as computed for
+  each column of <code>B</code>.</p>
+  
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>This function provides a multivariate version of function
+  <code><a href='http://www.inside-r.org/r-doc/limSolve/lsei'>lsei</a></code> from the <code><a href='http://www.inside-r.org/r-doc/limSolve/limSolve'>limSolve</a></code>
+  package. It solves the following optimisation problem for
+  each column b of B</p>
+  
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p><pre class = 'eq'>min ||Ax - b||^2</code></p>
+  
+      <p>subject to the equality constraints: E x = f</p>
+  
+      <p>and/or inequality constraints: G x >= h</p>
+  
+      <p>It applies <code>lsei</code> on each column of a right-hand
+  side matrix, and automatically transpose the input and
+  result matrices back and forth if needed.</p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'># random left-hand quadratic coefficients</div><div class='input'>A <- rmatrix(20, 3)
+</div><div class='input'>r <- ncol(A)
+</div><div class='input'># random right-hand target matrix</div><div class='input'>B <- rmatrix(20, 10)
+</div><div class='input'># constrained least-squares: nonnegative and sum up to one</div><div class='input'>res <- mlsei(A,B, E=matrix(1, 1, r), F=1, G=diag(1, r), H=rep(0,r))
+</div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>mlsei</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>DSAproportions. CellMix 1.4.2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Digital Sorting Algorithm: Proportion Estimation Method</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre>DSAproportions(x, markers, verbose = FALSE)
+
+.DSAproportions(x, markers, verbose = FALSE)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>x</dt>
+      <dd>target mixed expression matrix</dd>
+      <dt>markers</dt>
+      <dd>marker specification</dd>
+      <dt>verbose</dt>
+      <dd>verbose level</dd>
+    </dl>
+    
+    <div class="Value">
+      <h2>Value</h2>
+      
+      <p>a matrix of proportions with the same number of columns
+  as <code>x</code> and as many rows as elements in
+  <code>markers</code> (i.e. cell types).</p>
+  
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p><code>DSAproportions</code> implements the method proposed by
+  <cite>Zhong et al. (2013)</cite> as part of the
+  <code><a href='gedAlgorithm.DSA.html'>DSA</a></code> algorithm. This method
+  estimates cell proportions from mixed sample expression
+  data, given a set of markers, i.e. features that are
+  known to be exclusively expressed by a single cell type
+  in the mixture.</p>
+  
+      <p><code>.DSAproportions</code> is the internal -- non-exported --
+  function that actually performs the estimation. It
+  expects a list of valid indexes for each cell type whose
+  proportions are to be estimated.</p>
+  
+    </div>
+
+    <div class="References">
+      <h2>References</h2>
+      
+      <p>Zhong Y, Wan Y, Pang K, Chow LM and Liu Z (2013).
+  "Digital sorting of complex tissues for cell
+  type-specific gene expression profiles." _BMC
+  Bioinformatics_, *14*(1), pp. 89. ISSN 1471-2105, <URL:
+  http://dx.doi.org/10.1186/1471-2105-14-89>, <URL:
+  http://www.biomedcentral.com/1471-2105/14/89>.</p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'># random data</div><div class='input'>x <- rmix(3, 100, 20)
+</div><div class='input'>m <- getMarkers(x)
+</div><div class='input'></div><div class='input'># estimate proportions</div><div class='input'>p <- DSAproportions(x, m)
+</div><div class='input'># plot against true proportions</div><div class='input'>profplot(x, p)
+</div><p><img src='DSAproportions-ex1.png' alt='' width='400' height='400' /></p></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>DSAproportions</li><li>.DSAproportions</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>
