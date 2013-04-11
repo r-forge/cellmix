@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>runSAM. csSAM 1.2.4</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="
+  Shai Shen-Orr, Rob Tibshirani, Narasimhan
+  Balasubramanian, David Wang
+">
+
+<!-- bootstrap css -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<!-- highlighting css -->
+<link href="css/highlight.css" rel="stylesheet">
+<!-- custom css -->
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!-- bootstrap javascript -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- d3 word cloud -->
+<script src="js/d3.v2.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class = "container">
+      <a class="brand" href="index.html">csSAM 1.2.4</a>
+      <div class="nav">
+        <ul class="nav">
+        <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
+       </ul>
+   	  </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>runSAM</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre>runSAM(G, y, s0.sam = NULL, stand.r = TRUE)</pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>G</dt>
+      <dd>Matrix of gene expression, columns ordered in
+  the same order at the cell-frequency matrix (n by p, n
+  samples, p genes)</dd>
+      <dt>y</dt>
+      <dd>Numeric group association of each sample. Either
+  1 or 2.</dd>
+      <dt>s0.sam</dt>
+      <dd>Input or computed value of SAM
+  exchangeability factor. Default is determined
+  automatically</dd>
+      <dt>stand.r</dt>
+      <dd>Median center and standardize arrays.
+  Default is TRUE.</dd>
+    </dl>
+    
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>A lightweight version of the SAM algorithm, only performs
+  two group comparison with equal deltas on each tail</p>
+  
+    </div>
+
+    <div class="References">
+      <h2>References</h2>
+      
+      <p>Shen-Orr SS, Tibshirani R, Khatri P, Bodian DL, Staedtler
+  F, Perry NM, Hastie T, Sarwal MM, Davis MM and Butte AJ
+  (2010). "Cell type-specific gene expression differences
+  in complex tissues." _Nature methods_, *7*(4), pp. 287-9.
+  ISSN 1548-7105, <URL:
+  http://dx.doi.org/10.1038/nmeth.1439>, <URL:
+  http://www.ncbi.nlm.nih.gov/pubmed/20208531>.</p>
+  
+    </div>
+      </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>runSAM</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+    
+    <h2>Author</h2>
+    
+  Shai Shen-Orr, Rob Tibshirani, Narasimhan
+  Balasubramanian, David Wang
+
+    
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>
