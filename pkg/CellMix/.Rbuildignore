@@ -1,0 +1,16 @@
+\.project
+\.settings
+^dev$
+^ressources/$
+vignettes/tmplib$
+vignettes/figure$
+vignettes/cache$
+vignettes/Rpackages\.bib
+vignettes/.*\.tex
+vignettes/.*\.eps
+vignettes/.*\.pdf
+vignettes/CellMix_appnote\.zip
+^makefile$
+inst/scripts/LCBMF
+data/mixeddigits.rda
+^sandbox
