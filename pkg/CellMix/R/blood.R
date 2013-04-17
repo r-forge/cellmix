@@ -92,15 +92,18 @@ cbcMapper <- list(
 		Abbas <- ldata('Abbas')
 		.charmap(x, setNames(Abbas$WBType, sampleNames(Abbas)))
 	}
+	, DMap = list(Lymphocytes=c('NKT', 'CD4+ Central Memory', 'CD4+ Effector Memory'
+								, 'CD8+ Central Memory', 'CD8+ Effector Memory', 'CD8+ Effector Memory RA'))
 	, HaemAtlas = c(`B-CD19`='Lymphocytes'
 			, Erythroblast='Precursor', `Granulocyte-CD66b`='Neutrophils'
 			, Megakaryocyte='Precursor', `Monocyte-CD14`='Monocytes', `NK-CD56`='Lymphocytes'
 			, `T-CD4`='Lymphocytes', `T-CD8`='Lymphocytes')
 	, regexpr = function(x){
 		# define patterns
-		patterns <- c(Lymphocytes='((^)|( ))((B)|(T[ch]?)|(NK)|(natural[- ._]killer))((( )|($))|([- ._]cell))'
+		patterns <- setNames(sub("s$", "", names(refCBC)), names(refCBC))
+		patterns <- c(patterns, Lymphocytes='((^)|( ))((B)|(T[ch]?)|(NK)|(natural[- ._]killer)|(NKT))((( )|($))|([- ._]?cell))'
 					, Granulocytes='granulocyte')
-		patterns <- c(patterns, setNames(sub("s$", "", names(refCBC)), names(refCBC)))
+		patterns <- c(patterns, c(Lymphocytes='^CD[48][^0-9]'))
 			
 		# apply patterns sequentially
 		res <- as.character(rep(NA, length(x)))
@@ -158,7 +161,10 @@ setMethod('asCBC', 'character'
 				m <- map(ct)
 			}else if( is.character(map) ){
 				m <- .charmap(ct, map)
-			}
+			}else if( is.list(map) ){
+				map <- unlist2(map)
+				m <- .charmap(ct, setNames(names(map), map))
+			}else stop("Invalid cell type map [", class(map), ']')
 			# update result map
 			if( !is.null(m) ) res[i] <- m
 		}
@@ -173,7 +179,7 @@ setMethod('asCBC', 'character'
 		# check that all cell types were matched
 		if( any(bad <- is.na(res)) ){
 			# drop unmatched cell types
-			if( !drop && !quiet ) warning("asCBC - Could not match some cell type(s): ", str_out(unique(names(res[bad])), Inf))
+			if( !quiet ) warning("asCBC - Could not match some cell type(s): ", str_out(unique(names(res[bad])), Inf))
 		}
 		
 		# limit to CBC cell types

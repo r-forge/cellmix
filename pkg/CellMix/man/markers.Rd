@@ -160,6 +160,12 @@
   with a given fixed value. This is useful to filter
   markers based on their associated scores. }
 
+  \item{connectivity}{\code{signature(object =
+  "MarkerList")}: Computes the connectivity matrix of each
+  set (i.e. cell/tissue type) of a marker list, i.e. the
+  matrix whose entries are the number of features in common
+  between each pair o cell type. }
+
   \item{convertIDs}{\code{signature(object = "MarkerList",
   to = "GeneIdentifierType", from = "GeneIdentifierType")}:
   Convert IDs from a MarkerList object.
@@ -216,6 +222,16 @@
   \item{geneValues}{\code{signature(object =
   "MarkerList")}: Returns the values embedded in a
   \code{MarkerList} object. }
+
+  \item{incidence}{\code{signature(x = "MarkerList")}:
+  Computes the incidence matrix of each feature in each set
+  (i.e. cell/tissue type) of a marker list.
+
+  The matrix is computed by converting the
+  \code{MarkerList} object into a
+  \code{\link{GeneSetCollection}} object, for which a
+  method \code{\link{incidence}} exists in the
+  \pkg{GSEABase} package. }
 
   \item{MarkerList}{\code{signature(object =
   "MarkerList")}: This method acts as a Constructor-Copy

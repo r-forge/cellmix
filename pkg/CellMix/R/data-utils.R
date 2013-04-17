@@ -4,6 +4,10 @@
 # Created: Apr 1, 2013
 ###############################################################################
 
+ldata <- function(..., package='CellMix'){
+	pkgmaker::ldata(..., package=package)
+}
+
 #' @include GEOquery.R
 NULL
 

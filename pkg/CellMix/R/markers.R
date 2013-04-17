@@ -1685,7 +1685,7 @@ getCurrentGeneric <- function(envir=parent.frame()){
 }
 
 
-setGeneric('Compare', package='methods')
+#setGeneric('Compare', package='methods')
 #' Operations on MarkerList Objects
 #' 
 #' \code{Compare} compares all embedded values with a given fixed value.
@@ -2008,11 +2008,11 @@ flatten_seq <- function(x, decreasing=FALSE, n=NULL){
 	idx
 } 
 
-#' @importFrom BiocGenerics combine
-#' @export
-setGeneric('combine', package='BiocGenerics')
+#setGeneric('combine', package='BiocGenerics')
 #' Combine markers from multiple cell types of a MarkerList object, based on groups 
 #' defined by a given factor.
+#' @importFrom BiocGenerics combine
+#' @export
 setMethod('combine', signature(x='MarkerList', y='factor')
 	, function(x, y, ...){
 		
@@ -2042,3 +2042,56 @@ setMethod('nmf', signature(x='MatrixData', rank='MarkerList'),
 	}
 ) 
  
+
+#' Computes the incidence matrix of each feature in each set (i.e. cell/tissue type) of a marker list.
+#' 
+#' The matrix is computed by converting the \code{MarkerList} object into a \code{\link{GeneSetCollection}}
+#' object, for which a method \code{\link{incidence}} exists in the \pkg{GSEABase} package. 
+setMethod('incidence', 'MarkerList',
+	function(x, ...){
+		incidence(as(x, 'GeneSetCollection'), ...)
+	}
+)
+
+#' Computes the connectivity matrix of each set (i.e. cell/tissue type) of a marker list, 
+#' i.e. the matrix whose entries are the number of features in common between each pair o
+#' cell type.
+#' 
+#' @examples 
+#' 
+#' # connectivity matrix of marker sets 
+#' vg <- MarkerList('VeryGene')
+#' co <- connectivity(vg)
+#' # plot as a conensus matrix
+#' consensusmap(co)
+#' 
+setMethod('connectivity', 'MarkerList',
+	function(object, ...){
+		
+		tmpl <- rep(as.integer(NA), length(object))
+		mn <- geneIds(object)
+		con <- sapply(seq_along(object), function(i){
+			tmpl[-i] <- sapply(mn[-i], function(set) sum(is.element(mn[[i]], set))) 
+			tmpl
+		}, simplify=TRUE)
+
+		# set names
+		colnames(con) <- rownames(con) <- names(object)
+		# return connectivity matrix
+		con
+	}
+)
+#' Subset a matrix-like object by only keeping the features in common 
+#' with a \code{MarkerList} object.
+#' Note that no ID conversion is attempted, meaning that marker IDs
+#' must match exactly feature names used in the matrix data.
+#' 
+#' This is a shortcut for \code{intersect(x, featureNames(y), ...)}.
+#' @rdname intersect
+#' @export 
+setMethod('intersect', signature(x='MatrixData', y='MarkerList'), 
+		function(x, y){
+			intersect(x, featureNames(y))
+		}
+)
+

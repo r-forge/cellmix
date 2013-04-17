@@ -1,0 +1,66 @@
+\begin{thebibliography}{}
+
+\bibitem[Abbas {\em et~al.}(2009)Abbas, Wolslegel, Seshasayee, Modrusan, and
+  Clark]{Abbas2009}
+Abbas, A.~R., Wolslegel, K., Seshasayee, D., Modrusan, Z., and Clark, H.~F.
+  (2009).
+\newblock {Deconvolution of blood microarray data identifies cellular
+  activation patterns in systemic lupus erythematosus.}
+\newblock {\em PloS one\/}, {\bf 4}(7), e6098.
+
+\bibitem[Bolen {\em et~al.}(2011)Bolen, Uduman, and Kleinstein]{Bolen2011}
+Bolen, C.~R., Uduman, M., and Kleinstein, S.~H. (2011).
+\newblock {Cell Subset Prediction for Blood Genomic Studies}.
+\newblock {\em BMC Bioinformatics\/}, {\bf 12}(1), 258.
+
+\bibitem[Gaujoux and Seoighe(2010)Gaujoux and Seoighe]{Gaujoux2010}
+Gaujoux, R. and Seoighe, C. (2010).
+\newblock {A flexible R package for nonnegative matrix factorization.}
+\newblock {\em BMC bioinformatics\/}, {\bf 11}, 367.
+
+\bibitem[Gaujoux and Seoighe(2011)Gaujoux and Seoighe]{Gaujoux2011}
+Gaujoux, R. and Seoighe, C. (2011).
+\newblock {Semi-supervised Nonnegative Matrix Factorization for gene expression
+  deconvolution: A case study.}
+\newblock {\em Infection, genetics and evolution : journal of molecular
+  epidemiology and evolutionary genetics in infectious diseases\/}.
+
+\bibitem[Gentleman {\em et~al.}(2004)Gentleman, Carey, Bates, Bolstad,
+  Dettling, Dudoit, Ellis, Gautier, Ge, Gentry, Hornik, Hothorn, Huber, Iacus,
+  Irizarry, Leisch, Li, Maechler, Rossini, Sawitzki, Smith, Smyth, Tierney,
+  Yang, and Zhang]{Gentleman2004}
+Gentleman, R.~C., {\em et~al.} (2004).
+\newblock {Bioconductor: open software development for computational biology
+  and bioinformatics.}
+\newblock {\em Genome biology\/}, {\bf 5}(10), R80.
+
+\bibitem[Kuhn {\em et~al.}(2011)Kuhn, Thu, Waldvogel, Faull, and
+  Luthi-Carter]{Kuhn2011}
+Kuhn, A., Thu, D., Waldvogel, H.~J., Faull, R. L.~M., and Luthi-Carter, R.
+  (2011).
+\newblock {Population-specific expression analysis (PSEA) reveals molecular
+  changes in diseased brain.}
+\newblock {\em Nature methods\/}, {\bf 8}(11), 945--7.
+
+\bibitem[Shen-Orr {\em et~al.}(2010)Shen-Orr, Tibshirani, Khatri, Bodian,
+  Staedtler, Perry, Hastie, Sarwal, Davis, and Butte]{Shen-Orr2010}
+Shen-Orr, S.~S., {\em et~al.} (2010).
+\newblock {Cell type-specific gene expression differences in complex tissues.}
+\newblock {\em Nature methods\/}, {\bf 7}(4), 287--9.
+
+\bibitem[Watkins {\em et~al.}(2009)Watkins, Gusnanto, de~Bono, De,
+  Miranda-Saavedra, Hardie, Angenent, Attwood, Ellis, Erber, Foad, Garner,
+  Isacke, Jolley, Koch, Macaulay, Morley, Rendon, Rice, Taylor,
+  Thijssen-Timmer, Tijssen, van~der Schoot, Wernisch, Winzer, Dudbridge,
+  Buckley, Langford, Teichmann, G\"{o}ttgens, and Ouwehand]{Watkins2009}
+Watkins, N.~a., {\em et~al.} (2009).
+\newblock {A HaemAtlas: characterizing gene expression in differentiated human
+  blood cells.}
+\newblock {\em Blood\/}, {\bf 113}(19), e1--9.
+
+\bibitem[Zhao and Simon(2010)Zhao and Simon]{Zhao2010}
+Zhao, Y. and Simon, R. (2010).
+\newblock {Gene expression deconvolution in clinical samples.}
+\newblock {\em Genome medicine\/}, {\bf 2}(12), 93.
+
+\end{thebibliography}

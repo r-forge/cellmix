@@ -8,6 +8,9 @@
 \alias{annotation<-,MarkerList,NULL-method}
 \alias{annotation<--methods}
 \alias{annotation-methods}
+\alias{connectivity}
+\alias{connectivity,MarkerList-method}
+\alias{connectivity-methods}
 \alias{details}
 \alias{details,MarkerList-method}
 \alias{details-methods}
@@ -31,6 +34,9 @@
 \alias{geneValues<--methods}
 \alias{geneValues-methods}
 \alias{hasValues}
+\alias{incidence}
+\alias{incidence,MarkerList-method}
+\alias{incidence-methods}
 \alias{marknames}
 \alias{marknames,list-method}
 \alias{marknames-methods}
@@ -58,6 +64,10 @@
   annotation(object, ...) <- value
 
   details(object)
+
+  incidence(x, ...)
+
+  connectivity(object, ...)
 
   nmf(x, rank, method, ...)
 
@@ -174,6 +184,12 @@
   "MarkerList", value = "NULL")}: Reset the annotation
   package associated to a marker list }
 
+  \item{connectivity}{\code{signature(object =
+  "MarkerList")}: Computes the connectivity matrix of each
+  set (i.e. cell/tissue type) of a marker list, i.e. the
+  matrix whose entries are the number of features in common
+  between each pair o cell type. }
+
   \item{details}{\code{signature(object = "MarkerList")}:
   Shows more details than the regular \code{show} method. }
 
@@ -199,6 +215,16 @@
   "MarkerList")}: Returns the values embedded in a
   \code{MarkerList} object. }
 
+  \item{incidence}{\code{signature(x = "MarkerList")}:
+  Computes the incidence matrix of each feature in each set
+  (i.e. cell/tissue type) of a marker list.
+
+  The matrix is computed by converting the
+  \code{MarkerList} object into a
+  \code{\link{GeneSetCollection}} object, for which a
+  method \code{\link{incidence}} exists in the
+  \pkg{GSEABase} package. }
+
   \item{nmf}{\code{signature(x = "MatrixData", rank =
   "MarkerList", method = "ANY")}: Calls an NMF algorithm
   using a MarkerList object, whose length defines the
@@ -217,6 +243,11 @@ geneValues(m)
 marknames( rMarkerList(3) )
 marknames( rMarkerList(3, names=TRUE) )
 marknames( rMarkerList(3, values=TRUE) )
+# connectivity matrix of marker sets
+vg <- MarkerList('VeryGene')
+co <- connectivity(vg)
+# plot as a conensus matrix
+consensusmap(co)
 }
 \keyword{methods}
 

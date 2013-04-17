@@ -928,3 +928,22 @@ NULL
 	.GSE3649_convert(eset, file, mode='in')
 }
 
+##########################################
+# Dataset: GSE24759 [DMap]
+##########################################
+gedData.DMap <- setGEDData(key='GSE24759'
+		, aliases = 'DMap'
+		, description = 'Differentiation Map: Densely Interconnected Transcriptional Circuits Control Cell States in Human Hematopoiesis'
+		, cite = 'Novershtern2011'
+		, annotation = 'hthgu133a.db'
+		, dim = c(22944L, 211L, 38L)
+		, pure = TRUE
+		, pdata = function(eset){
+			# cell type
+			type <- eset$characteristics_ch1
+			type <- sub("cell type: ", "", type)
+			data.frame(Type=type)
+		}
+		, basis = meanBasis('Type')
+		, coef = pureCoef('Type')
+)

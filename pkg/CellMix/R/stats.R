@@ -136,7 +136,7 @@ applyBy <- function(x, BY, MARGIN, FUN, W=NULL, ..., DROP=FALSE){
   #
   
   # re-wrap ExpressionSet objects
-	if( is(x.orig, 'ExpressionSet') ){
+	if( isExpressionSet(x.orig) ){
 	  res <- ExpressionSet(res, annotation=annotation(x.orig))
 	}
   

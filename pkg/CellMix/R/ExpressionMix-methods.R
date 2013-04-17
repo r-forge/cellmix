@@ -12,6 +12,10 @@ isExpressionSet <- function(x){
 	is(x, 'ExpressionSet')
 }
 
+isExpressionMix <- function(x){
+	is(x, 'ExpressionMix')
+}
+
 #' @rdname ExpressionMix
 #' @export
 setMethod('show', 'ExpressionMix', 

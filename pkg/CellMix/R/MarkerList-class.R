@@ -188,22 +188,32 @@ setGeneric('geneIdType<-', package='GSEABase')
 #' 
 #' @export
 #' @rdname MarkerList-data
+#' @importMethodsFrom BiocGenerics annotation
 #' @inline
-setGeneric('annotation', package='Biobase')
+setGeneric('annotation', package='BiocGenerics')
 #' @export
 #' @rdname MarkerList-data
 #' @inline
-setGeneric('annotation<-', package='Biobase')
+#' @importMethodsFrom BiocGenerics annotation<-
+setGeneric('annotation<-', package='BiocGenerics')
 
 
 #' @rdname MarkerList-data
-#' @importMethodsFrom GSEABase details
 #' @export
 #' @inline
 setGeneric('details', package='GSEABase')
 
-#' @importMethodsFrom GSEABase mapIdentifiers
 setGeneric('mapIdentifiers', package='GSEABase')
+
+#' @rdname MarkerList-data
+#' @export
+#' @inline
+setGeneric('incidence', package='GSEABase')
+
+#' @rdname MarkerList-data
+#' @export
+#' @inline
+setGeneric('connectivity', package='NMF')
 
 #' Identifying Gene or Probe ID Type
 #' 

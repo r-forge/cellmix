@@ -51,3 +51,50 @@ setGeneric('exprs', package = 'Biobase')
 setMethod('exprs', 'matrix', function(object) object )
 
 setGeneric('subset', package='base')
+
+#' Enhanced Subsetting for Matrix-like Data 
+#' 
+#' These methods subset Matrix-like data only keeping rows 
+#' whose names are in common with some other data.
+#' 
+#' @details 
+#' The generic for these methods is taken from 
+#' the \pkg{GSEABase} package because it is entirely imported
+#' by \pkg{CellMix}.
+#' However, a more natural definition would be to be able to use 
+#' the -- currently conflicting -- version defined in the 
+#' recommended \pkg{BiocGenerics} package.
+#' 
+#' @inheritParams base::intersect
+#' @name intersect
+NULL
+#setGeneric('intersect', package='GSEABase')
+
+#' This method is equivalent to \code{\link[base]{subset}(x, y)}.
+#' @rdname intersect
+#' @export 
+setMethod('intersect', signature(x='MatrixData', y='logical'), 
+	function(x, y){
+		subset(x, y)
+	}
+)
+#' Subset a matrix-like object by only keeping the rows whose 
+#' names are in a given reference character vector.
+#' @rdname intersect
+#' @export 
+setMethod('intersect', signature(x='MatrixData', y='character'), 
+	function(x, y){
+		intersect(x, featureNames(x) %in% y)
+	}
+)
+#' Subset a matrix-like object by only keeping the rows whose 
+#' names are in common with another matrix-like data.
+#' 
+#' This is a shortcut for \code{intersect(x, featureNames(y), ...)}.
+#' @rdname intersect
+#' @export 
+setMethod('intersect', signature(x='MatrixData', y='MatrixData'), 
+		function(x, y){
+			intersect(x, featureNames(y))
+		}
+)
