@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>gpl2bioc. CellMix 1.4.2</title>
+<title>gpl2bioc. CellMix 1.5.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -30,7 +30,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <a class="brand" href="index.html">CellMix 1.5.1</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -80,34 +80,22 @@ bioc2gpl(x)</pre>
     <h2 id="examples">Examples</h2>
     <pre class="examples"><div class='input'>gpl2bioc()
 </div>
-<div class='output'>             GPL71             GPL198            GPL3738             GPL200 
-           "ag.db"    "ath1121501.db"       "canine2.db"      "celegans.db" 
-           GPL3213              GPL72            GPL1322            GPL3154 
-      "chicken.db"   "drosgenome1.db"   "drosophila2.db"        "ecoli2.db" 
-             GPL74             GPL201              GPL96             GPL571 
-       "hcg110.db"       "hgfocus.db"       "hgu133a.db"      "hgu133a2.db" 
-             GPL97             GPL570              GPL91              GPL92 
-      "hgu133b.db"   "hgu133plus2.db"      "hgu95av2.db"        "hgu95b.db" 
-             GPL93              GPL94              GPL95            GPL3921 
-       "hgu95c.db"        "hgu95d.db"        "hgu95e.db"     "hthgu133a.db" 
-             GPL98              GPL99             GPL100             GPL101 
-    "hu35ksuba.db"     "hu35ksubb.db"     "hu35ksubc.db"     "hu35ksubd.db" 
-             GPL80              GPL32              GPL81              GPL33 
-       "hu6800.db"        "mgu74a.db"      "mgu74av2.db"        "mgu74b.db" 
-             GPL82              GPL34              GPL83             GPL339 
-     "mgu74bv2.db"        "mgu74c.db"      "mgu74cv2.db"       "moe430a.db" 
-            GPL340            GPL1261              GPL75              GPL76 
-    "mouse4302.db"    "mouse430a2.db"     "mu11ksuba.db"     "mu11ksubb.db" 
-             GPL77              GPL78              GPL79            GPL3533 
-    "mu19ksuba.db"     "mu19ksubb.db"     "mu19ksubc.db"       "porcine.db" 
-            GPL341             GPL342            GPL1355              GPL85 
-      "rae230a.db"       "rae230b.db"       "rat2302.db"        "rgu34a.db" 
-             GPL86              GPL87              GPL88              GPL89 
-       "rgu34b.db"        "rgu34c.db"         "rnu34.db"         "rtu34.db" 
-           GPL1352            GPL1318            GPL2529              GPL90 
-      "u133x3p.db" "xenopuslaevis.db"        "yeast2.db"         "ygs98.db" 
-           GPL1319 
-    "zebrafish.db" 
+<div class='output'>             GPL71             GPL198            GPL3738             GPL200            GPL3213              GPL72            GPL1322 
+           "ag.db"    "ath1121501.db"       "canine2.db"      "celegans.db"       "chicken.db"   "drosgenome1.db"   "drosophila2.db" 
+           GPL3154              GPL74             GPL201              GPL96             GPL571              GPL97             GPL570 
+       "ecoli2.db"        "hcg110.db"       "hgfocus.db"       "hgu133a.db"      "hgu133a2.db"       "hgu133b.db"   "hgu133plus2.db" 
+             GPL91              GPL92              GPL93              GPL94              GPL95            GPL3921              GPL98 
+     "hgu95av2.db"        "hgu95b.db"        "hgu95c.db"        "hgu95d.db"        "hgu95e.db"     "hthgu133a.db"     "hu35ksuba.db" 
+             GPL99             GPL100             GPL101              GPL80              GPL32              GPL81              GPL33 
+    "hu35ksubb.db"     "hu35ksubc.db"     "hu35ksubd.db"        "hu6800.db"        "mgu74a.db"      "mgu74av2.db"        "mgu74b.db" 
+             GPL82              GPL34              GPL83             GPL339             GPL340            GPL1261              GPL75 
+     "mgu74bv2.db"        "mgu74c.db"      "mgu74cv2.db"       "moe430a.db"     "mouse4302.db"    "mouse430a2.db"     "mu11ksuba.db" 
+             GPL76              GPL77              GPL78              GPL79            GPL3533             GPL341             GPL342 
+    "mu11ksubb.db"     "mu19ksuba.db"     "mu19ksubb.db"     "mu19ksubc.db"       "porcine.db"       "rae230a.db"       "rae230b.db" 
+           GPL1355              GPL85              GPL86              GPL87              GPL88              GPL89            GPL1352 
+      "rat2302.db"        "rgu34a.db"        "rgu34b.db"        "rgu34c.db"         "rnu34.db"         "rtu34.db"       "u133x3p.db" 
+           GPL1318            GPL2529              GPL90            GPL1319 
+"xenopuslaevis.db"        "yeast2.db"         "ygs98.db"     "zebrafish.db" 
 </div><div class='input'>gpl2bioc("GPL96")
 </div>
 <div class='output'>       GPL96 
@@ -122,34 +110,20 @@ bioc2gpl(x)</pre>
 "hgu133a.db" 
 </div><div class='input'>bioc2gpl()
 </div>
-<div class='output'>           ag.db    ath1121501.db       canine2.db      celegans.db 
-         "GPL71"         "GPL198"        "GPL3738"         "GPL200" 
-      chicken.db   drosgenome1.db   drosophila2.db        ecoli2.db 
-       "GPL3213"          "GPL72"        "GPL1322"        "GPL3154" 
-       hcg110.db       hgfocus.db      hgu133a2.db       hgu133a.db 
-         "GPL74"         "GPL201"         "GPL571"          "GPL96" 
-      hgu133b.db   hgu133plus2.db      hgu95av2.db        hgu95b.db 
-         "GPL97"         "GPL570"          "GPL91"          "GPL92" 
-       hgu95c.db        hgu95d.db        hgu95e.db     hthgu133a.db 
-         "GPL93"          "GPL94"          "GPL95"        "GPL3921" 
-    hu35ksuba.db     hu35ksubb.db     hu35ksubc.db     hu35ksubd.db 
-         "GPL98"          "GPL99"         "GPL100"         "GPL101" 
-       hu6800.db        mgu74a.db      mgu74av2.db        mgu74b.db 
-         "GPL80"          "GPL32"          "GPL81"          "GPL33" 
-     mgu74bv2.db        mgu74c.db      mgu74cv2.db       moe430a.db 
-         "GPL82"          "GPL34"          "GPL83"         "GPL339" 
-    mouse4302.db    mouse430a2.db     mu11ksuba.db     mu11ksubb.db 
-        "GPL340"        "GPL1261"          "GPL75"          "GPL76" 
-    mu19ksuba.db     mu19ksubb.db     mu19ksubc.db       porcine.db 
-         "GPL77"          "GPL78"          "GPL79"        "GPL3533" 
-      rae230a.db       rae230b.db       rat2302.db        rgu34a.db 
-        "GPL341"         "GPL342"        "GPL1355"          "GPL85" 
-       rgu34b.db        rgu34c.db         rnu34.db         rtu34.db 
-         "GPL86"          "GPL87"          "GPL88"          "GPL89" 
-      u133x3p.db xenopuslaevis.db        yeast2.db         ygs98.db 
-       "GPL1352"        "GPL1318"        "GPL2529"          "GPL90" 
-    zebrafish.db 
-       "GPL1319" 
+<div class='output'>           ag.db    ath1121501.db       canine2.db      celegans.db       chicken.db   drosgenome1.db   drosophila2.db        ecoli2.db 
+         "GPL71"         "GPL198"        "GPL3738"         "GPL200"        "GPL3213"          "GPL72"        "GPL1322"        "GPL3154" 
+       hcg110.db       hgfocus.db      hgu133a2.db       hgu133a.db       hgu133b.db   hgu133plus2.db      hgu95av2.db        hgu95b.db 
+         "GPL74"         "GPL201"         "GPL571"          "GPL96"          "GPL97"         "GPL570"          "GPL91"          "GPL92" 
+       hgu95c.db        hgu95d.db        hgu95e.db     hthgu133a.db     hu35ksuba.db     hu35ksubb.db     hu35ksubc.db     hu35ksubd.db 
+         "GPL93"          "GPL94"          "GPL95"        "GPL3921"          "GPL98"          "GPL99"         "GPL100"         "GPL101" 
+       hu6800.db        mgu74a.db      mgu74av2.db        mgu74b.db      mgu74bv2.db        mgu74c.db      mgu74cv2.db       moe430a.db 
+         "GPL80"          "GPL32"          "GPL81"          "GPL33"          "GPL82"          "GPL34"          "GPL83"         "GPL339" 
+    mouse4302.db    mouse430a2.db     mu11ksuba.db     mu11ksubb.db     mu19ksuba.db     mu19ksubb.db     mu19ksubc.db       porcine.db 
+        "GPL340"        "GPL1261"          "GPL75"          "GPL76"          "GPL77"          "GPL78"          "GPL79"        "GPL3533" 
+      rae230a.db       rae230b.db       rat2302.db        rgu34a.db        rgu34b.db        rgu34c.db         rnu34.db         rtu34.db 
+        "GPL341"         "GPL342"        "GPL1355"          "GPL85"          "GPL86"          "GPL87"          "GPL88"          "GPL89" 
+      u133x3p.db xenopuslaevis.db        yeast2.db         ygs98.db     zebrafish.db 
+       "GPL1352"        "GPL1318"        "GPL2529"          "GPL90"        "GPL1319" 
 </div><div class='input'>bioc2gpl('hgu133a')
 </div>
 <div class='output'>hgu133a 

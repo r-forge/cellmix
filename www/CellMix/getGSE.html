@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>getGSE. CellMix 1.4.2</title>
+<title>getGSE. CellMix 1.5.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -30,7 +30,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <a class="brand" href="index.html">CellMix 1.5.1</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -112,10 +112,10 @@
   
       <p>Moreover, this function installs GEOquery if necessary.</p>
   
-      <p>This function calls <code><a href='http://www.inside-r.org/r-doc/GEOquery/getGEO'>getGEO</a></code> in a
-  special environment, where a custom modified version of
-  <code><a href='GEO.html'>getAndParseGSEMatrices</a></code> is defined to cope
-  with the annoying proxy case.</p>
+      <p>This function is a wrapper to
+  <code><a href='http://www.inside-r.org/r-doc/GEOquery/getGEO'>getGEO</a></code>, which unlist the result
+  list in the common case of a single dataset, and installs
+  the <span class = "pkg">GEOquery</span> package if necessary.</p>
   
     </div>
     

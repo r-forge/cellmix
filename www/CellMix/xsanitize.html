@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>xsanitize. CellMix 1.4.2</title>
+<title>xsanitize. CellMix 1.5.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -30,7 +30,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <a class="brand" href="index.html">CellMix 1.5.1</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -83,8 +83,8 @@
     <pre class="examples"><div class='input'>library(xtable)
 </div><div class='input'>print(xtable(gedAlgorithmInfo(show=FALSE), citet=TRUE), sanitize.text.function=xsanitize("\\{}$"))
 </div>
-<div class='output'>% latex table generated in R 2.15.3 by xtable 1.7-1 package
-% Tue Apr  2 13:31:29 2013
+<div class='output'>% latex table generated in R 3.0.0 by xtable 1.7-1 package
+% Mon Apr 29 15:11:03 2013
 \begin{table}[ht]
 \centering
 \begin{tabular}{rlllll}
@@ -103,7 +103,7 @@ lsfit & Partial deconvolution of proportions using standard least-squares (\cite
   ssKL & Semi-supervised NMF algorithm for KL divergence, using marker genes (\citet{Gaujoux2011}) & - & - & \checkmark & 3000 \\ 
   ssFrobenius & Semi-supervised NMF algorithm for Euclidean distance, using marker genes (\citet{Gaujoux2011}) & - & - & \checkmark & 3000 \\ 
   meanProfile & Compute proportion proxies as mean expression profiles & - & - & \checkmark & - \\ 
-  deconf & Alternate least-square NMF method, using heuristic constraints [fast] (\citet{Repsilber2010}) & - & - & - & 1000 \\ 
+  deconf & Alternate least-square NMF method, using heuristic constraints [fcnnls] (\citet{Repsilber2010}) & - & - & - & 1000 \\ 
    \hline
 \end{tabular}
 \end{table}

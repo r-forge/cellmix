@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>match_first. CellMix 1.4.2</title>
+<title>match_first. CellMix 1.5.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -30,7 +30,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <a class="brand" href="index.html">CellMix 1.5.1</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -55,11 +55,11 @@
     <h2>Arguments</h2>
     <dl>
       <dt>x</dt>
-      <dd>vector or <code>NULL</code>: the values to be
-  matched.</dd>
+      <dd>vector or <code>NULL</code>: the values to be matched.
+  <a href='http://www.inside-r.org/r-doc/base/LongVectors'>Long vectors</a> are supported.</dd>
       <dt>table</dt>
       <dd>vector or <code>NULL</code>: the values to be
-  matched against.</dd>
+  matched against.  <a href='http://www.inside-r.org/r-doc/base/LongVectors'>Long vectors</a> are not supported.</dd>
       <dt>nomatch</dt>
       <dd>the value to be returned in the case when
   no match is found.  Note that it is coerced to
@@ -76,7 +76,7 @@
       <h2>Description</h2>
       
       <p>This function provides a modified behaviour of
-  <code><a href='http://www.inside-r.org/r-doc/base/match'>match</a></code> in the case of multiple matches,
+  <code><a href='http://www.inside-r.org/r-doc/BiocGenerics/match'>match</a></code> in the case of multiple matches,
   where it returns the index of the first match.</p>
   
     </div>
@@ -91,7 +91,7 @@
       
     <h2>See also</h2>
     
-  <code><a href='http://www.inside-r.org/r-doc/base/match'>match</a></code>, <code><a href='http://www.inside-r.org/r-doc/base/charmatch'>charmatch</a></code>
+  <code><a href='http://www.inside-r.org/r-doc/BiocGenerics/match'>match</a></code>, <code><a href='http://www.inside-r.org/r-doc/base/charmatch'>charmatch</a></code>
 
         
   </div>

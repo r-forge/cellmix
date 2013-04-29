@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>MarkerList-class. CellMix 1.4.2</title>
+<title>MarkerList-class. CellMix 1.5.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="
   Renaud Gaujoux
@@ -32,7 +32,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <a class="brand" href="index.html">CellMix 1.5.1</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -231,6 +231,13 @@ has.markers(x)</pre>
   markers based on their associated scores.</p>
   
       <p></li>
+<li>connectivity<code>signature(object =
+  "MarkerList")</code>: Computes the connectivity matrix of each
+  set (i.e. cell/tissue type) of a marker list, i.e. the
+  matrix whose entries are the number of features in common
+  between each pair o cell type.</p>
+  
+      <p></li>
 <li>convertIDs<code>signature(object = "MarkerList",
   to = "GeneIdentifierType", from = "GeneIdentifierType")</code>:
   Convert IDs from a MarkerList object.</p>
@@ -259,7 +266,7 @@ has.markers(x)</pre>
       <p></li>
 <li>flatten<code>signature(object = "MarkerList")</code>:
   For <code><a href='MarkerList.html'>MarkerList</a></code> objects the conversion is
-  similar to what <code><a href='http://www.inside-r.org/r-doc/base/unlist'>unlist</a></code> would do, but
+  similar to what <code><a href='http://www.inside-r.org/r-doc/BiocGenerics/unlist'>unlist</a></code> would do, but
   argument <code>use.names</code> is used slightly differently.</p>
   
       <p>Secondly, the names of the main elements are append to
@@ -296,6 +303,17 @@ has.markers(x)</pre>
 <li>geneValues<code>signature(object =
   "MarkerList")</code>: Returns the values embedded in a
   <code>MarkerList</code> object.</p>
+  
+      <p></li>
+<li>incidence<code>signature(x = "MarkerList")</code>:
+  Computes the incidence matrix of each feature in each set
+  (i.e. cell/tissue type) of a marker list.</p>
+  
+      <p>The matrix is computed by converting the
+  <code>MarkerList</code> object into a
+  <code><a href='http://www.inside-r.org/r-doc/GSEABase/GeneSetCollection-methods'>GeneSetCollection</a></code> object, for which a
+  method <code><a href='MarkerList-data.html'>incidence</a></code> exists in the
+  <span class = "pkg">GSEABase</span> package.</p>
   
       <p></li>
 <li>MarkerList<code>signature(object =

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>gedAlgorithm.qprog. CellMix 1.4.2</title>
+<title>gedAlgorithm.qprog. CellMix 1.5.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -30,7 +30,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <a class="brand" href="index.html">CellMix 1.5.1</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -57,7 +57,7 @@ gedAlgorithm.cs_qprog(..., data = NULL, exact = TRUE, log = NULL)</pre>
     <h2>Arguments</h2>
     <dl>
       <dt>...</dt>
-      <dd>extra parameters passed to
+      <dd>extra parameters DSAproportionspassed to
   <code><a href='mlsei.html'>mlsei</a></code>.</dd>
       <dt>data</dt>
       <dd>markers as <code><a href='MarkerList.html'>MarkerList</a></code> object.</dd>
@@ -66,12 +66,18 @@ gedAlgorithm.cs_qprog(..., data = NULL, exact = TRUE, log = NULL)</pre>
   a sum-to-one (<code>TRUE</code>) or sum-to-less-than-one
   (<code>FALSE</code>) constraint on the proportions.</dd>
       <dt>log</dt>
-      <dd>indicates if the data should be converted to
-  linear scale (not log-trasnformed). If <code>TRUE</code> the
-  data is exponentialised (using base 2). If <code>FALSE</code>
-  the data is left unchanged (the detected log scale is
+      <dd>indicates if the data are in log-scale or
+  should be converted to linear-scale. This is relevant
+  because the DSA algorithm assumes that the input mixed
+  data are in linear scale (i.e. not log-trasnformed).
+
+  If <code>NULL</code>, then data's scale is detected by
+  <code>link{is_logscale}</code> and conversion to linear-scale
+  is performed if necessary. If <code>TRUE</code> the data is
+  exponentialised (using log base 2). If <code>FALSE</code> the
+  data is left unchanged (the detected log scale is
   displayed in verbose mode). If a number, then it is used
-  as the base to exponentialise the data.</dd>
+  as the log base to exponentialise the data.</dd>
     </dl>
     
     <div class="Description">

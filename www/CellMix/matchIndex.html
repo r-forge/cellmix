@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>matchIndex. CellMix 1.4.2</title>
+<title>matchIndex. CellMix 1.5.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -30,7 +30,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <a class="brand" href="index.html">CellMix 1.5.1</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -160,10 +160,8 @@ IDtype: .Affymetrix ['205267_at', '211048_s_at', ..., '229026_at']
 Values: [6.8842, 5.2979, ..., 0.0298]
 Source: hgu133a.db, hgu133b.db 
 Breakdown:
-         B          T         NK  Dendritic   Monocyte Neutrophil   Lymphoid 
-       121         94         24         86        103         54        302 
-   Myeloid   Multiple 
-       449       1037 
+         B          T         NK  Dendritic   Monocyte Neutrophil   Lymphoid    Myeloid   Multiple 
+       121         94         24         86        103         54        302        449       1037 
 </div><div class='input'>ma <- matchIndex(m, Abbas)
 </div><div class='input'>summary(ma)
 </div>
@@ -174,10 +172,8 @@ Markers: 121
 IDtype: _INDEX_ [284L, 85L, ..., 314L] 
 Source: hgu133a.db, hgu133b.db 
 Breakdown:
-         B          T         NK  Dendritic   Monocyte Neutrophil   Lymphoid 
-        18         19          1         20         14         12         15 
-   Myeloid   Multiple 
-        10         12 
+         B          T         NK  Dendritic   Monocyte Neutrophil   Lymphoid    Myeloid   Multiple 
+        18         19          1         20         14         12         15         10         12 
 </div><div class='input'></div><div class='input'># get as a mapping vector</div><div class='input'>head(matchIndex(m, Abbas, unlist=TRUE))
 </div>
 <div class='output'>210356_x_at 218949_s_at 219667_s_at   206641_at 217418_x_at 209995_s_at 
@@ -195,10 +191,8 @@ Markers: 2270
 IDtype: _INDEX_ [0L, 0L, ..., 0L] 
 Source: hgu133a.db, hgu133b.db 
 Breakdown:
-         B          T         NK  Dendritic   Monocyte Neutrophil   Lymphoid 
-       121         94         24         86        103         54        302 
-   Myeloid   Multiple 
-       449       1037 
+         B          T         NK  Dendritic   Monocyte Neutrophil   Lymphoid    Myeloid   Multiple 
+       121         94         24         86        103         54        302        449       1037 
 </div></pre>
   </div>
   <div class="span4">

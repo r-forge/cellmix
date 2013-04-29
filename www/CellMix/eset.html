@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>eset. CellMix 1.4.2</title>
+<title>eset. CellMix 1.5.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -30,7 +30,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <a class="brand" href="index.html">CellMix 1.5.1</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -101,8 +101,13 @@
       <dt>cache</dt>
       <dd>logical that indicates if the data should be
   retrieved from the local cache if present, or
-  re-downloaded. If <code>save=TRUE</code> (as default), the new
-  data will replace any previously downloaded data.</dd>
+  re-(down)loaded. If some remote data has been downloaded
+  by a previous call to <code>eset</code>, these data are
+  generally loaded from disk and not re-downloaded by the
+  relevant package (e.g., <span class = "pkg">GEOquery</span> or
+  <span class = "pkg">ArrayExpress</span>). If <code>save=TRUE</code> (as default),
+  the new data will replace any previously downloaded
+  data.</dd>
     </dl>
     
     <div class="Value">

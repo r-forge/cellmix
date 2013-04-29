@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>gedBlood. CellMix 1.4.2</title>
+<title>gedBlood. CellMix 1.5.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -30,7 +30,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <a class="brand" href="index.html">CellMix 1.5.1</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -219,41 +219,36 @@ gCBC(n = 1, sampleNames = NULL, counts = NULL)</pre>
     </div>
     
     <h2 id="examples">Examples</h2>
-    <pre class="examples"><div class='input'># load kidney transplant data (Shen-Orr et al. (2010))</div><div class='input'>eset <- ExpressionMix('GSE20300')
-</div><div class='input'></div><div class='input'># true CBC proportions are stored as -- mixture -- coefficients</div><div class='input'>cbc <- coef(eset)
-</div><div class='input'>head(cbc)
-</div>
-<div class='output'>            GSM508883 GSM508884 GSM508885 GSM508886 GSM508887 GSM508888
-Neutrophils     0.764     0.380     0.707     0.621     0.905     0.658
-Lymphocytes     0.194     0.475     0.171     0.203     0.020     0.250
-Monocytes       0.036     0.124     0.118     0.146     0.048     0.073
-Eosinophils     0.004     0.014     0.001     0.025     0.024     0.014
-Basophils       0.002     0.008     0.003     0.005     0.003     0.005
-            GSM508889 GSM508890 GSM508891 GSM508892 GSM508893 GSM508894
-Neutrophils     0.392     0.585     0.605     0.894     0.436     0.913
-Lymphocytes     0.371     0.280     0.278     0.063     0.440     0.016
-Monocytes       0.141     0.096     0.083     0.037     0.058     0.046
-Eosinophils     0.092     0.033     0.028     0.001     0.065     0.025
-Basophils       0.004     0.006     0.006     0.005     0.000     0.000
-            GSM508895 GSM508896 GSM508897 GSM508898 GSM508899 GSM508900
-Neutrophils     0.554     0.145     0.810     0.634     0.501     0.548
-Lymphocytes     0.313     0.615     0.179     0.231     0.306     0.152
-Monocytes       0.084     0.219     0.004     0.116     0.181     0.278
-Eosinophils     0.046     0.013     0.006     0.016     0.012     0.016
-Basophils       0.003     0.008     0.001     0.003     0.000     0.006
-            GSM508901 GSM508902 GSM508903 GSM508904 GSM508905 GSM508906
-Neutrophils     0.477     0.538     0.599     0.770     0.304     0.478
-Lymphocytes     0.378     0.372     0.326     0.185     0.520     0.397
-Monocytes       0.121     0.084     0.058     0.041     0.094     0.066
-Eosinophils     0.016     0.004     0.015     0.002     0.077     0.047
-Basophils       0.008     0.002     0.003     0.002     0.005     0.012
-</div><div class='input'>profplot(cbc, lab='')
-</div><p><img src='blood-ex1.png' alt='' width='400' height='400' /></p><div class='input'></div><div class='input'># devonvolve using basis signature matrix from Abbas et al. (2009)</div><div class='input'>res <- gedBlood(eset, verbose=TRUE)
+    <pre class="examples"><div class='input'>if( !isCHECK() ){
+
+# load kidney transplant data (Shen-Orr et al. (2010))
+eset <- ExpressionMix('GSE20300')
+
+# true CBC proportions are stored as -- mixture -- coefficients
+cbc <- coef(eset)
+head(cbc)
+profplot(cbc, lab='')
+
+# devonvolve using basis signature matrix from Abbas et al. (2009)
+res <- gedBlood(eset, verbose=TRUE)
+# estimated proportions are stored as -- mixture -- coefficients
+p <- coef(res)
+str(p)
+# the Abbas basis matrix includes detailed immune cell types
+rownames(p)
+# or: basisnames(res)
+
+# aggregate into CBC
+ecbc <- asCBC(res)
+# plot Estimated vs. Measured CBC
+profplot(cbc, ecbc)
+
+}
 </div>
 <div class='output'>Loading basis signature from Abbas et al. (2009) ... OK [359 features x 17 cell types]
-Mapping signature ids onto target ids (method: auto) ... OK [322 features x 17 cell types]
-Limit/reorder to common set of features ... OK [322 features x 17 cell types]
-Checking data dimension compatibility ... OK [322 features x 17 cell types]
+Mapping signature ids onto target ids (method: auto) ... OK [321 features x 17 cell types]
+Limit/reorder to common set of features ... OK [321 features x 17 cell types]
+Checking data dimension compatibility ... OK [321 features x 17 cell types]
 Checking log-scale ... data:YES - signatures:NO
 Applying log-transform to signatures (base 2) ... OK
 Normalizing signatures and target together (method: quantiles) ... OK
@@ -261,23 +256,13 @@ Normalizing signatures and target together (method: quantiles) ... OK
   Estimating cell proportions from cell-specific signatures [lsfit]
  Timing:
    user  system elapsed 
-  0.872   0.028   0.901 
+  0.904   0.016   0.923 
  GED final wrap up ...  OK
-</div><div class='input'># estimated proportions are stored as -- mixture -- coefficients</div><div class='input'>p <- coef(res)
-</div><div class='input'>str(p)
-</div>
-<div class='output'> num [1:17, 1:24] 0.0622 0 0.0826 0 0.0366 ...
+ num [1:17, 1:24] 0.06 0 0.0896 0 0.0215 ...
  - attr(*, "dimnames")=List of 2
   ..$ : chr [1:17] "Th" "Th act" "Tc" "Tc act" ...
   ..$ : chr [1:24] "GSM508883" "GSM508884" "GSM508885" "GSM508886" ...
-</div><div class='input'># the Abbas basis matrix includes detailed immune cell types</div><div class='input'>rownames(p)
-</div>
-<div class='output'> [1] "Th"       "Th act"   "Tc"       "Tc act"   "B"        "B act"   
- [7] "B aIgM"   "Mem IgG"  "Mem IgM"  "PC"       "NK"       "NK act"  
-[13] "mono"     "mono act" "DC"       "DC act"   "neutro"  
-</div><div class='input'># or: basisnames(res)</div><div class='input'></div><div class='input'># aggregate into CBC</div><div class='input'>ecbc <- asCBC(res)
-</div><div class='input'># plot Estimated vs. Measured CBC</div><div class='input'>profplot(cbc, ecbc)
-</div><p><img src='blood-ex2.png' alt='' width='400' height='400' /></p><div class='input'># default proportions</div><div class='input'>gCBC()
+</div><p><img src='blood-ex1.png' alt='' width='400' height='400' /></p><p><img src='blood-ex2.png' alt='' width='400' height='400' /></p><div class='input'># default proportions</div><div class='input'>gCBC()
 </div>
 <div class='output'>             [,1]
 Basophils   0.005

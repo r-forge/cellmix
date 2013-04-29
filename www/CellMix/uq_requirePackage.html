@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>uq_requirePackage. CellMix 1.4.2</title>
+<title>uq_requirePackage. CellMix 1.5.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -30,7 +30,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <a class="brand" href="index.html">CellMix 1.5.1</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -51,7 +51,7 @@
   <div class="span8">
     <h2>Usage</h2>
     <pre>uq_requirePackage(package, lib = NULL, ..., load = TRUE, msg = NULL, quiet = TRUE, 
-  prependLF = FALSE)</pre>
+  prependLF = FALSE, ptype = c("CRAN-like", "BioC", "BioCSoft", "BioCann"))</pre>
     
     <h2>Arguments</h2>
     <dl>
@@ -79,6 +79,11 @@
       <dt>prependLF</dt>
       <dd>logical that indicates if the message
   should start at a new line.</dd>
+      <dt>ptype</dt>
+      <dd>type of package: from CRAN-like
+  repositories, Bioconductor, Bioconductor software,
+  Bioconductor annotation. Bioconductor packages are
+  installed using <code>biocLite</code></dd>
     </dl>
     
     <div class="Value">

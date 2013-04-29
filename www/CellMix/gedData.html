@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>gedData. CellMix 1.4.2</title>
+<title>gedData. CellMix 1.5.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -30,7 +30,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <a class="brand" href="index.html">CellMix 1.5.1</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -132,8 +132,7 @@ gedDataInfo(show = TRUE)</pre>
 <div class='output'>               key GSE20300
            aliases 
                url 
-       description Whole blood from stable and acute rejection
-                   pediatric kidney transplant
+       description Whole blood from stable and acute rejection pediatric kidney transplant
               cite Shen-Orr2010
         annotation hgu133plus2.db
                dim 54675, 24, 5
@@ -151,66 +150,50 @@ REGISTERINGpackage CellMix
 <div class='output'>NULL
 </div><div class='input'></div><div class='input'># list datasets that contain cell proportions</div><div class='input'>gedData(with='prop')
 </div>
-<div class='output'>[1] "GSE29832"   "GSE19830"   "GSE20300"   "GSE5350"    "GSE11058"  
-[6] "GSE33076"   "GSE3649"    "E-TABM-633"
+<div class='output'>[1] "GSE29832"   "GSE19830"   "GSE20300"   "GSE5350"    "GSE11058"   "GSE33076"   "GSE3649"    "E-TABM-633" "GSE24759"  
 </div><div class='input'># or pure samples</div><div class='input'>gedData(with='sig')
 </div>
-<div class='output'>[1] "GSE29832"   "GSE19830"   "GSE5350"    "GSE11057"   "GSE11058"  
-[6] "GSE33076"   "E-TABM-633"
+<div class='output'>[1] "GSE29832"   "GSE19830"   "GSE5350"    "GSE11057"   "GSE11058"   "GSE33076"   "E-TABM-633" "GSE24759"  
 </div><div class='input'># or both</div><div class='input'>gedData(with=c('prop', 'sig'))
 </div>
-<div class='output'>[1] "GSE29832"   "GSE19830"   "GSE5350"    "GSE11058"   "GSE33076"  
-[6] "E-TABM-633"
+<div class='output'>[1] "GSE29832"   "GSE19830"   "GSE5350"    "GSE11058"   "GSE33076"   "E-TABM-633" "GSE24759"  
 </div><div class='input'># or mixed samples</div><div class='input'>gedData(with='mixed')
 </div>
-<div class='output'>[1] "GSE29832" "GSE24223" "GSE19830" "GSE20300" "GSE5350"  "GSE11057" "GSE11058"
-[8] "GSE33076" "GSE3649" 
+<div class='output'>[1] "GSE29832" "GSE24223" "GSE19830" "GSE20300" "GSE5350"  "GSE11057" "GSE11058" "GSE33076" "GSE3649" 
 </div><div class='input'># show algorithms and properties</div><div class='input'>gedDataInfo()
 </div>
-<div class='output'>An object of class 'registry' with 12 entries.
-                                                                                  Description
-GSE29832                Pure/mixed blood and breast to test deconvolution of clinical samples
-GSE24223             Deconvoluting Early Post-Transplant Immunity Using Purified Cell Subsets
-GSE19830             Pure/mixed brain, liver and lung to test statistical deconvolution [Rat]
-GSE20300              Whole blood from stable and acute rejection pediatric kidney transplant
-GSE5350                MicroArray Quality Control (MAQC) Project: Affymetrix HG-U133 Plus 2.0
-GSE11057                        Memory T Cell Subsets: Central memory, Effector memory, Naive
-GSE11058                                 Immune Cell Line Mixtures: Jurkat, IM-9, Raji, THP-1
-GSE22886_A                          IRIS: Resting and activated human immune cells [HG-U133A]
-GSE22886_B                          IRIS: Resting and activated human immune cells [HG-U133B]
-GSE33076   Linearity of amplification between gene expression values and mRNA in retina cells
-GSE3649                Individuality and variation in gene expression patterns in human blood
-E-TABM-633         The HaemAtlas: Transcription profiling of differentiated human blood cells
-           Features Samples Types Mixed  Pure Basis  Coef            Annotation
-GSE29832      54675      15     2  TRUE  TRUE  TRUE  TRUE        hgu133plus2.db
-GSE24223      54675     179     5  TRUE  TRUE FALSE FALSE        hgu133plus2.db
-GSE19830      31099      42     3  TRUE  TRUE  TRUE  TRUE            rat2302.db
-GSE20300      54675      24     5  TRUE FALSE FALSE  TRUE        hgu133plus2.db
-GSE5350       54675     120     2  TRUE  TRUE  TRUE  TRUE        hgu133plus2.db
-GSE11057      54675      17     3  TRUE  TRUE  TRUE FALSE        hgu133plus2.db
-GSE11058      54675      24     4  TRUE  TRUE  TRUE  TRUE        hgu133plus2.db
-GSE22886_A    22283     114    11 FALSE  TRUE FALSE FALSE            hgu133a.db
-GSE22886_B    22645     114    11 FALSE  TRUE FALSE FALSE            hgu133b.db
-GSE33076      22347      24     2  TRUE  TRUE  TRUE  TRUE mogene10stprobeset.db
-GSE3649       36794      70     5  TRUE FALSE FALSE  TRUE                      
-E-TABM-633    46693      50     8 FALSE  TRUE  TRUE  TRUE    illuminaHumanv2.db
-               Reference
-GSE29832        Gong2011
-GSE24223   Grigoryev2010
-GSE19830    Shen-Orr2010
-GSE20300    Shen-Orr2010
-GSE5350          Shi2006
-GSE11057       Abbas2009
-GSE11058       Abbas2009
-GSE22886_A     Abbas2005
-GSE22886_B     Abbas2005
-GSE33076     Siegert2012
-GSE3649      Whitney2003
-E-TABM-633   Watkins2009
+<div class='output'>An object of class 'registry' with 13 entries.
+                                                                                                               Description Features Samples
+GSE29832                                             Pure/mixed blood and breast to test deconvolution of clinical samples    54675      15
+GSE24223                                          Deconvoluting Early Post-Transplant Immunity Using Purified Cell Subsets    54675     179
+GSE19830                                          Pure/mixed brain, liver and lung to test statistical deconvolution [Rat]    31099      42
+GSE20300                                           Whole blood from stable and acute rejection pediatric kidney transplant    54675      24
+GSE5350                                             MicroArray Quality Control (MAQC) Project: Affymetrix HG-U133 Plus 2.0    54675     120
+GSE11057                                                     Memory T Cell Subsets: Central memory, Effector memory, Naive    54675      17
+GSE11058                                                              Immune Cell Line Mixtures: Jurkat, IM-9, Raji, THP-1    54675      24
+GSE22886_A                                                       IRIS: Resting and activated human immune cells [HG-U133A]    22283     114
+GSE22886_B                                                       IRIS: Resting and activated human immune cells [HG-U133B]    22645     114
+GSE33076                                Linearity of amplification between gene expression values and mRNA in retina cells    22347      24
+GSE3649                                             Individuality and variation in gene expression patterns in human blood    36794      70
+E-TABM-633                                      The HaemAtlas: Transcription profiling of differentiated human blood cells    46693      50
+GSE24759   Differentiation Map: Densely Interconnected Transcriptional Circuits Control Cell States in Human Hematopoiesis    22944     211
+           Types Mixed  Pure Basis  Coef            Annotation       Reference
+GSE29832       2  TRUE  TRUE  TRUE  TRUE        hgu133plus2.db        Gong2011
+GSE24223       5  TRUE  TRUE FALSE FALSE        hgu133plus2.db   Grigoryev2010
+GSE19830       3  TRUE  TRUE  TRUE  TRUE            rat2302.db    Shen-Orr2010
+GSE20300       5  TRUE FALSE FALSE  TRUE        hgu133plus2.db    Shen-Orr2010
+GSE5350        2  TRUE  TRUE  TRUE  TRUE        hgu133plus2.db         Shi2006
+GSE11057       3  TRUE  TRUE  TRUE FALSE        hgu133plus2.db       Abbas2009
+GSE11058       4  TRUE  TRUE  TRUE  TRUE        hgu133plus2.db       Abbas2009
+GSE22886_A    11 FALSE  TRUE FALSE FALSE            hgu133a.db       Abbas2005
+GSE22886_B    11 FALSE  TRUE FALSE FALSE            hgu133b.db       Abbas2005
+GSE33076       2  TRUE  TRUE  TRUE  TRUE mogene10stprobeset.db     Siegert2012
+GSE3649        5  TRUE FALSE FALSE  TRUE                           Whitney2003
+E-TABM-633     8 FALSE  TRUE  TRUE  TRUE    illuminaHumanv2.db     Watkins2009
+GSE24759      38 FALSE  TRUE  TRUE  TRUE          hthgu133a.db Novershtern2011
 </div><div class='input'>class(gedDataInfo(FALSE))
 </div>
-<div class='output'>[1] "GEDdata_registry"      "data_package_registry" "package_registry"     
-[4] "registry"             
+<div class='output'>[1] "GEDdata_registry"      "data_package_registry" "package_registry"      "registry"             
 </div></pre>
   </div>
   <div class="span4">

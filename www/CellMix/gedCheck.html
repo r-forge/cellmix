@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>gedCheck. CellMix 1.4.2</title>
+<title>gedCheck. CellMix 1.5.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -30,7 +30,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <a class="brand" href="index.html">CellMix 1.5.1</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -99,7 +99,7 @@ DONE (stopped at 5/5 iterations)
 <strong class='message'># NMF computation exit status ... OK</strong>
 <div class='output'>  Timing:
    user  system elapsed 
-  0.788   0.012   0.802 
+  0.392   0.004   0.396 
   GED final wrap up ...   OK
 </div><div class='input'>gedCheck('DSA', log=FALSE)
 </div>
@@ -111,15 +111,17 @@ DONE (stopped at 5/5 iterations)
     Using 15/15 markers to estimate cell proportions: 
  CL_1 CL_2 CL_3 
     5    5    5 
-    Checking data scale ...     NOTE [log]
+     Checking data scale ...      NOTE [log]
+     Converting data to linear scale ...      SKIP
+     Computing proportions using DSA method ...      OK
      Estimating basis matrix from mixture coefficients [qprog]
-    Building data range constraint matrices:     0.02 <= x <= 19.68
+     Building data range constraint matrices:      0.04 <= x <= 19.33
      Not using any marker constraints
 </div>
 <strong class='message'># NMF computation exit status ... OK</strong>
 <div class='output'>  Timing:
    user  system elapsed 
-  0.456   0.004   0.461 
+  0.608   0.004   0.613 
   GED final wrap up ...   OK
 </div></pre>
   </div>

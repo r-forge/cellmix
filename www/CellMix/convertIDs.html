@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>convertIDs. CellMix 1.4.2</title>
+<title>convertIDs. CellMix 1.5.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -30,7 +30,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <a class="brand" href="index.html">CellMix 1.5.1</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -239,17 +239,15 @@ IDtype: .Affymetrix ['205267_at', '211048_s_at', ..., '229026_at']
 Values: [6.8842, 5.2979, ..., 0.0298]
 Source: hgu133a.db, hgu133b.db 
 Breakdown:
-         B          T         NK  Dendritic   Monocyte Neutrophil   Lymphoid 
-       121         94         24         86        103         54        302 
-   Myeloid   Multiple 
-       449       1037 
+         B          T         NK  Dendritic   Monocyte Neutrophil   Lymphoid    Myeloid   Multiple 
+       121         94         24         86        103         54        302        449       1037 
 </div><div class='input'>head(m[[1]])
 </div>
 <div class='output'>  205267_at 211048_s_at 206398_s_at 217823_s_at 217825_s_at 217826_s_at 
      6.8842      5.2979      4.6785      4.4810      4.3739      4.2061 
 </div><div class='input'></div><div class='input'># convert Entrez gene ids to Affy probeset ids chip hgu133b</div><div class='input'>m2 <- convertIDs(m, 'hgu133b.db', verbose=2)
 </div>
-<div class='output'> # Converting 2270 markers from Annotation (hgu133a.db, hgu133b.db) to Annotation (hgu133b.db) ...  OK [1409/2270 (1:1)]
+<div class='output'> # Converting 2270 markers from Annotation (hgu133a.db, hgu133b.db) to Annotation (hgu133b.db) ...  OK [1402/2270 (1:1)]
  # Processing 2270 markers from Annotation (hgu133a.db, hgu133b.db) to Annotation (hgu133b.db) ... 
   ** Processing ids for 'B' ...   OK [69/121 (1:1)]
   ** Processing ids for 'T' ...   OK [44/94 (1:1)]
@@ -257,25 +255,23 @@ Breakdown:
   ** Processing ids for 'Dendritic' ...   OK [43/86 (1:1)]
   ** Processing ids for 'Monocyte' ...   OK [43/103 (1:1)]
   ** Processing ids for 'Neutrophil' ...   OK [21/54 (1:1)]
-  ** Processing ids for 'Lymphoid' ...   OK [168/302 (1:1)]
-  ** Processing ids for 'Myeloid' ...   OK [240/449 (1:1)]
-  ** Processing ids for 'Multiple' ...   OK [640/1037 (1:1)]
- # Checking for duplicated marker(s) across cell-types ...  OK [dropped 87/1276]
- OK [1189/2270 (1:1)]
+  ** Processing ids for 'Lymphoid' ...   OK [166/302 (1:1)]
+  ** Processing ids for 'Myeloid' ...   OK [238/449 (1:1)]
+  ** Processing ids for 'Multiple' ...   OK [636/1037 (1:1)]
+ # Checking for duplicated marker(s) across cell-types ...  OK [dropped 83/1268]
+ OK [1185/2270 (1:1)]
 </div><div class='input'>summary(m2)
 </div>
 <div class='output'><object of class MarkerList>
 Types: 9 ['B', 'T', ..., 'Multiple'] 
 Mode: numeric
-Markers: 1189 
+Markers: 1185 
 IDtype: .Affymetrix ['222435_s_at', '230232_at', ..., '229026_at'] 
 Values: [4.481, 3.5788, ..., 0.0298]
 Source: hgu133b.db 
 Breakdown:
-         B          T         NK  Dendritic   Monocyte Neutrophil   Lymphoid 
-        66         40          6         41         41         17        150 
-   Myeloid   Multiple 
-       220        608 
+         B          T         NK  Dendritic   Monocyte Neutrophil   Lymphoid    Myeloid   Multiple 
+        66         40          6         41         40         17        150        219        606 
 </div><div class='input'>#----------------------------------------------</div><div class='input'># 1. Conversion from biological IDs</div><div class='input'>#----------------------------------------------</div><div class='input'># For this kind of IDs, a source annotation package can often be inferred</div><div class='input'># from the ID type, using regular expression patterns (e.g. "^ENS[0-9]+$"</div><div class='input'># identifies Ensembl gene IDs)</div><div class='input'></div><div class='input'>ids <- c("Hs.1", "Hs.2", "Hs.3")
 </div><div class='input'># get Entrez gene IDs (based on annotation from the org.Hs.gene.eg package)</div><div class='input'>convertIDs(ids, 'ENTREZID', 'org.Hs.eg.db', verbose=TRUE)
 </div>
@@ -356,7 +352,7 @@ geneIdType: Annotation (hgu133a.db)
 <div class='output'>  # Converting from EntrezId (hgu133b.db) to Annotation (hgu133a.db) ... 
   # Limiting query to EntrezId (hgu133b.db) ...   [3 -> 1 id(s)]
  # Loading map(s) from EntrezId (hgu133b.db) to Annotation (hgu133a.db)  [x-platform /x-id] ...  OK [1 step(s)]
-   # Mapping from EntrezId (hgu133a.db) to Annotation (hgu133a.db) [43059 entries] ...    [1/1 mapped (1:1)]
+   # Mapping from EntrezId (hgu133a.db) to Annotation (hgu133a.db) [43827 entries] ...    [1/1 mapped (1:1)]
    # Applying filtering strategy 'auto' ... (kept 1 2nd-affy probes)    [1/1 passed (1:1)]
   OK [1/3 mapped (1:1)]
 </div>

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>DSA Algorithm: Digital Sorting Algorithm. CellMix 1.4.2</title>
+<title>DSA Algorithm: Digital Sorting Algorithm. CellMix 1.5.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -30,7 +30,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <a class="brand" href="index.html">CellMix 1.5.1</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_DEMOS.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -74,20 +74,13 @@ geneValues: 99.8603, 78.4616, ..., 5.04784
 details: use 'details(object)'
 </div><div class='input'>names(ml)
 </div>
-<div class='output'> [1] "bladder"                   "blood"                    
- [3] "bone"                      "bone_marrow"              
- [5] "brain"                     "cervix"                   
- [7] "colon"                     "eye"                      
- [9] "heart"                     "kidney"                   
-[11] "larynx"                    "liver"                    
-[13] "lung"                      "lymph_node"               
-[15] "mammary_gland"             "muscle"                   
-[17] "ovary"                     "pancreas"                 
-[19] "peripheral_nervous_system" "placenta"                 
-[21] "prostate"                  "skin"                     
-[23] "small_intestine"           "soft_tissue"              
-[25] "spleen"                    "stomach"                  
-[27] "testis"                    "thymus"                   
+<div class='output'> [1] "bladder"                   "blood"                     "bone"                      "bone_marrow"              
+ [5] "brain"                     "cervix"                    "colon"                     "eye"                      
+ [9] "heart"                     "kidney"                    "larynx"                    "liver"                    
+[13] "lung"                      "lymph_node"                "mammary_gland"             "muscle"                   
+[17] "ovary"                     "pancreas"                  "peripheral_nervous_system" "placenta"                 
+[21] "prostate"                  "skin"                      "small_intestine"           "soft_tissue"              
+[25] "spleen"                    "stomach"                   "testis"                    "thymus"                   
 [29] "tongue"                    "uterus"                   
 </div><div class='input'></div><div class='input'># select markers for the tissues present in the mixture</div><div class='input'>basisnames(x)
 </div>
@@ -107,49 +100,62 @@ brain liver  lung
   342   334   192 
 </div><div class='input'></div><div class='input'># convert to match annotations</div><div class='input'>mlx <- convertIDs(ml, mix, verbose=TRUE)
 </div>
-<div class='output'># Converting 868 markers from Unigene (org.Hs.eg.db) to Annotation (rat2302.db) ... OK [307/868 (1:1)]
-# Processing 868 markers from Unigene (org.Hs.eg.db) to Annotation (rat2302.db) ... OK [307/868 (1:1)]
+<div class='output'># Converting 868 markers from Unigene (org.Hs.eg.db) to Annotation (rat2302.db) ... OK [261/868 (1:1)]
+# Processing 868 markers from Unigene (org.Hs.eg.db) to Annotation (rat2302.db) ... OK [261/868 (1:1)]
 </div><div class='input'>summary(mlx)
 </div>
 <div class='output'><object of class MarkerList>
 Types: 3 ['brain', 'liver', 'lung'] 
 Mode: numeric
-Markers: 307 
+Markers: 261 
 IDtype: .Affymetrix ['1369882_at', '1398649_at', ..., '1370458_at'] 
 Values: [7.26871, 7.26871, ..., 5.00013]
 Source: rat2302.db 
 Breakdown:
 brain liver  lung 
-  128   130    49 
+  107   106    48 
 </div><div class='input'></div><div class='input'># QC on markers from their expression patterns in mixed samples</div><div class='input'>profplot(mlx[,1:10], mix)
-</div><p><img src='gedAlgorithm.DSA-demo1.png' alt='' width='400' height='400' /></p><div class='input'># filter out poor markers using SCOREM (based on linear-scale expression)</div><div class='input'>mlsc <- extractMarkers(mlx, expb(mix, 2), method='SCOREM', alpha=10^-12)
+</div>
+<strong class='warning'>Warning message:
+'x' is NULL so the result will be NULL</strong>
+<strong class='warning'>Warning message:
+'x' is NULL so the result will be NULL</strong>
+<strong class='warning'>Warning message:
+'x' is NULL so the result will be NULL</strong><p><img src='gedAlgorithm.DSA-demo1.png' alt='' width='400' height='400' /></p><div class='input'># filter out poor markers using SCOREM (based on linear-scale expression)</div><div class='input'>mlsc <- extractMarkers(mlx, expb(mix, 2), method='SCOREM', alpha=10^-12)
 </div><div class='input'>summary(mlsc)
 </div>
 <div class='output'><object of class MarkerList>
 Types: 3 ['brain', 'liver', 'lung'] 
 Mode: numeric
-Markers: 141 
-IDtype: .Affymetrix ['1387961_at', '1368524_at', ..., '1379653_a_at'] 
-Values: [0.953342979390863, 0.95274323262175, ..., 0.873042439926512]
+Markers: 113 
+IDtype: .Affymetrix ['1373774_at', '1378796_at', ..., '1379653_a_at'] 
+Values: [0.977665444448239, 0.974762280427837, ..., 0.951324094855668]
 Source: rat2302.db 
 Breakdown:
 brain liver  lung 
-   29    97    15 
+   17    81    15 
 </div><div class='input'># expresison patterns are more correlated</div><div class='input'>profplot(mlsc[,1:10], mix)
-</div><p><img src='gedAlgorithm.DSA-demo2.png' alt='' width='400' height='400' /></p><div class='input'></div><div class='input'># apply DSA using all markers</div><div class='input'>res <- ged(mix[mlsc,], mlsc, 'DSA', verbose=TRUE)
+</div>
+<strong class='warning'>Warning message:
+'x' is NULL so the result will be NULL</strong>
+<strong class='warning'>Warning message:
+'x' is NULL so the result will be NULL</strong>
+<strong class='warning'>Warning message:
+'x' is NULL so the result will be NULL</strong><p><img src='gedAlgorithm.DSA-demo2.png' alt='' width='400' height='400' /></p><div class='input'></div><div class='input'># apply DSA using all markers</div><div class='input'>res <- ged(mix[mlsc,], mlsc, 'DSA', verbose=TRUE)
 </div>
 <div class='output'>Using ged algorithm: “DSA”
     Estimating basis and mixture coefficients matrices from marker features [DSA]
-    Using 141/141 markers to estimate cell proportions: 
+    Using 113/113 markers to estimate cell proportions: 
  brain liver  lung 
-    29    97    15 
-    Checking data scale ...     NOTE [log]
-    Converting data to linear scale ...     OK [base: 2]
-    Estimating basis matrix from mixture coefficients [qprog]
-    Not using any marker constraints
+    17    81    15 
+     Checking data scale ...      NOTE [log]
+     Converting data to linear scale ...      OK [base: 2]
+     Computing proportions using DSA method ...      OK
+     Estimating basis matrix from mixture coefficients [qprog]
+     Not using any marker constraints
 Timing:
    user  system elapsed 
-  1.432   0.040   1.477 
+  1.772   0.036   1.813 
 GED final wrap up ... OK
 </div><div class='input'></div><div class='input'># plot against true proportions</div><div class='input'>profplot(mix, res)</div><p><img src='gedAlgorithm.DSA-demo3.png' alt='' width='400' height='400' /></p>
   </pre>

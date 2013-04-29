@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>Data-driven marker selection (experimental). CellMix 1.4.2</title>
+<title>Data-driven marker selection (experimental). CellMix 1.5.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -30,7 +30,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <a class="brand" href="index.html">CellMix 1.5.1</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_DEMOS.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -66,21 +66,21 @@ geneValues: NA
 details: use 'details(object)'
 </div><div class='input'># convert marker IDs to Affy IDs from dataset</div><div class='input'># using stringent one to one mapping</div><div class='input'>mla <- convertIDs(ml, eset, method='1:1', verbose=TRUE)
 </div>
-<div class='output'># Converting 2069 markers from Annotation (illuminaHumanv2.db) to Annotation (hgu133plus2.db) ... OK [649/2069 (1:1)]
-# Processing 2069 markers from Annotation (illuminaHumanv2.db) to Annotation (hgu133plus2.db) ... OK [638/2069 (1:1)]
+<div class='output'># Converting 2069 markers from Annotation (illuminaHumanv2.db) to Annotation (hgu133plus2.db) ... OK [643/2069 (1:1)]
+# Processing 2069 markers from Annotation (illuminaHumanv2.db) to Annotation (hgu133plus2.db) ... OK [631/2069 (1:1)]
 </div><div class='input'>summary(mla)
 </div>
 <div class='output'><object of class MarkerList>
 Types: 8 ['B-CD19', 'Erythroblast', ..., 'T-CD8'] 
 Mode: character
-Markers: 638 
+Markers: 631 
 IDtype: .Affymetrix ['206513_at', '207655_s_at', ..., '219025_at'] 
 Source: hgu133plus2.db 
 Breakdown:
-           B-CD19      Erythroblast Granulocyte-CD66b     Megakaryocyte 
-               53               114               235               107 
-    Monocyte-CD14           NK-CD56             T-CD4             T-CD8 
-               81                28                18                 2 
+           B-CD19      Erythroblast Granulocyte-CD66b     Megakaryocyte     Monocyte-CD14           NK-CD56             T-CD4 
+               55               113               231               106                79                27                18 
+            T-CD8 
+                2 
 </div><div class='input'></div><div class='input'># plot expression profile of each set of markers (only the first 10)</div><div class='input'>profplot(mla[, 1:10], eset, split=TRUE, lab='')
 </div><p><img src='markerScoreScorem-demo1.png' alt='' width='400' height='400' /></p><div class='input'></div><div class='input'># filter out using SCOREM</div><div class='input'>sml <- extractMarkers(mla, eset, method='scorem', alpha=.005)
 </div><div class='input'># plot selected markers</div><div class='input'>profplot(sml, eset, split=TRUE, lab='')</div><p><img src='markerScoreScorem-demo2.png' alt='' width='400' height='400' /></p>

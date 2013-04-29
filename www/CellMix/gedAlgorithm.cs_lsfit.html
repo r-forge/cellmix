@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>gedAlgorithm.cs_lsfit. CellMix 1.4.2</title>
+<title>gedAlgorithm.cs_lsfit. CellMix 1.5.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -30,7 +30,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <a class="brand" href="index.html">CellMix 1.5.1</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -96,13 +96,13 @@
 </div><div class='input'></div><div class='input'># deconvolve using standard least-squares</div><div class='input'>res <- ged(x, p, 'cs-lsfit')
 </div><div class='input'>head(basis(res))
 </div>
-<div class='output'>          [,1]      [,2]      [,3]
-[1,] 0.3276782 0.0000000 0.4325633
-[2,] 0.3257906 0.3965724 0.2974765
-[3,] 0.1020014 0.6537396 0.2876938
-[4,] 0.1884735 0.2639664 0.4987986
-[5,] 0.1164081 0.6583487 0.2447951
-[6,] 0.5041316 0.4840758 0.1374917
+<div class='output'>          [,1]      [,2]       [,3]
+[1,] 0.0000000 0.8076441 0.11490107
+[2,] 0.3932350 0.3294261 0.00000000
+[3,] 0.2261956 0.1909361 0.11270899
+[4,] 0.4929535 0.1947457 0.12736523
+[5,] 0.2975687 0.4624131 0.06778374
+[6,] 0.5388163 0.2653024 0.00000000
 </div><div class='input'># proportions are not updated</div><div class='input'>identical(coef(res), p)
 </div>
 <div class='output'>[1] TRUE

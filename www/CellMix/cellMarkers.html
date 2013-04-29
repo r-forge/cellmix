@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>cellMarkers. CellMix 1.4.2</title>
+<title>cellMarkers. CellMix 1.5.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -30,7 +30,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <a class="brand" href="index.html">CellMix 1.5.1</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -107,37 +107,27 @@ cellMarkersInfo(show = TRUE)</pre>
     <h2 id="examples">Examples</h2>
     <pre class="examples"><div class='input'># show marker lists and properties</div><div class='input'>cellMarkersInfo()
 </div>
-<div class='output'>                                                                                                       Description
-IRIS                            Immune Response In Silico: B, T, NK and dendritic cells, monocytes and neutrophils
-Abbas                                             Optimised set of immune genes for deconvolution of blood samples
-TDDB_HS                  TissueDistributionDB: UniGene EST distribution profiles using Tissue Ontology from BRENDA
-TDDB_RN                  TissueDistributionDB: UniGene EST distribution profiles using Tissue Ontology from BRENDA
-Palmer                                    Markers for B-cells, CD4+ and CD8+ T-cells, lymphocytes and granulocytes
-HaemAtlas HaemAtlas markers for CD4+ and CD8+ T-cells, lymphocytes, monocytes, B-cells, NK cells, and granulocytes
-TIGER                                                   TiGER database: based on UniGene EST distribution profiles
-VeryGene                                                 VeryGene database: based on two large microarray datasets
-          Organism Types Markers      idType             Annotation
-IRIS         Human     9    2270 .Affymetrix hgu133a.db, hgu133b.db
-Abbas        Human    12     122 .Affymetrix hgu133a.db, hgu133b.db
-TDDB_HS      Human    65   14732     UNIGENE           org.Hs.eg.db
-TDDB_RN        Rat    19    3915     UNIGENE           org.Rn.eg.db
-Palmer       Human     5     907      SYMBOL           org.Hs.eg.db
-HaemAtlas    Human     8    2069   .Illumina     illuminaHumanv2.db
-TIGER        Human    30    7743     UNIGENE           org.Hs.eg.db
-VeryGene     Human   127   10102    ENTREZID           org.Hs.eg.db
-             Reference
-IRIS         Abbas2005
-Abbas        Abbas2009
-TDDB_HS   Kogenaru2009
-TDDB_RN   Kogenaru2009
-Palmer      Palmer2006
-HaemAtlas  Watkins2009
-TIGER         Liu2008a
-VeryGene      Yang2011
+<div class='output'>                                                                                                       Description Organism Types Markers
+IRIS                            Immune Response In Silico: B, T, NK and dendritic cells, monocytes and neutrophils    Human     9    2270
+Abbas                                             Optimised set of immune genes for deconvolution of blood samples    Human    12     122
+TDDB_HS                  TissueDistributionDB: UniGene EST distribution profiles using Tissue Ontology from BRENDA    Human    65   14732
+TDDB_RN                  TissueDistributionDB: UniGene EST distribution profiles using Tissue Ontology from BRENDA      Rat    19    3915
+Palmer                                    Markers for B-cells, CD4+ and CD8+ T-cells, lymphocytes and granulocytes    Human     5     907
+HaemAtlas HaemAtlas markers for CD4+ and CD8+ T-cells, lymphocytes, monocytes, B-cells, NK cells, and granulocytes    Human     8    2069
+TIGER                                                   TiGER database: based on UniGene EST distribution profiles    Human    30    7743
+VeryGene                                                 VeryGene database: based on two large microarray datasets    Human   127   10102
+               idType             Annotation    Reference
+IRIS      .Affymetrix hgu133a.db, hgu133b.db    Abbas2005
+Abbas     .Affymetrix hgu133a.db, hgu133b.db    Abbas2009
+TDDB_HS       UNIGENE           org.Hs.eg.db Kogenaru2009
+TDDB_RN       UNIGENE           org.Rn.eg.db Kogenaru2009
+Palmer         SYMBOL           org.Hs.eg.db   Palmer2006
+HaemAtlas   .Illumina     illuminaHumanv2.db  Watkins2009
+TIGER         UNIGENE           org.Hs.eg.db     Liu2008a
+VeryGene     ENTREZID           org.Hs.eg.db     Yang2011
 </div><div class='input'>class(cellMarkersInfo(FALSE))
 </div>
-<div class='output'>[1] "GEDmarkers_registry"      "markers_package_registry"
-[3] "package_registry"         "registry"                
+<div class='output'>[1] "GEDmarkers_registry"      "markers_package_registry" "package_registry"         "registry"                
 </div></pre>
   </div>
   <div class="span4">

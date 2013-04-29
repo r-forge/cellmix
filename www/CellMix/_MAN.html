@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>. CellMix 1.4.2</title>
+<title>. CellMix 1.5.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="Renaud Gaujoux, Cathal Seoighe">
 
@@ -30,7 +30,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <a class="brand" href="index.html">CellMix 1.5.1</a>
       <div class="nav">
         <ul class="nav">
         <li><a href=""><i class="icon-home icon-white"></i> Index</a></li>
@@ -62,7 +62,7 @@
     <code><a href="addNames.html">addNames</a></code><br />Generating Names</li>
 
   <li>
-    <code><a href="applyBy.html">applyBy</a></code>(colApplyBy, colMaxsBy, colMeansBy, colMediansBy, colSumsBy, rowApplyBy, rowMaxsBy, rowMeansBy, rowMediansBy, rowSumsBy)<br />Group Apply</li>
+    <code><a href="applyBy.html">applyBy</a></code>(applyBy.ExpressionSet, applyBy.matrix, colApplyBy, colMaxsBy, colMeansBy, colMediansBy, colMinsBy, colSumsBy, rowApplyBy, rowMaxsBy, rowMeansBy, rowMediansBy, rowMinsBy, rowSumsBy)<br />Group Apply</li>
 
   <li>
     <code><a href="dot-atrack-commaMarkerList-method.html">.atrack,MarkerList-method</a></code><br />Heatmap Annotation Track for MarkerList Objects</li>
@@ -222,7 +222,7 @@
     <code><a href="GEDStrategy-class.html">GEDStrategy-class</a></code>(show,GEDStrategy-method)<br />Class for GED Algorithms</li>
 
   <li>
-    <code><a href="MarkerList-data.html">geneValues</a></code>(annotation, annotation&lt;-, annotation,GEDdata_entry-method, annotation&lt;-,MarkerList,character-method, annotation,MarkerList-method, annotation&lt;-,MarkerList,NULL-method, annotation&lt;--methods, annotation-methods, details, details,MarkerList-method, details-methods, geneIds, geneIds&lt;-, geneIds&lt;-,MarkerList,list-method, geneIds,MarkerList-method, geneIds&lt;--methods, geneIds-methods, geneIdType, geneIdType&lt;-, geneIdType&lt;-,MarkerList,character-method, geneIdType&lt;-,MarkerList,GeneIdentifierType-method, geneIdType,MarkerList-method, geneIdType&lt;-,MarkerList,NULL-method, geneIdType&lt;--methods, geneIdType-methods, geneValues&lt;-, geneValues,MarkerList-method, geneValues&lt;--methods, geneValues-methods, hasValues, marknames, marknames,list-method, marknames-methods, marknames,vector-method, nmf, nmf,MatrixData,MarkerList,ANY-method, nmf-methods, show,MarkerList-method)<br />Accessing Data in Marker Lists</li>
+    <code><a href="MarkerList-data.html">geneValues</a></code>(annotation, annotation&lt;-, annotation,GEDdata_entry-method, annotation&lt;-,MarkerList,character-method, annotation,MarkerList-method, annotation&lt;-,MarkerList,NULL-method, annotation&lt;--methods, annotation-methods, connectivity, connectivity,MarkerList-method, connectivity-methods, details, details,MarkerList-method, details-methods, geneIds, geneIds&lt;-, geneIds&lt;-,MarkerList,list-method, geneIds,MarkerList-method, geneIds&lt;--methods, geneIds-methods, geneIdType, geneIdType&lt;-, geneIdType&lt;-,MarkerList,character-method, geneIdType&lt;-,MarkerList,GeneIdentifierType-method, geneIdType,MarkerList-method, geneIdType&lt;-,MarkerList,NULL-method, geneIdType&lt;--methods, geneIdType-methods, geneValues&lt;-, geneValues,MarkerList-method, geneValues&lt;--methods, geneValues-methods, hasValues, incidence, incidence,MarkerList-method, incidence-methods, marknames, marknames,list-method, marknames-methods, marknames,vector-method, nmf, nmf,MatrixData,MarkerList,ANY-method, nmf-methods, show,MarkerList-method)<br />Accessing Data in Marker Lists</li>
 
   <li>
     <code><a href="getGSE.html">getGSE</a></code><br />Downloading GSE Datasets from GEO</li>
@@ -262,6 +262,9 @@
 
   <li>
     <code><a href="initialize-commaExpressionMix-method.html">initialize,ExpressionMix-method</a></code><br />Initialize method for ExpressionMix object</li>
+
+  <li>
+    <code><a href="intersect.html">intersect</a></code>(intersect,MatrixData,character-method, intersect,MatrixData,logical-method, intersect,MatrixData,MarkerList-method, intersect,MatrixData,MatrixData-method)<br />Enhanced Subsetting for Matrix-like Data</li>
 
   <li>
     <code><a href="IRIS.html">IRIS</a></code><br />Immune Response In-Silico (IRIS) Data</li>

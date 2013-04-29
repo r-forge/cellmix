@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>applyBy. CellMix 1.4.2</title>
+<title>applyBy. CellMix 1.5.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -30,7 +30,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <a class="brand" href="index.html">CellMix 1.5.1</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -50,7 +50,13 @@
 <div class="row">
   <div class="span8">
     <h2>Usage</h2>
-    <pre>applyBy(x, BY, MARGIN, FUN, W = NULL, ..., DROP = FALSE)
+    <pre>applyBy(x, ...)
+
+<span class="label label-success">S3</span> (matrix)
+`applyBy`(x, BY, MARGIN, FUN, W = NULL, ..., DROP = FALSE)
+
+<span class="label label-success">S3</span> (ExpressionSet)
+`applyBy`(x, BY, MARGIN, ..., ANNOTATIONS = TRUE)
 
 rowApplyBy(x, BY, FUN, ...)
 
@@ -70,7 +76,11 @@ colMediansBy(x, BY, ...)
 
 rowMaxsBy(x, BY, ...)
 
-colMaxsBy(x, BY, ...)</pre>
+colMaxsBy(x, BY, ...)
+
+rowMinsBy(x, BY, ...)
+
+colMinsBy(x, BY, ...)</pre>
     
     <h2>Arguments</h2>
     <dl>
@@ -80,7 +90,12 @@ colMaxsBy(x, BY, ...)</pre>
       <dt>BY</dt>
       <dd>factor or object coerced to a factor, that
   defines the groups within which the function <code>FUN</code>
-  is applied.</dd>
+  is applied.
+
+  If <code>x</code> is an ExpressionSet object, then <code>BY</code>
+  can be the names of a sample (resp. feature) annotation
+  variable if <code>MARGIN=1</code> (resp. <code>MARGIN=2L</code>) (see
+  examples).</dd>
       <dt>MARGIN</dt>
       <dd>margin along which the function <code>FUN</code>
   is applied: 1L for rows, 2L for columns.</dd>
@@ -97,6 +112,24 @@ colMaxsBy(x, BY, ...)</pre>
       <dd>logical that indicates if absent levels
   should be removed from the result matrix, or appear as
   0-filled rows/columns.</dd>
+      <dt>ANNOTATIONS</dt>
+      <dd>logical that indicates if
+  samples/feature annotations should be kept, when the
+  input data is an <code><a href='http://www.inside-r.org/r-doc/Biobase/class.ExpressionSet'>ExpressionSet</a></code> object.
+  Currently, if <code>TRUE</code>: <ul>
+<li> if
+  codeMARGIN=1L, then feature annotations are kept
+  unchanged, and phenotypic sample annotations are
+  discarded. </li>
+<li> if codeMARGIN=2L, then phenotypic
+  sample annotations are kept unchanged, and feature
+  annotations are discarded. </li>
+</ul>
+
+
+  In any case, the value of slot <code>annotation</code> (i.e.
+  the annotation package), is passed on to the result
+  object.</dd>
       <dt>W</dt>
       <dd>An optional <code><a href='http://www.inside-r.org/r-doc/base/numeric'>numeric</a></code> NxM
   <code><a href='http://www.inside-r.org/r-doc/base/matrix'>matrix</a></code> of weights.</dd>
@@ -105,18 +138,33 @@ colMaxsBy(x, BY, ...)</pre>
     <div class="Value">
       <h2>Value</h2>
       
-      <p>The result is a matrix whose margin's dimension
-  <code>MARGIN</code> is equal the same margin's dimension in
-  <code>x</code>, and the other to the number of levels in
-  <code>BY</code>.</p>
+      <p>The result is a matrix or an <code>ExpressionSet</code> object
+  whose margin's dimension <code>MARGIN</code> is equal the same
+  margin's dimension in <code>x</code>, and the other to the
+  number of levels in <code>BY</code>.</p>
   
     </div>
 
     <div class="Description">
       <h2>Description</h2>
       
-      <p>Applies a function to rows or columns of a matrix-like
-  object, separately within groups defined by a factor.</p>
+      <p><code>appplyBy</code> is an S3 generic function that applies a
+  given function to sub-matrices of a matrix-like object,
+  which are generated according to a factor that defines
+  groups rows or columns.</p>
+  
+      <p><code>applyBy.matrix</code> is a wrapper around
+  <code><a href='http://www.inside-r.org/r-doc/matrixStats/rowAvgsPerColSet.matrix'>colAvgsPerRowSet</a></code>, which make
+  the computation really fast, but requires somehow
+  cumbersome matrix specifications for the groups of
+  columns or rows. The wrapper builds the arguments for the
+  particular case where the groups are defined by a factor.</p>
+  
+      <p>A method is provided for <code><a href='http://www.inside-r.org/r-doc/Biobase/class.ExpressionSet'>ExpressionSet</a></code>
+  objects, which preserve sample and feature annotations.
+  Moreover it allows directly passing names of
+  feature/sample annotation -- factor -- variables in
+  argument <code>BY</code> (see examples).</p>
   
       <p><code>rowApplyBy</code> applies a function to rows of
   sub-matrices whose columns are defined by a factor.</p>
@@ -133,21 +181,6 @@ colMaxsBy(x, BY, ...)</pre>
   defined by a factor.</p>
   
     </div>
-
-    <div class="Details">
-      <h2>Details</h2>
-      
-      <p><code>applyBy</code> is the work horse function that is called
-  by other more user-friendly functions.</p>
-  
-      <p><code>applyBy</code> is a wrapper around
-  <code><a href='http://www.inside-r.org/r-doc/matrixStats/rowAvgsPerColSet.matrix'>colAvgsPerRowSet</a></code>, which make
-  the computation really fast, but requires somehow
-  cumbersome matrix specifications for the groups of
-  columns or rows. The wrapper builds the arguments for the
-  particular case where the groups are defined by a factor.</p>
-  
-    </div>
     
     <h2 id="examples">Examples</h2>
     <pre class="examples"><div class='input'># random data matrix</div><div class='input'>x <- rmatrix(12, 6)
@@ -155,19 +188,19 @@ colMaxsBy(x, BY, ...)</pre>
 </div><div class='input'>b <- applyBy(x, fc, 1L, rowSums)
 </div><div class='input'>b
 </div>
-<div class='output'>             1         2
- [1,] 1.128947 1.6702637
- [2,] 1.448162 2.1900103
- [3,] 1.536033 1.1535277
- [4,] 1.205556 2.3665224
- [5,] 1.567208 0.3289842
- [6,] 1.417626 1.2329996
- [7,] 1.460712 1.1498039
- [8,] 1.638283 1.2267020
- [9,] 1.929241 1.7474233
-[10,] 1.168765 1.5865691
-[11,] 1.532594 1.6474817
-[12,] 2.277984 2.1582314
+<div class='output'>              1         2
+ [1,] 1.6063100 2.2079148
+ [2,] 2.2565705 1.2183286
+ [3,] 2.3212810 0.9869661
+ [4,] 1.3572888 1.7199242
+ [5,] 1.4835356 2.5008653
+ [6,] 1.2504324 0.9475977
+ [7,] 1.0860375 1.0451921
+ [8,] 1.7885476 0.5793109
+ [9,] 2.5603957 1.0439766
+[10,] 1.1338770 1.0669209
+[11,] 1.0981482 1.5040171
+[12,] 0.6850369 0.6957557
 </div><div class='input'># or</div><div class='input'>balt <- rowApplyBy(x, fc, rowSums)
 </div><div class='input'>identical(b, balt)
 </div>
@@ -178,11 +211,77 @@ colMaxsBy(x, BY, ...)</pre>
 </div><div class='input'>identical(b, balt)
 </div>
 <div class='output'>[1] TRUE
-</div></pre>
+</div><div class='input'>## Method for ExpressionSet objects</div><div class='input'></div><div class='input'>x <- ExpressionSet(x, annotation='abcd.db')
+</div><div class='input'>y <- rowMinsBy(x, fc)
+</div><div class='input'></div><div class='input'>y <- colMinsBy(x, fr)
+</div><div class='input'></div><div class='input'></div><div class='input'>## annotations are conserved/collapsed</div><div class='input'>pData(x) <- data.frame(Group=fc, Sample=letters[1:ncol(x)])
+</div><div class='input'>pData(x)
+</div>
+<div class='output'>  Group Sample
+1     1      a
+2     1      b
+3     1      c
+4     2      d
+5     2      e
+6     2      f
+</div><div class='input'>fData(x) <- data.frame(ENTREZID=fr, Gene=letters[nrow(x):1])
+</div><div class='input'>fData(x)
+</div>
+<div class='output'>   ENTREZID Gene
+1         1    l
+2         1    k
+3         1    j
+4         1    i
+5         2    h
+6         2    g
+7         2    f
+8         2    e
+9         3    d
+10        3    c
+11        3    b
+12        3    a
+</div><div class='input'></div><div class='input'># keep feature annotations, collapse sample annotations</div><div class='input'>y <- rowMinsBy(x, 'Group')
+</div><div class='input'>pData(y)
+</div>
+<div class='output'>  Group Sample
+1     1      a
+2     2      d
+</div><div class='input'>fData(y)
+</div>
+<div class='output'>   ENTREZID Gene
+1         1    l
+2         1    k
+3         1    j
+4         1    i
+5         2    h
+6         2    g
+7         2    f
+8         2    e
+9         3    d
+10        3    c
+11        3    b
+12        3    a
+</div><div class='input'></div><div class='input'></div><div class='input'># keep sample annotations, collapse feature annotations</div><div class='input'>y <- colMinsBy(x, 'ENTREZID')
+</div><div class='input'>pData(y)
+</div>
+<div class='output'>  Group Sample
+1     1      a
+2     1      b
+3     1      c
+4     2      d
+5     2      e
+6     2      f
+</div><div class='input'>fData(y)
+</div>
+<div class='output'>  ENTREZID Gene
+1        1    l
+2        2    h
+3        3    d
+</div><div class='input'></div></pre>
   </div>
   <div class="span4">
     <!-- <ul>
-      <li>applyBy</li><li>colApplyBy</li><li>colMaxsBy</li><li>colMeansBy</li><li>colMediansBy</li><li>colSumsBy</li><li>rowApplyBy</li><li>rowMaxsBy</li><li>rowMeansBy</li><li>rowMediansBy</li><li>rowSumsBy</li>
+      <li>applyBy</li><li>applyBy.ExpressionSet</li><li>applyBy.matrix</li><li>colApplyBy</li><li>colMaxsBy</li><li>colMeansBy</li><li>colMediansBy</li><li>colMinsBy</li><li>colSumsBy</li><li>rowApplyBy</li><li>rowMaxsBy</li><li>rowMeansBy</li><li>rowMediansBy</li><li>rowMinsBy</li><li>rowSumsBy</li>
     </ul>
     <ul>
       

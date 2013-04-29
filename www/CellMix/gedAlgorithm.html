@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>gedAlgorithm. CellMix 1.4.2</title>
+<title>gedAlgorithm. CellMix 1.5.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -30,7 +30,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <a class="brand" href="index.html">CellMix 1.5.1</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -100,9 +100,8 @@ gedAlgorithmInfo(show = TRUE, all = !show)</pre>
     <h2 id="examples">Examples</h2>
     <pre class="examples"><div class='input'>gedAlgorithm()
 </div>
-<div class='output'> [1] "lsfit"       "cs-lsfit"    "nnls"        "cs-nnls"     "qprog"      
- [6] "cs-qprog"    "DSA"         "csSAM"       "DSection"    "ssKL"       
-[11] "ssFrobenius" "meanProfile" "deconf"     
+<div class='output'> [1] "lsfit"       "cs-lsfit"    "nnls"        "cs-nnls"     "qprog"       "cs-qprog"    "DSA"         "csSAM"       "DSection"   
+[10] "ssKL"        "ssFrobenius" "meanProfile" "deconf"     
 </div><div class='input'>gedAlgorithm('ssKL')
 </div>
 <div class='output'><Object of class: GEDStrategy>
@@ -117,38 +116,37 @@ Require: Coef
 Reference: Shen-Orr et al. (2010)
 </div><div class='input'># show algorithms and properties</div><div class='input'>gedAlgorithmInfo()
 </div>
-<div class='output'>                                                                                                           Description
-lsfit                                                Partial deconvolution of proportions using standard least-squares
-cs-lsfit                                         Partial deconvolution of cell signatures using standard least-squares
-nnls             Partial deconvolution of proportions or signatures using fast combinatorial nonnegative least-squares
-cs-nnls                         Partial deconvolution of signatures using fast combinatorial nonnegative least-squares
-qprog                               Estimates proportions from known expression signatures using quadratic programming
-cs-qprog    Estimates constrained cell-specific signatures from proportions using quadratic programming [experimental]
-DSA                                                             Complete deconvolution using Digital Sorting Algorithm
-csSAM                                       Estimates cell/tissue specific signatures from known proportions using SAM
-DSection                                                      Estimates proportions from proportions priors using MCMC
-ssKL                                               Semi-supervised NMF algorithm for KL divergence, using marker genes
-ssFrobenius                                   Semi-supervised NMF algorithm for Euclidean distance, using marker genes
-meanProfile                                                     Compute proportion proxies as mean expression profiles
-deconf                                           Alternate least-square NMF method, using heuristic constraints [fast]
-            Basis  Coef Marker Iter     Reference
-lsfit        TRUE FALSE  FALSE    1     Abbas2009
-cs-lsfit    FALSE  TRUE  FALSE    1              
-nnls         TRUE FALSE  FALSE    1              
-cs-nnls     FALSE  TRUE  FALSE    1              
-qprog        TRUE FALSE  FALSE    1      Gong2011
-cs-qprog    FALSE  TRUE  FALSE    1              
-DSA         FALSE FALSE   TRUE    1     Zhong2013
-csSAM       FALSE  TRUE  FALSE    1  Shen-Orr2010
-DSection    FALSE  TRUE  FALSE  500   Erkkila2010
-ssKL        FALSE FALSE   TRUE 3000   Gaujoux2011
-ssFrobenius FALSE FALSE   TRUE 3000   Gaujoux2011
-meanProfile FALSE FALSE   TRUE    1              
-deconf      FALSE FALSE  FALSE 1000 Repsilber2010
+<div class='output'>                                                                                                           Description Basis  Coef Marker
+lsfit                                                Partial deconvolution of proportions using standard least-squares  TRUE FALSE  FALSE
+cs-lsfit                                         Partial deconvolution of cell signatures using standard least-squares FALSE  TRUE  FALSE
+nnls             Partial deconvolution of proportions or signatures using fast combinatorial nonnegative least-squares  TRUE FALSE  FALSE
+cs-nnls                         Partial deconvolution of signatures using fast combinatorial nonnegative least-squares FALSE  TRUE  FALSE
+qprog                               Estimates proportions from known expression signatures using quadratic programming  TRUE FALSE  FALSE
+cs-qprog    Estimates constrained cell-specific signatures from proportions using quadratic programming [experimental] FALSE  TRUE  FALSE
+DSA                                                             Complete deconvolution using Digital Sorting Algorithm FALSE FALSE   TRUE
+csSAM                                       Estimates cell/tissue specific signatures from known proportions using SAM FALSE  TRUE  FALSE
+DSection                                                      Estimates proportions from proportions priors using MCMC FALSE  TRUE  FALSE
+ssKL                                               Semi-supervised NMF algorithm for KL divergence, using marker genes FALSE FALSE   TRUE
+ssFrobenius                                   Semi-supervised NMF algorithm for Euclidean distance, using marker genes FALSE FALSE   TRUE
+meanProfile                                                     Compute proportion proxies as mean expression profiles FALSE FALSE   TRUE
+deconf                                         Alternate least-square NMF method, using heuristic constraints [fcnnls] FALSE FALSE  FALSE
+            Iter     Reference
+lsfit          1     Abbas2009
+cs-lsfit       1              
+nnls           1              
+cs-nnls        1              
+qprog          1      Gong2011
+cs-qprog       1              
+DSA            1     Zhong2013
+csSAM          1  Shen-Orr2010
+DSection     500   Erkkila2010
+ssKL        3000   Gaujoux2011
+ssFrobenius 3000   Gaujoux2011
+meanProfile    1              
+deconf      1000 Repsilber2010
 </div><div class='input'>class(gedAlgorithmInfo(show=FALSE))
 </div>
-<div class='output'>[1] "GEDalgorithm_registry"       "algorithms_package_registry"
-[3] "package_registry"            "registry"                   
+<div class='output'>[1] "GEDalgorithm_registry"       "algorithms_package_registry" "package_registry"            "registry"                   
 </div></pre>
   </div>
   <div class="span4">

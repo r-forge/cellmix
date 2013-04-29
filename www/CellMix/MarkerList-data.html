@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>geneValues. CellMix 1.4.2</title>
+<title>geneValues. CellMix 1.5.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -30,7 +30,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <a class="brand" href="index.html">CellMix 1.5.1</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -68,7 +68,14 @@ annotation(object, ...) <- value
 
 details(object)
 
+incidence(x, ...)
+
+connectivity(object, ...)
+
 nmf(x, rank, method, ...)
+
+<span class="label label-important">S4</span> (MarkerList,character)
+`annotation`(object, ..., check = TRUE) <- value
 
 <span class="label label-important">S4</span> (MarkerList)
 `show`(object)
@@ -98,6 +105,15 @@ marknames(object, ...)
       <dt>...</dt>
       <dd>extra arguments to allow extension. See each
   method's description for more details.</dd>
+      <dt>check</dt>
+      <dd>logical that indicates if the validity of
+  the new value should be checked for consistency with the
+  currrent type of identifiers used in the marker list. If
+  <code>TRUE</code>, and the marker list already has associated
+  annotation package(s), then the new annotation package(s)
+  are required to be installed, and the user will be asked
+  for permission to install them if they are not
+  (interactive mode only).</dd>
       <dt>verbose</dt>
       <dd>logical not used.</dd>
       <dt>unlist</dt>
@@ -204,6 +220,13 @@ marknames(object, ...)
   package associated to a marker list</p>
   
       <p></li>
+<li>connectivity<code>signature(object =
+  "MarkerList")</code>: Computes the connectivity matrix of each
+  set (i.e. cell/tissue type) of a marker list, i.e. the
+  matrix whose entries are the number of features in common
+  between each pair o cell type.</p>
+  
+      <p></li>
 <li>details<code>signature(object = "MarkerList")</code>:
   Shows more details than the regular <code>show</code> method.</p>
   
@@ -235,6 +258,17 @@ marknames(object, ...)
   <code>MarkerList</code> object.</p>
   
       <p></li>
+<li>incidence<code>signature(x = "MarkerList")</code>:
+  Computes the incidence matrix of each feature in each set
+  (i.e. cell/tissue type) of a marker list.</p>
+  
+      <p>The matrix is computed by converting the
+  <code>MarkerList</code> object into a
+  <code><a href='http://www.inside-r.org/r-doc/GSEABase/GeneSetCollection-methods'>GeneSetCollection</a></code> object, for which a
+  method <code><a href='MarkerList-data.html'>incidence</a></code> exists in the
+  <span class = "pkg">GSEABase</span> package.</p>
+  
+      <p></li>
 <li>nmf<code>signature(x = "MatrixData", rank =
   "MarkerList", method = "ANY")</code>: Calls an NMF algorithm
   using a MarkerList object, whose length defines the
@@ -259,8 +293,7 @@ $Type2
 [1] "Marker.9" "Marker.5" "Marker.7" "Marker.4" "Marker.8" "Marker.6"
 
 $Type3
-[1] "Marker.12" "Marker.18" "Marker.16" "Marker.17" "Marker.11" "Marker.15"
-[7] "Marker.13" "Marker.14" "Marker.10"
+[1] "Marker.12" "Marker.18" "Marker.16" "Marker.17" "Marker.11" "Marker.15" "Marker.13" "Marker.14" "Marker.10"
 
 </div><div class='input'># get attached values</div><div class='input'>m <- rMarkerList(3, values=TRUE)
 </div><div class='input'>geneValues(m)
@@ -274,38 +307,33 @@ $Type2
 0.08689466 0.68606624 0.96765137 0.63654410 0.42051527 0.80513973 
 
 $Type3
- Marker.10  Marker.11  Marker.12  Marker.13  Marker.14  Marker.15  Marker.16 
-0.26038751 0.65711832 0.58254836 0.64320725 0.02520756 0.06435620 0.98084656 
- Marker.17  Marker.18 
-0.93940564 0.19708425 
+ Marker.10  Marker.11  Marker.12  Marker.13  Marker.14  Marker.15  Marker.16  Marker.17  Marker.18 
+0.26038751 0.65711832 0.58254836 0.64320725 0.02520756 0.06435620 0.98084656 0.93940564 0.19708425 
 
 </div><div class='input'>marknames( rMarkerList(3) )
 </div>
-<div class='output'>Type1 Type1 Type1 Type2 Type2 Type2 Type2 Type2 Type2 Type3 Type3 Type3 Type3 
-    4    13    17     2     7     9    10    14    16     1     3     5     6 
-Type3 Type3 Type3 Type3 Type3 
-    8    11    12    15    18 
+<div class='output'>Type1 Type1 Type1 Type2 Type2 Type2 Type2 Type2 Type2 Type3 Type3 Type3 Type3 Type3 Type3 Type3 Type3 Type3 
+    4    13    17     2     7     9    10    14    16     1     3     5     6     8    11    12    15    18 
 </div><div class='input'>marknames( rMarkerList(3, names=TRUE) )
 </div>
-<div class='output'>      Type1       Type1       Type1       Type2       Type2       Type2 
- "Marker.1"  "Marker.3"  "Marker.2"  "Marker.7"  "Marker.8"  "Marker.4" 
-      Type2       Type2       Type2       Type3       Type3       Type3 
- "Marker.5"  "Marker.6"  "Marker.9" "Marker.13" "Marker.15" "Marker.12" 
-      Type3       Type3       Type3       Type3       Type3       Type3 
-"Marker.11" "Marker.16" "Marker.17" "Marker.14" "Marker.10" "Marker.18" 
+<div class='output'>      Type1       Type1       Type1       Type2       Type2       Type2       Type2       Type2       Type2       Type3       Type3 
+ "Marker.1"  "Marker.3"  "Marker.2"  "Marker.7"  "Marker.8"  "Marker.4"  "Marker.5"  "Marker.6"  "Marker.9" "Marker.13" "Marker.15" 
+      Type3       Type3       Type3       Type3       Type3       Type3       Type3 
+"Marker.12" "Marker.11" "Marker.16" "Marker.17" "Marker.14" "Marker.10" "Marker.18" 
 </div><div class='input'>marknames( rMarkerList(3, values=TRUE) )
 </div>
-<div class='output'>      Type1       Type1       Type1       Type2       Type2       Type2 
- "Marker.1"  "Marker.2"  "Marker.3"  "Marker.4"  "Marker.5"  "Marker.6" 
-      Type2       Type2       Type2       Type3       Type3       Type3 
- "Marker.7"  "Marker.8"  "Marker.9" "Marker.10" "Marker.11" "Marker.12" 
-      Type3       Type3       Type3       Type3       Type3       Type3 
-"Marker.13" "Marker.14" "Marker.15" "Marker.16" "Marker.17" "Marker.18" 
-</div></pre>
+<div class='output'>      Type1       Type1       Type1       Type2       Type2       Type2       Type2       Type2       Type2       Type3       Type3 
+ "Marker.1"  "Marker.2"  "Marker.3"  "Marker.4"  "Marker.5"  "Marker.6"  "Marker.7"  "Marker.8"  "Marker.9" "Marker.10" "Marker.11" 
+      Type3       Type3       Type3       Type3       Type3       Type3       Type3 
+"Marker.12" "Marker.13" "Marker.14" "Marker.15" "Marker.16" "Marker.17" "Marker.18" 
+</div><div class='input'># connectivity matrix of marker sets</div><div class='input'>vg <- MarkerList('VeryGene')
+</div><div class='input'>co <- connectivity(vg)
+</div><div class='input'># plot as a conensus matrix</div><div class='input'>consensusmap(co)
+</div><p><img src='MarkerList-data-ex1.png' alt='' width='400' height='400' /></p></pre>
   </div>
   <div class="span4">
     <!-- <ul>
-      <li>annotation</li><li>annotation&lt;-</li><li>annotation,GEDdata_entry-method</li><li>annotation&lt;-,MarkerList,character-method</li><li>annotation,MarkerList-method</li><li>annotation&lt;-,MarkerList,NULL-method</li><li>annotation&lt;--methods</li><li>annotation-methods</li><li>details</li><li>details,MarkerList-method</li><li>details-methods</li><li>geneIds</li><li>geneIds&lt;-</li><li>geneIds&lt;-,MarkerList,list-method</li><li>geneIds,MarkerList-method</li><li>geneIds&lt;--methods</li><li>geneIds-methods</li><li>geneIdType</li><li>geneIdType&lt;-</li><li>geneIdType&lt;-,MarkerList,character-method</li><li>geneIdType&lt;-,MarkerList,GeneIdentifierType-method</li><li>geneIdType,MarkerList-method</li><li>geneIdType&lt;-,MarkerList,NULL-method</li><li>geneIdType&lt;--methods</li><li>geneIdType-methods</li><li>geneValues</li><li>geneValues&lt;-</li><li>geneValues,MarkerList-method</li><li>geneValues&lt;--methods</li><li>geneValues-methods</li><li>hasValues</li><li>marknames</li><li>marknames,list-method</li><li>marknames-methods</li><li>marknames,vector-method</li><li>nmf</li><li>nmf,MatrixData,MarkerList,ANY-method</li><li>nmf-methods</li><li>show,MarkerList-method</li>
+      <li>annotation</li><li>annotation&lt;-</li><li>annotation,GEDdata_entry-method</li><li>annotation&lt;-,MarkerList,character-method</li><li>annotation,MarkerList-method</li><li>annotation&lt;-,MarkerList,NULL-method</li><li>annotation&lt;--methods</li><li>annotation-methods</li><li>connectivity</li><li>connectivity,MarkerList-method</li><li>connectivity-methods</li><li>details</li><li>details,MarkerList-method</li><li>details-methods</li><li>geneIds</li><li>geneIds&lt;-</li><li>geneIds&lt;-,MarkerList,list-method</li><li>geneIds,MarkerList-method</li><li>geneIds&lt;--methods</li><li>geneIds-methods</li><li>geneIdType</li><li>geneIdType&lt;-</li><li>geneIdType&lt;-,MarkerList,character-method</li><li>geneIdType&lt;-,MarkerList,GeneIdentifierType-method</li><li>geneIdType,MarkerList-method</li><li>geneIdType&lt;-,MarkerList,NULL-method</li><li>geneIdType&lt;--methods</li><li>geneIdType-methods</li><li>geneValues</li><li>geneValues&lt;-</li><li>geneValues,MarkerList-method</li><li>geneValues&lt;--methods</li><li>geneValues-methods</li><li>hasValues</li><li>incidence</li><li>incidence,MarkerList-method</li><li>incidence-methods</li><li>marknames</li><li>marknames,list-method</li><li>marknames-methods</li><li>marknames,vector-method</li><li>nmf</li><li>nmf,MatrixData,MarkerList,ANY-method</li><li>nmf-methods</li><li>show,MarkerList-method</li>
     </ul>
     <ul>
       <li>methods</li>

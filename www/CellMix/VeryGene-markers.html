@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>VeryGene-markers. CellMix 1.4.2</title>
+<title>VeryGene-markers. CellMix 1.5.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -30,7 +30,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <a class="brand" href="index.html">CellMix 1.5.1</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -65,19 +65,49 @@
   according to their specificity index.</p>
   
     </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p>Note that according to the VeryGene paper, tissue
+  specific gene sets in this list are <strong>not
+  disjoint</strong>, and "express selectively in approximately two
+  tissues on average". This can be important when used in
+  deconvolution methods that require disjoint sets of
+  marker genes. Duplicates accross tissue types can be
+  removed using the function <code><a href='utils-MarkerList.html'>rmDuplicated</a></code> or
+  by filtering on the specificity score, e.g., <code>ml[ ml
+  >= 8]</code>.</p>
+  
+    </div>
     
     <h2 id="examples">Examples</h2>
-    <pre class="examples"><div class='input'>MarkerList('VeryGene')
+    <pre class="examples"><div class='input'>vg <- MarkerList('VeryGene')
+</div><div class='input'></div><div class='input'># marker sets are not disjoint</div><div class='input'>hasDuplicated(vg)
 </div>
-<div class='output'><object of class: MarkerList>
-Types: 721 B lymphoblasts, Abdominal lymph node, ..., White matter of occipital lobe (total: 127)
+<div class='output'>[1] 32
+</div><div class='input'></div><div class='input'># show historgram of specificity scores</div><div class='input'>hist(vg)
+</div><p><img src='VeryGene-markers-ex1.png' alt='' width='400' height='400' /></p><div class='input'># filter on scores</div><div class='input'>vg2 <- vg[vg >= 8, drop=TRUE]
+</div><div class='input'>summary(vg2)
+</div>
+<div class='output'><object of class MarkerList>
+Types: 32 ['Adrenal gland', 'Bladder', ..., 'Vas deferens'] 
 Mode: numeric
-setName: VeryGene 
-geneIds: 55349, 30848, ..., 85414 (total: 10102)
-geneIdType: EntrezId (org.Hs.eg.db)
-collectionType: Null 
-geneValues: 7.6619, 7.6599, ..., 0.8186 
-details: use 'details(object)'
+Markers: 502 
+IDtype: ENTREZID ['1584', '3284', ..., '160065'] 
+Values: [9.0293, 8.5984, ..., 8.0571]
+Source: org.Hs.eg.db 
+Breakdown:
+    Adrenal gland           Bladder             Blood   Body of stomach       Bone marrow    Bone structure            Breast 
+               16                 1               134                 6                 1                 3                 2 
+         Bronchus        Dura mater    Fallopian tube       Gallbladder      Hypothalamus            Larynx             Liver 
+                1                 5                 1                 2                 3                 1               129 
+   Locus ceruleus              Lung Medulla of kidney             Ovary          Pancreas          Placenta          Prostate 
+                1                 8                 1                 2                34                26                14 
+          Pylorus      Right atrium    Salivary gland              Skin            Spleen  Substantia nigra            Testis 
+                1                 1                 3                 7                 2                 2                50 
+           Thymus     Thyroid gland            Ureter      Vas deferens 
+               33                 8                 1                 3 
 </div></pre>
   </div>
   <div class="span4">

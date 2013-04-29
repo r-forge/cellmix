@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>markerScoreHSD. CellMix 1.4.2</title>
+<title>markerScoreHSD. CellMix 1.5.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -30,7 +30,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <a class="brand" href="index.html">CellMix 1.5.1</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -158,7 +158,13 @@ Composition:  (3 total)
 </div><p><img src='markerScoreHSD-ex1.png' alt='' width='400' height='400' /></p><div class='input'></div><div class='input'># extract markers</div><div class='input'>ml <- extractMarkers(x, x$CellType, method='HSD')
 </div><div class='input'># check score/p-value distribution</div><div class='input'>hist(ml)
 </div><p><img src='markerScoreHSD-ex2.png' alt='' width='400' height='400' /></p><div class='input'># plot most significant ones</div><div class='input'>profplot(ml[ml < 0.0001], x, split=TRUE)
-</div><p><img src='markerScoreHSD-ex3.png' alt='' width='400' height='400' /></p></pre>
+</div>
+<strong class='warning'>Warning message:
+'x' is NULL so the result will be NULL</strong>
+<strong class='warning'>Warning message:
+'x' is NULL so the result will be NULL</strong>
+<strong class='warning'>Warning message:
+'x' is NULL so the result will be NULL</strong><p><img src='markerScoreHSD-ex3.png' alt='' width='400' height='400' /></p></pre>
   </div>
   <div class="span4">
     <!-- <ul>

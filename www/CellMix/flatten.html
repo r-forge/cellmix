@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>flatten. CellMix 1.4.2</title>
+<title>flatten. CellMix 1.5.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -30,7 +30,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <a class="brand" href="index.html">CellMix 1.5.1</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -83,7 +83,7 @@
       
       <p><code>flatten</code> is an S4 generic function that flattens
   objects by unfolding their inner levels, like what
-  <code><a href='http://www.inside-r.org/r-doc/base/unlist'>unlist</a></code> does for <code><a href='http://www.inside-r.org/r-doc/base/list'>list</a></code> objects.</p>
+  <code><a href='http://www.inside-r.org/r-doc/BiocGenerics/unlist'>unlist</a></code> does for <code><a href='http://www.inside-r.org/r-doc/base/list'>list</a></code> objects.</p>
   
     </div>
 
@@ -98,7 +98,7 @@
       <p></li>
 <li>flatten<code>signature(object = "MarkerList")</code>:
   For <code><a href='MarkerList.html'>MarkerList</a></code> objects the conversion is
-  similar to what <code><a href='http://www.inside-r.org/r-doc/base/unlist'>unlist</a></code> would do, but
+  similar to what <code><a href='http://www.inside-r.org/r-doc/BiocGenerics/unlist'>unlist</a></code> would do, but
   argument <code>use.names</code> is used slightly differently.</p>
   
       <p>Secondly, the names of the main elements are append to
@@ -132,17 +132,14 @@
 </div><div class='input'>ml <- rMarkerList(3, names=TRUE)
 </div><div class='input'>flatten(ml)
 </div>
-<div class='output'> [1] "Marker.3"  "Marker.1"  "Marker.2"  "Marker.8"  "Marker.9"  "Marker.6" 
- [7] "Marker.5"  "Marker.4"  "Marker.7"  "Marker.18" "Marker.13" "Marker.16"
-[13] "Marker.11" "Marker.15" "Marker.14" "Marker.17" "Marker.10" "Marker.12"
+<div class='output'> [1] "Marker.2"  "Marker.3"  "Marker.1"  "Marker.9"  "Marker.4"  "Marker.8"  "Marker.7"  "Marker.5"  "Marker.6"  "Marker.15" "Marker.14"
+[12] "Marker.10" "Marker.12" "Marker.11" "Marker.18" "Marker.17" "Marker.13" "Marker.16"
 </div><div class='input'>flatten(ml, use.names=TRUE)
 </div>
-<div class='output'> Marker.3  Marker.1  Marker.2  Marker.8  Marker.9  Marker.6  Marker.5  Marker.4 
-  "Type1"   "Type1"   "Type1"   "Type2"   "Type2"   "Type2"   "Type2"   "Type2" 
- Marker.7 Marker.18 Marker.13 Marker.16 Marker.11 Marker.15 Marker.14 Marker.17 
-  "Type2"   "Type3"   "Type3"   "Type3"   "Type3"   "Type3"   "Type3"   "Type3" 
-Marker.10 Marker.12 
-  "Type3"   "Type3" 
+<div class='output'> Marker.2  Marker.3  Marker.1  Marker.9  Marker.4  Marker.8  Marker.7  Marker.5  Marker.6 Marker.15 Marker.14 Marker.10 Marker.12 Marker.11 
+  "Type1"   "Type1"   "Type1"   "Type2"   "Type2"   "Type2"   "Type2"   "Type2"   "Type2"   "Type3"   "Type3"   "Type3"   "Type3"   "Type3" 
+Marker.18 Marker.17 Marker.13 Marker.16 
+  "Type3"   "Type3"   "Type3"   "Type3" 
 </div></pre>
   </div>
   <div class="span4">
@@ -155,7 +152,7 @@ Marker.10 Marker.12
       
     <h2>See also</h2>
     
-  <code><a href='http://www.inside-r.org/r-doc/base/unlist'>unlist</a></code>
+  <code><a href='http://www.inside-r.org/r-doc/BiocGenerics/unlist'>unlist</a></code>
 
         
   </div>

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>Index. CellMix 1.4.2</title>
+<title>Index. CellMix 1.5.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="Renaud Gaujoux, Cathal Seoighe">
 
@@ -30,7 +30,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <a class="brand" href="index.html">CellMix 1.5.1</a>
       <div class="nav">
         <ul class="nav">
         <li><a href=""><i class="icon-home icon-white"></i> Index</a></li>
@@ -63,25 +63,30 @@
     <h2>Overview</h2>
 
 <p>This package contains methods and utilities for performing gene expression deconvolution, i.e. estimating cell type proportions and/or cell-specific gene expression signatures from global expression data in heterogeneous samples.
-Its objectives are to provide:</p>
+Its main objectives are to provide:</p>
 
 <ul>
-<li>a unified base framework for applying and developping deconvolution analysis;</li>
+<li>a unified base framework for applying and developing deconvolution analysis;</li>
 <li>a user-friendly and intuitive interface;</li>
-<li>a ressource of relevant auxiliary data such as benchmark datasets or cell marker gene lists.</li>
+<li>a resource of relevant auxiliary data such as benchmark datasets or cell marker gene lists.</li>
 </ul>
 
 <h2>Installation</h2>
 
-<pre><code class="R"># enable Bioconductor repositories
-# -&gt; add Bioc-software and Bioc-annotation
-setRepositories() 
+<pre><code class="R"># install biocLite if not already there
+if( !require(BiocInstaller) ){
+    # enable Bioconductor repositories
+    # -&gt; add Bioc-software
+    setRepositories() 
 
-# installation
-install.packages(&#39;CellMix&#39;, repos=c(&#39;http://web.cbio.uct.ac.za/~renaud/CRAN&#39;, getOption(&#39;repos&#39;)))
+    install.packages(&#39;BiocInstaller&#39;)
+    library(BiocInstaller)
+}
+# or alternatively do: 
+# source(&#39;http://www.bioconductor.org/biocLite.R&#39;)
 
-# or if this fails, e.g., Mac OS X, if a binary package is not available for the OS version
-install.packages(&#39;CellMix&#39;, repos=c(&#39;http://web.cbio.uct.ac.za/~renaud/CRAN&#39;, getOption(&#39;repos&#39;)), type=&#39;source&#39;)
+# install (NB: this might ask you to update some of your packages)
+biocLite(&#39;CellMix&#39;, siteRepos = &#39;http://web.cbio.uct.ac.za/~renaud/CRAN&#39;, type=&#39;both&#39;)
 </code></pre>
 
 
@@ -102,7 +107,7 @@ install.packages(&#39;CellMix&#39;, repos=c(&#39;http://web.cbio.uct.ac.za/~rena
         <code><a href="addNames.html">addNames</a></code><br />Generating Names</li>
             
       <li>
-        <code><a href="applyBy.html">applyBy</a></code>(colApplyBy, colMaxsBy, colMeansBy, colMediansBy, colSumsBy, rowApplyBy, rowMaxsBy, rowMeansBy, rowMediansBy, rowSumsBy)<br />Group Apply</li>
+        <code><a href="applyBy.html">applyBy</a></code>(applyBy.ExpressionSet, applyBy.matrix, colApplyBy, colMaxsBy, colMeansBy, colMediansBy, colMinsBy, colSumsBy, rowApplyBy, rowMaxsBy, rowMeansBy, rowMediansBy, rowMinsBy, rowSumsBy)<br />Group Apply</li>
             
       <li>
         <code><a href="dot-atrack-commaMarkerList-method.html">.atrack,MarkerList-method</a></code><br />Heatmap Annotation Track for MarkerList Objects</li>
@@ -262,7 +267,7 @@ install.packages(&#39;CellMix&#39;, repos=c(&#39;http://web.cbio.uct.ac.za/~rena
         <code><a href="GEDStrategy-class.html">GEDStrategy-class</a></code>(show,GEDStrategy-method)<br />Class for GED Algorithms</li>
             
       <li>
-        <code><a href="MarkerList-data.html">geneValues</a></code>(annotation, annotation&lt;-, annotation,GEDdata_entry-method, annotation&lt;-,MarkerList,character-method, annotation,MarkerList-method, annotation&lt;-,MarkerList,NULL-method, annotation&lt;--methods, annotation-methods, details, details,MarkerList-method, details-methods, geneIds, geneIds&lt;-, geneIds&lt;-,MarkerList,list-method, geneIds,MarkerList-method, geneIds&lt;--methods, geneIds-methods, geneIdType, geneIdType&lt;-, geneIdType&lt;-,MarkerList,character-method, geneIdType&lt;-,MarkerList,GeneIdentifierType-method, geneIdType,MarkerList-method, geneIdType&lt;-,MarkerList,NULL-method, geneIdType&lt;--methods, geneIdType-methods, geneValues&lt;-, geneValues,MarkerList-method, geneValues&lt;--methods, geneValues-methods, hasValues, marknames, marknames,list-method, marknames-methods, marknames,vector-method, nmf, nmf,MatrixData,MarkerList,ANY-method, nmf-methods, show,MarkerList-method)<br />Accessing Data in Marker Lists</li>
+        <code><a href="MarkerList-data.html">geneValues</a></code>(annotation, annotation&lt;-, annotation,GEDdata_entry-method, annotation&lt;-,MarkerList,character-method, annotation,MarkerList-method, annotation&lt;-,MarkerList,NULL-method, annotation&lt;--methods, annotation-methods, connectivity, connectivity,MarkerList-method, connectivity-methods, details, details,MarkerList-method, details-methods, geneIds, geneIds&lt;-, geneIds&lt;-,MarkerList,list-method, geneIds,MarkerList-method, geneIds&lt;--methods, geneIds-methods, geneIdType, geneIdType&lt;-, geneIdType&lt;-,MarkerList,character-method, geneIdType&lt;-,MarkerList,GeneIdentifierType-method, geneIdType,MarkerList-method, geneIdType&lt;-,MarkerList,NULL-method, geneIdType&lt;--methods, geneIdType-methods, geneValues&lt;-, geneValues,MarkerList-method, geneValues&lt;--methods, geneValues-methods, hasValues, incidence, incidence,MarkerList-method, incidence-methods, marknames, marknames,list-method, marknames-methods, marknames,vector-method, nmf, nmf,MatrixData,MarkerList,ANY-method, nmf-methods, show,MarkerList-method)<br />Accessing Data in Marker Lists</li>
             
       <li>
         <code><a href="getGSE.html">getGSE</a></code><br />Downloading GSE Datasets from GEO</li>
@@ -302,6 +307,9 @@ install.packages(&#39;CellMix&#39;, repos=c(&#39;http://web.cbio.uct.ac.za/~rena
             
       <li>
         <code><a href="initialize-commaExpressionMix-method.html">initialize,ExpressionMix-method</a></code><br />Initialize method for ExpressionMix object</li>
+            
+      <li>
+        <code><a href="intersect.html">intersect</a></code>(intersect,MatrixData,character-method, intersect,MatrixData,logical-method, intersect,MatrixData,MarkerList-method, intersect,MatrixData,MatrixData-method)<br />Enhanced Subsetting for Matrix-like Data</li>
             
       <li>
         <code><a href="IRIS.html">IRIS</a></code><br />Immune Response In-Silico (IRIS) Data</li>
@@ -486,9 +494,10 @@ install.packages(&#39;CellMix&#39;, repos=c(&#39;http://web.cbio.uct.ac.za/~rena
     
     <h2>Dependencies</h2>
     <ul>
-      <li><strong>Depends</strong>: methods, pkgmaker, NMF, csSAM, registry, stats, stringr, GSEABase, Biobase, matrixStats</li>
-      <li><strong>Imports</strong>: graphics, BiocGenerics, annotate, genefilter, AnnotationDbi, RSQLite, DBI, GEOquery, preprocessCore, limSolve, quadprog, corpcor, xtable, gtools, csSAM, beeswarm, graph, genefilter</li>
-      <li><strong>Suggests</strong>: limSolve, RcppOctave, RUnit, lumi, hgu133a.db, hgu133b.db, hgu133plus2.db, illuminaHumanv2.db, rat2302.db, hom.Hs.inp.db, GEOmetadb, xlsx, ArrayExpress</li>
+      <li><strong>R version</strong>: R &gt;= 3.0</li>
+      <li><strong>Depends</strong>: methods, pkgmaker, NMF, csSAM, registry, stats, stringr, GSEABase, Biobase</li>
+      <li><strong>Imports</strong>: graphics, BiocGenerics, annotate, matrixStats, genefilter, AnnotationDbi, RSQLite, DBI, preprocessCore, limSolve, quadprog, corpcor, xtable, gtools, csSAM, beeswarm, graph, BiocInstaller</li>
+      <li><strong>Suggests</strong>: limSolve, RcppOctave, RUnit, lumi, hgu133a.db, hgu133b.db, hgu133plus2.db, illuminaHumanv2.db, rat2302.db, hom.Hs.inp.db, GEOmetadb, xlsx, GEOquery, ArrayExpress, biomaRt, knitr</li>
       
     </ul>
      
@@ -520,6 +529,10 @@ quadratic programming)</li>
 	  	</ul>
 	
 	
+  	<h2>Web page(s)</h2>
+  	<ul>
+  		<li><a href="http://web.cbio.uct.ac.za/~renaud/CRAN/web/CellMix">http://web.cbio.uct.ac.za/~renaud/CRAN/web/CellMix</a></li>
+  	</ul>
     
   </div>
 </div>

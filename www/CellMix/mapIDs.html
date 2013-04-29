@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>mapIDs. CellMix 1.4.2</title>
+<title>mapIDs. CellMix 1.5.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -30,7 +30,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">CellMix 1.4.2</a>
+      <a class="brand" href="index.html">CellMix 1.5.1</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -127,26 +127,26 @@
 </div><div class='input'></div><div class='input'># convert into probe ids for Affymetrix Chip hgu133a</div><div class='input'>m <- mapIDs(ez, EntrezIdentifier('hgu133a.db'), AnnotationIdentifier('hgu133b.db'), verbose=2)
 </div>
 <div class='output'># Converting from EntrezId (hgu133a.db) to Annotation (hgu133b.db) ... 
-# Limiting query to EntrezId (hgu133a.db) ... [1000 -> 701 id(s)]
+# Limiting query to EntrezId (hgu133a.db) ... [1000 -> 690 id(s)]
 # Loading map(s) from EntrezId (hgu133a.db) to Annotation (hgu133b.db) [x-platform/x-id] ... OK [1 step(s)]
- # Mapping from EntrezId (hgu133b.db) to Annotation (hgu133b.db) [43059 entries] ...  [178/701 mapped (1:1-6 = 275)]
-OK [178/1000 mapped (1:1-6 = 275)]
+ # Mapping from EntrezId (hgu133b.db) to Annotation (hgu133b.db) [43827 entries] ...  [173/690 mapped (1:1-6 = 269)]
+OK [173/1000 mapped (1:1-6 = 269)]
 </div><div class='input'></div><div class='input'># keep primary affy probes only</div><div class='input'>m <- mapIDs(ez, EntrezIdentifier('hgu133a.db'), AnnotationIdentifier('hgu133b.db'), method='affy', verbose=2)
 </div>
 <div class='output'># Converting from EntrezId (hgu133a.db) to Annotation (hgu133b.db) ... 
-# Limiting query to EntrezId (hgu133a.db) ... [1000 -> 701 id(s)]
+# Limiting query to EntrezId (hgu133a.db) ... [1000 -> 690 id(s)]
 # Loading map(s) from EntrezId (hgu133a.db) to Annotation (hgu133b.db) [x-platform/x-id] ... OK [1 step(s)]
- # Mapping from EntrezId (hgu133b.db) to Annotation (hgu133b.db) [43059 entries] ...  [178/701 mapped (1:1-6 = 275)]
- # Applying filtering strategy 'affy' ... (kept 65 2nd-affy probes)  [178/178 passed (1:1-6 = 275)]
-OK [178/1000 mapped (1:1-6 = 275)]
+ # Mapping from EntrezId (hgu133b.db) to Annotation (hgu133b.db) [43827 entries] ...  [173/690 mapped (1:1-6 = 269)]
+ # Applying filtering strategy 'affy' ... (kept 61 2nd-affy probes)  [173/173 passed (1:1-6 = 269)]
+OK [173/1000 mapped (1:1-6 = 269)]
 </div><div class='input'></div><div class='input'># same but only keep 1:1 mapping, using a composed filtering strategy</div><div class='input'>m <- mapIDs(ez, EntrezIdentifier('hgu133a.db'), AnnotationIdentifier('hgu133b.db'), method=c('affy', '1:1'), verbose=2)
 </div>
 <div class='output'># Converting from EntrezId (hgu133a.db) to Annotation (hgu133b.db) ... 
-# Limiting query to EntrezId (hgu133a.db) ... [1000 -> 701 id(s)]
+# Limiting query to EntrezId (hgu133a.db) ... [1000 -> 690 id(s)]
 # Loading map(s) from EntrezId (hgu133a.db) to Annotation (hgu133b.db) [x-platform/x-id] ... OK [1 step(s)]
- # Mapping from EntrezId (hgu133b.db) to Annotation (hgu133b.db) [43059 entries] ...  [178/701 mapped (1:1-6 = 275)]
- # Applying filtering strategy 'affy > 1:1' ... (kept 65 2nd-affy probes) (dropped 62 1:2+ maps)  [116/178 passed (1:1)]
-OK [116/1000 mapped (1:1)]
+ # Mapping from EntrezId (hgu133b.db) to Annotation (hgu133b.db) [43827 entries] ...  [173/690 mapped (1:1-6 = 269)]
+ # Applying filtering strategy 'affy > 1:1' ... (kept 61 2nd-affy probes) (dropped 61 1:2+ maps)  [112/173 passed (1:1)]
+OK [112/1000 mapped (1:1)]
 </div></pre>
   </div>
   <div class="span4">
