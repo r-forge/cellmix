@@ -1,5 +1,5 @@
 %\VignetteIndexEntry{An introduction to gene expression deconvolution and the CellMix package}
-%\VignetteDepends{CellMix,knitr}
+%\VignetteDepends{CellMix,knitr,GEOquery,hgu133plus2.db,hgu133a.db,hgu133a.db,illuminaHumanv2.db}
 %\VignetteCompiler{knitr}
 
 \documentclass[a4paper]{article}
@@ -112,11 +112,31 @@ summary <- function(x){
 This vignette aims at providing a general background on gene expression deconvolution, motivating the \Rpkg{CellMix}, as well as describing its main features.
 It serves as supplementary material for the following article:
 
+\medskip
 \noindent\fullcite{Gaujoux2012}
 
+\medskip
 Documentation, practical examples, and sample analyses can be found online at:
 
 \url{http://web.cbio.uct.ac.za/~renaud/CRAN/web/CellMix}
+
+\medskip
+Note that to reproduce some of the examples in this vignettes, you will also
+need to have the \BioCpkg{GEOquery} package installed, as well as some
+Bioconductor annotation packages which will be installed when
+needed\footnote{In an interactive R session, their installation is automated,
+after the user gives permission to do so.}:
+
+<<GEOquery, eval=FALSE>>=
+# install biocLite
+install.packages('BiocInstaller')
+# or alternatively do: 
+# source('http://www.bioconductor.org/biocLite.R')
+
+# install GEOquery (NB: might ask you to update some of your packages) 
+library(BiocInstaller)
+biocLite('GEOquery')
+@
 
 \pagebreak
 \tableofcontents
@@ -1160,6 +1180,12 @@ We will eventually submit the package to Bioconductor\footurl{http://www.biocond
 
 \pagebreak
 \appendix
+
+\section{R session details}
+
+<<sessionInfo, echo=FALSE, results='asis'>>=
+utils::toLatex(sessionInfo())
+@
 
 \section{Hematopoietic tree}
 \label{sec:hemato}

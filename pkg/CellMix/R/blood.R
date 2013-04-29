@@ -38,6 +38,8 @@ NULL
 #' @export
 #' @examples
 #' 
+#' if( !isCHECK() ){
+#' 
 #' # load kidney transplant data (Shen-Orr et al. (2010))
 #' eset <- ExpressionMix('GSE20300')
 #' 
@@ -59,6 +61,8 @@ NULL
 #' ecbc <- asCBC(res)
 #' # plot Estimated vs. Measured CBC 
 #' profplot(cbc, ecbc)
+#' 
+#' }
 #' 
 gedBlood <- function(object, ..., normalize=TRUE, verbose=FALSE){
 	

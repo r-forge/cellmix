@@ -3,14 +3,34 @@
 \alias{.DSAproportions}
 \title{Digital Sorting Algorithm: Proportion Estimation Method}
 \usage{
-  DSAproportions(x, markers, verbose = FALSE)
+  DSAproportions(x, markers, log = NULL,
+    match.names = TRUE, verbose = FALSE)
 
-  .DSAproportions(x, markers, verbose = FALSE)
+  .DSAproportions(x, markers)
 }
 \arguments{
   \item{x}{target mixed expression matrix}
 
   \item{markers}{marker specification}
+
+  \item{log}{indicates if the data are in log-scale or
+  should be converted to linear-scale. This is relevant
+  because the DSA algorithm assumes that the input mixed
+  data are in linear scale (i.e. not log-trasnformed).
+
+  If \code{NULL}, then data's scale is detected by
+  \code{link{is_logscale}} and conversion to linear-scale
+  is performed if necessary. If \code{TRUE} the data is
+  exponentialised (using log base 2). If \code{FALSE} the
+  data is left unchanged (the detected log scale is
+  displayed in verbose mode). If a number, then it is used
+  as the log base to exponentialise the data.}
+
+  \item{match.names}{logical that indicates if marker names
+  should be first matched against the data, to convert them
+  into integer indexes. If code{FALSE}, then \code{markers}
+  should be a list of integer vectors that corresponds to
+  the indexes of markers for each cell types.}
 
   \item{verbose}{verbose level}
 }

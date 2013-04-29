@@ -55,8 +55,13 @@
 
   \item{cache}{logical that indicates if the data should be
   retrieved from the local cache if present, or
-  re-downloaded. If \code{save=TRUE} (as default), the new
-  data will replace any previously downloaded data.}
+  re-(down)loaded. If some remote data has been downloaded
+  by a previous call to \code{eset}, these data are
+  generally loaded from disk and not re-downloaded by the
+  relevant package (e.g., \pkg{GEOquery} or
+  \pkg{ArrayExpress}). If \code{save=TRUE} (as default),
+  the new data will replace any previously downloaded
+  data.}
 }
 \value{
   an \code{\link{ExpressionSet}} object.

@@ -35,10 +35,11 @@ NULL
 #' 
 GEDdownload <- function(x, ..., destdir=GEDtmp(), datasource=NULL, annotation=NULL, verbose=TRUE){
 	
-	if( !is.verbose() ){
+	if( !is.verbose() || !missing(verbose) ){
 		ol <- lverbose(verbose)
 		on.exit( lverbose(ol) )
 	}
+	verbose <- lverbose()
 	
 	# get registry entry
 	dobj <- gedData(x, error=FALSE)
@@ -49,8 +50,8 @@ GEDdownload <- function(x, ..., destdir=GEDtmp(), datasource=NULL, annotation=NU
 			file <- file.path(destdir, basename(x$url))
 			if( !file.exists(file) ){
 				download.file(x$url, destfile=file, ...)
-			}else message("# Using cached version: '", file, "'")
-			message("# Loading file '", file, "'")
+			}else vmessage("# Using cached version: '", file, "'")
+			vmessage("# Loading file '", file, "'")
 			return( getGSE(filename=file, destdir=destdir, ...) )
 		}
 		key <- x$key
@@ -77,13 +78,20 @@ GEDdownload <- function(x, ..., destdir=GEDtmp(), datasource=NULL, annotation=NU
 		eset <- getGSE(key, destdir=destdir, ...)
 		
 	}else if( datasource =='ArrayExpress' ){ # ArrayExpress (even more buggy than GEOquery)
-		library(ArrayExpress)
-		# try local 
+		
+		# require ArrayExpress
+		uq_requirePackage('ArrayExpress', load=TRUE, msg=str_c("for downloading datasets from ArrayExpress."), ptype='BioCsoft')
+				
+		# try local
 		if( lverbose() <= 1 ){ # show warnings if high verbose level
 			opt <- options(warn=-1L)
 			on.exit( options(opt) )
 		}
 		vmessage("# Checking local files ...")
+		
+		# suppress output from getAE
+		getAE <- silenceF(ArrayExpress::getAE, verbose)
+	
 		ae <- try(getAE(key, path=destdir, type='processed', local=TRUE), silent=TRUE)
 		if( is(ae, 'try-error') ){
 			vmessage("# FAILED")
@@ -111,6 +119,7 @@ GEDdownload <- function(x, ..., destdir=GEDtmp(), datasource=NULL, annotation=NU
 		cnames = getcolproc(ae)
 #		print(ae)
 #		print(cnames)
+		procset <- silenceF(ArrayExpress::procset, verbose)
 		eset <- procset(ae, cnames[2])
 		vmessage("# DONE")
 		
@@ -123,7 +132,8 @@ GEDdownload <- function(x, ..., destdir=GEDtmp(), datasource=NULL, annotation=NU
 		# FIXME: ArrayExpress makes a bad job in loading the sample annotation data
 		if( !ncol(pData(eset)) ){
 			vmessage("# Fixing sample phenotypic annotation ...")
-			pd <- ArrayExpress:::readPhenoData(ae$sdrf, destdir)
+			readPhenoData <- silenceF(ArrayExpress:::readPhenoData, verbose)
+			pd <- readPhenoData(ae$sdrf, destdir)
 			pd <- pData(pd)
 			sid <- sampleNames(eset)
 			if( is_NA(idc <- matchColumn(sid, pd)) ){

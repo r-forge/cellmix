@@ -6,11 +6,11 @@
     incomparables = NULL)
 }
 \arguments{
-  \item{x}{vector or \code{NULL}: the values to be
-  matched.}
+  \item{x}{vector or \code{NULL}: the values to be matched.
+  \link{Long vectors} are supported.}
 
   \item{table}{vector or \code{NULL}: the values to be
-  matched against.}
+  matched against.  \link{Long vectors} are not supported.}
 
   \item{nomatch}{the value to be returned in the case when
   no match is found.  Note that it is coerced to

@@ -17,7 +17,7 @@ authors <- packageDescription(pkg)$Author
 
 \usepackage[colorlinks]{hyperref}
 \author{\Sexpr{authors}}
-\title{\texttt{\Sexpr{pkg}}: Unit testing results\footnote{Vignette computed  on Tue Apr  2 12:52:35 2013}}
+\title{\texttt{\Sexpr{pkg}}: Unit testing results\footnote{Vignette computed  on Mon Apr 29 15:05:03 2013}}
 \date{\texttt{\Sexpr{pkg}} version \Sexpr{prettyVersion} as of \Sexpr{prettyDate}}
 \begin{document}
 \maketitle
@@ -25,7 +25,7 @@ authors <- packageDescription(pkg)$Author
 \section{Details}
 \begin{verbatim}
 
-RUNIT TEST PROTOCOL -- Tue Apr  2 12:52:35 2013 
+RUNIT TEST PROTOCOL -- Mon Apr 29 15:05:03 2013 
 *********************************************** 
 Number of test functions: 25 
 Number of errors: 0 
@@ -43,75 +43,73 @@ Test Suite: package:CellMix
 Test function regexp: ^test. 
 Test file regexp: ^runit.*.[rR]$ 
 Involved directory: 
-/tmp/Rpkglib_392b6059e77c/CellMix/unitTests 
+/tmp/Rpkglib_37d3385c0bd5/CellMix/unitTests 
 --------------------------- 
-Test file: /tmp/Rpkglib_392b6059e77c/CellMix/unitTests/runit.algorithms.R 
-test.all: (13 checks) ... OK (14.19 seconds)
-test.autoselect: (20 checks) ... OK (10.74 seconds)
+Test file: /tmp/Rpkglib_37d3385c0bd5/CellMix/unitTests/runit.algorithms.R 
+test.all: (13 checks) ... OK (15.87 seconds)
+test.autoselect: (20 checks) ... OK (11.77 seconds)
 --------------------------- 
-Test file: /tmp/Rpkglib_392b6059e77c/CellMix/unitTests/runit.data.R 
+Test file: /tmp/Rpkglib_37d3385c0bd5/CellMix/unitTests/runit.data.R 
 test.Abbas: (1 checks) ... OK (0.01 seconds)
-test.GSE11057: (14 checks) ... OK (6.1 seconds)
-test.GSE11058: (15 checks) ... OK (2.85 seconds)
-test.GSE19830: (12 checks) ... OK (2.12 seconds)
-test.GSE20300: (12 checks) ... OK (2.07 seconds)
-test.GSE22886.A: (7 checks) ... OK (2.49 seconds)
-test.GSE22886.B: (7 checks) ... OK (1.66 seconds)
-test.GSE24223: (11 checks) ... OK (5.95 seconds)
-test.GSE29832: (11 checks) ... OK (2.18 seconds)
-test.GSE33076: (13 checks) ... OK (1.63 seconds)
-test.GSE3649: (7 checks) ... OK (1.9 seconds)
-test.GSE5350: (14 checks) ... OK (4.25 seconds)
-test.HaemAtlas: (9 checks) ... OK (1.75 seconds)
-test.SLE: (4 checks) ... OK (0.01 seconds)
+test.GSE11057: (14 checks) ... OK (7.21 seconds)
+test.GSE11058: (15 checks) ... OK (3.05 seconds)
+test.GSE19830: (12 checks) ... OK (2.69 seconds)
+test.GSE20300: (12 checks) ... OK (2.41 seconds)
+test.GSE22886.A: (7 checks) ... OK (2.9 seconds)
+test.GSE22886.B: (7 checks) ... OK (2.02 seconds)
+test.GSE24223: (11 checks) ... OK (6.02 seconds)
+test.GSE29832: (11 checks) ... OK (1.95 seconds)
+test.GSE33076: (13 checks) ... OK (1.75 seconds)
+test.GSE3649: (7 checks) ... OK (2.17 seconds)
+test.GSE5350: (14 checks) ... OK (4.11 seconds)
+test.HaemAtlas: (9 checks) ... OK (1.8 seconds)
+test.SLE: (4 checks) ... OK (0.05 seconds)
 --------------------------- 
-Test file: /tmp/Rpkglib_392b6059e77c/CellMix/unitTests/runit.datasource.R 
+Test file: /tmp/Rpkglib_37d3385c0bd5/CellMix/unitTests/runit.datasource.R 
 test.DataSource: (14 checks) ... OK (0 seconds)
 --------------------------- 
-Test file: /tmp/Rpkglib_392b6059e77c/CellMix/unitTests/runit.idtype.R 
-test.asGeneIdentifierType: (49 checks) ... OK (0.18 seconds)
-test.idtype: (9 checks) ... OK (8.64 seconds)
+Test file: /tmp/Rpkglib_37d3385c0bd5/CellMix/unitTests/runit.idtype.R 
+test.asGeneIdentifierType: (49 checks) ... OK (0.15 seconds)
+test.idtype: (9 checks) ... OK (8.51 seconds)
 --------------------------- 
-Test file: /tmp/Rpkglib_392b6059e77c/CellMix/unitTests/runit.markers.R 
+Test file: /tmp/Rpkglib_37d3385c0bd5/CellMix/unitTests/runit.markers.R 
 test.brackets: (0 checks) ... OK (0.01 seconds)
-test.MarkerList: (5 checks) ... OK (0.02 seconds)
+test.MarkerList: (5 checks) ... OK (0.01 seconds)
 test.rmarkers: (20 checks) ... OK (0.01 seconds)
 test.stack: (16 checks) ... OK (0.03 seconds)
 test.subset: (4 checks) ... OK (0.05 seconds)
 --------------------------- 
-Test file: /tmp/Rpkglib_392b6059e77c/CellMix/unitTests/runit.registry-markers.R 
-test.load: (8 checks) ... OK (1.96 seconds)
+Test file: /tmp/Rpkglib_37d3385c0bd5/CellMix/unitTests/runit.registry-markers.R 
+test.load: (8 checks) ... OK (1.04 seconds)
 
 Total execution time
 ***************************
    user  system elapsed 
- 71.672   4.588  77.260 
+ 76.253   4.604  82.239 
 
 \end{verbatim}
 
 \section*{Session Information}
 \begin{itemize}\raggedright
-  \item R version 2.15.3 (2013-03-01), \verb|i686-pc-linux-gnu|
+  \item R version 3.0.0 (2013-04-03), \verb|i686-pc-linux-gnu|
   \item Locale: \verb|LC_CTYPE=en_US.UTF-8|, \verb|LC_NUMERIC=C|, \verb|LC_TIME=en_US.UTF-8|, \verb|LC_COLLATE=en_US.UTF-8|, \verb|LC_MONETARY=en_US.UTF-8|, \verb|LC_MESSAGES=en_US.UTF-8|, \verb|LC_PAPER=C|, \verb|LC_NAME=C|, \verb|LC_ADDRESS=C|, \verb|LC_TELEPHONE=C|, \verb|LC_MEASUREMENT=en_US.UTF-8|, \verb|LC_IDENTIFICATION=C|
   \item Base packages: base, datasets, graphics, grDevices, grid,
-    methods, stats, utils
-  \item Other packages: annotate~1.36.0, AnnotationDbi~1.20.7,
-    BH~1.51.0-0, bigmemory~4.4.0, bigmemory.sri~0.1.2, Biobase~2.18.0,
-    BiocGenerics~0.4.0, CellMix~1.4.2, corpcor~1.6.5, csSAM~1.2.3,
-    DBI~0.2-5, digest~0.6.3, graph~1.36.2, GSEABase~1.20.2,
-    hgu133a.db~2.8.0, hgu133b.db~2.8.0, illuminaHumanv2.db~1.16.0,
-    limSolve~1.5.3, lpSolve~5.6.7, MASS~7.3-23, matrixStats~0.6.2,
-    NMF~0.16.2, org.Hs.eg.db~2.8.0, pkgmaker~0.15.2, quadprog~1.5-4,
-    Rcpp~0.10.3, RcppOctave~0.9, registry~0.2, rngtools~1.2,
-    RSQLite~0.11.2, RUnit~0.4.26, stringr~0.6.2, synchronicity~1.1.0
+    methods, parallel, stats, utils
+  \item Other packages: annotate~1.38.0, AnnotationDbi~1.22.3,
+    Biobase~2.20.0, BiocGenerics~0.6.0, CellMix~1.5.1, corpcor~1.6.5,
+    csSAM~1.2.4, DBI~0.2-6, digest~0.6.3, graph~1.38.0,
+    GSEABase~1.22.0, illuminaHumanv2.db~1.18.0, limSolve~1.5.4,
+    NMF~0.16.2, org.Hs.eg.db~2.9.0, pkgmaker~0.15.5, Rcpp~0.10.3,
+    RcppOctave~0.9, registry~0.2, rngtools~1.2, RSQLite~0.11.3,
+    RUnit~0.4.26, stringr~0.6.2
   \item Loaded via a namespace (and not attached):
-    AnnotationForge~1.0.3, beeswarm~0.1.5, codetools~0.2-8,
-    colorspace~1.2-1, doParallel~1.0.1, foreach~1.4.0,
-    genefilter~1.40.0, GEOquery~2.24.1, gridBase~0.4-6, gtools~2.7.1,
-    IRanges~1.16.6, iterators~1.0.6, parallel~2.15.3,
-    preprocessCore~1.20.0, RColorBrewer~1.0-5, RCurl~1.95-4.1,
-    R.methodsS3~1.4.2, splines~2.15.3, stats4~2.15.3, survival~2.36-14,
-    tools~2.15.3, XML~3.96-1.1, xtable~1.7-1
+    AnnotationForge~1.2.0, beeswarm~0.1.5, BiocInstaller~1.10.1,
+    codetools~0.2-8, colorspace~1.2-2, doParallel~1.0.1, foreach~1.4.0,
+    genefilter~1.42.0, gridBase~0.4-6, gtools~2.7.1, IRanges~1.18.0,
+    iterators~1.0.6, lpSolve~5.6.7, MASS~7.3-26, matrixStats~0.6.2,
+    preprocessCore~1.22.0, quadprog~1.5-5, RColorBrewer~1.0-5,
+    R.methodsS3~1.4.2, splines~3.0.0, stats4~3.0.0, survival~2.37-4,
+    tools~3.0.0, XML~3.96-1.1, xtable~1.7-1
 \end{itemize}
 
 \end{document}

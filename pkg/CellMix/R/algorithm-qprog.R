@@ -172,19 +172,15 @@ mlsei <- function(A, B, ..., fulloutput=FALSE, verbose=TRUE){
 #' @param exact logical that specifies if one should impose a 
 #' sum-to-one (\code{TRUE}) or sum-to-less-than-one (\code{FALSE}) 
 #' constraint on the proportions.
-#' @param log indicates if the data should be converted to 
-#' linear scale (not log-trasnformed).
-#' If \code{TRUE} the data is exponentialised (using base 2).
-#' If \code{FALSE} the data is left unchanged (the detected log scale is
-#' displayed in verbose mode).
-#' If a number, then it is used as the base to exponentialise the data.
-#' @param ... extra parameters passed to \code{\link{mlsei}}.
+#' @param ... extra parameters DSAproportionspassed to \code{\link{mlsei}}.
+#' @inheritParams DSAproportions
 #' 
 #' @return an \code{\link{NMF}} object.
 #' 
 #' @keywords internal
 .qprog <- function(X, seed, data=NULL, exact=TRUE, log=NULL, ...){
 	
+	verbose <- lverbose()
 	# number of types
 	r <- nbasis(seed)
 	
@@ -283,25 +279,25 @@ mlsei <- function(A, B, ..., fulloutput=FALSE, verbose=TRUE){
 				, paste0(" ", capture.output(print(nm)), collapse="\n"))
 		
 		# IMPORTANT: this method works in linear scale only!!!
-		vmessage('Checking data scale ... ', appendLF=FALSE)
-		if( is_logscale(X) ){
-			vmessage('NOTE [log]')
-			lbase <- 2
-			if( isNumber(log) ){
-				lbase <- log
-				log <- TRUE
-			}
-			if( is.null(log) || isTRUE(log) ){				
-				vmessage('Converting data to linear scale ... ', appendLF=FALSE)
-				X <- expb(X, lbase)
-				vmessage('OK [base: ', lbase,']')
-			}
-		}else{
-			vmessage('OK [linear]')
-		}
+#		vmessage('Checking data scale ... ', appendLF=FALSE)
+#		if( is_logscale(X) ){
+#			vmessage('NOTE [log]')
+#			lbase <- 2
+#			if( isNumber(log) ){
+#				lbase <- log
+#				log <- TRUE
+#			}
+#			if( is.null(log) || isTRUE(log) ){				
+#				vmessage('Converting data to linear scale ... ', appendLF=FALSE)
+#				X <- expb(X, lbase)
+#				vmessage('OK [base: ', lbase,']')
+#			}
+#		}else{
+#			vmessage('OK [linear]')
+#		}
 		
 		# compute mean expression of each marker set
-		p <- .DSAproportions(X, im)
+		p <- DSAproportions(X, im, log = log, match.names = FALSE, verbose = verbose)
 #		if( exact ){ # force exact proportions (rescale sum up to one)
 #			p <- scoef(p)
 #		}

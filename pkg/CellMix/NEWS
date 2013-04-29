@@ -1,0 +1,35 @@
+*****************************
+Changes in version 1.5.1
+***************************** 
+
+NEW FEATURES
+    o the functions based on applyBy now accept ExpressionSet objects
+    and conserve/collapse feature and samples annotations if present.
+
+CHANGES
+    o GEOquery changed from Depends to Suggests, so that it needs to be 
+    installed if one wants to download dataset from GEO.
+    In interactive session, it installation is proposed.
+    This is to limit dependencies and initial download (for some reason 
+    GEOquery's source package is big).   
+    o A project has been created on Bitbucket with a 
+    public issue tracker url referenced in the DESCRIPTION file.
+    Note: this repo might eventually migrate to Github.
+    o An R-forge project has been created that host both CellMix and csSAM.
+    Note: all myCRAN stuff should migrate there, once R-forge building system is
+    fixed.
+    o Removed GEOquery hooks, which where fixing bugs in 
+    the GEOquery package that have been fixed in Bioc 2.12 (issue #3)
+    o applyBy is now an S3 method, with methods for matrix and ExpressionSet
+    objects.
+
+BUG FIXES
+    o Annotation packages are not required any more to load 
+    marker lists (issue #7).
+    o Installation of optional Annotation/Bioconductor packages 
+    now use biocLite to ensure relevant repositories are found (issue #5)
+    o Registry datasets could not be reloaded from the "raw" files 
+    as downloaded from data repositories (issue #6)
+    o A couple of minor changes have been made to ensure full compatibility
+    with R-3.0  
+     

@@ -1,6 +1,6 @@
 \documentclass[10pt]{article}
 %\VignetteIndexEntry{CellMix: Sample Analyses}
-%\VignetteDepends{CellMix,knitr,AnnotationDbi,limSolve}
+%\VignetteDepends{CellMix,knitr,AnnotationDbi,limSolve,GEOquery,hgu133plus2.db,hgu133a.db,hgu133a.db,illuminaHumanv2.db}
 %\VignetteCompiler{knitr}
 \usepackage{url}
 \usepackage[colorlinks]{hyperref}

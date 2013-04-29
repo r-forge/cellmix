@@ -140,6 +140,8 @@
   }
 }
 \examples{
+if( !isCHECK() ){
+
 # load kidney transplant data (Shen-Orr et al. (2010))
 eset <- ExpressionMix('GSE20300')
 
@@ -161,6 +163,8 @@ rownames(p)
 ecbc <- asCBC(res)
 # plot Estimated vs. Measured CBC
 profplot(cbc, ecbc)
+
+}
 # default proportions
 gCBC()
 

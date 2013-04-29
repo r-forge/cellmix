@@ -39,7 +39,7 @@
 
   \item{intersect}{\code{signature(x = "MatrixData", y =
   "logical")}: This method is equivalent to
-  \code{\link[base]{subset}}. }
+  \code{\link[base]{subset}(x, y)}. }
 
   \item{intersect}{\code{signature(x = "MatrixData", y =
   "character")}: Subset a matrix-like object by only
@@ -52,7 +52,7 @@
   matrix-like data.
 
   This is a shortcut for \code{intersect(x,
-  featureNames(y), ...)} }
+  featureNames(y), ...)}. }
 
   \item{intersect}{\code{signature(x = "MatrixData", y =
   "MarkerList")}: Subset a matrix-like object by only

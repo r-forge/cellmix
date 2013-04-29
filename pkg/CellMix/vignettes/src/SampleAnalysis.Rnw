@@ -1,5 +1,5 @@
 %\VignetteIndexEntry{CellMix: Sample Analyses}
-%\VignetteDepends{CellMix,knitr,AnnotationDbi,limSolve}
+%\VignetteDepends{CellMix,knitr,AnnotationDbi,limSolve,GEOquery,hgu133plus2.db,hgu133a.db,hgu133a.db,illuminaHumanv2.db}
 %\VignetteCompiler{knitr}
 
 \documentclass[a4paper]{article}
@@ -113,17 +113,38 @@ opts_chunk$set(size='small', out.width="0.6\\textwidth")
 
 \section{Setting up the \pkgname{CellMix} package}
 
-Until the package is released on CRAN \cite{R} or BioConductor \cite{Gentleman2004}, the \Rpkg{CellMix} can be installed from our CRAN-like repository, as any other \proglang{R} package:
+Until the package is released on CRAN \cite{R} or BioConductor
+\cite{Gentleman2004}, the \Rpkg{CellMix} can be installed from our CRAN-like
+repository, using standard package installation commands:
 
 <<myCRAN, eval=FALSE>>=
-# enable Bioconductor repositories
-# -> add Bioc-software and Bioc-annotation
-setRepositories() 
-# install
-repos <- c('http://web.cbio.uct.ac.za/~renaud/CRAN', getOption('repos'))
-install.packages('CellMix', repos=repos)
+
+# install biocLite if not already there
+if( !require(BiocInstaller) ){
+	# enable Bioconductor repositories
+	# -> add Bioc-software
+	setRepositories() 
+	
+	install.packages('BiocInstaller')
+	library(BiocInstaller)
+}
+# or alternatively do: 
+# source('http://www.bioconductor.org/biocLite.R')
+
+# install (NB: might ask you to update some of your packages)
+biocLite('CellMix', siteRepos = 'http://web.cbio.uct.ac.za/~renaud/CRAN')
 # load
 library(CellMix)
+@
+
+Note that to reproduce some of the examples in this vignettes, you will also
+need to have the \BioCpkg{GEOquery} package installed as well as some
+Bioconductor annotation packages which will be installed when
+needed\footnote{In an interactive R session, their installation is automated,
+after the user gives permission to do so.}:
+
+<<GEOquery, eval=FALSE>>=
+biocLite('GEOquery')
 @
 
 <<load, echo=FALSE, include=FALSE>>=
@@ -446,7 +467,9 @@ This algorithm is a Monte-Carlo-Markov-Chain (MCMC) approach, which models
 uncertainity in the proportions measurments, considering them as Bayesian priors, and computes posterior probabilities and estimates for cell type-specific signatures and proportions \cite{Erkkila2010}.
 It can perform the deconvolution in multiple groups of samples, possibly more than two.
 We illustrate its use on a small simulated dataset, as it is very computationally intensive: for large datasets, one would need several hundreds/thousands of samples, as well as a burnin period, to ensure the convergence of the Markov chain.
-Note that \emph{DSection} is expected to perform very well on such simulated data, because they are generated using noise assumptions that are close to its underlying statistical model.  
+Note that \emph{DSection} is expected to perform very well on such simulated
+toy data, because they are generated using noise assumptions that are close to
+its underlying statistical model.
 
 <<DSection, cache=TRUE, fig.show='hold', out.width="0.5\\textwidth">>=
 # generate random data: 3 cell types, 20 samples, 100 genes
@@ -483,8 +506,8 @@ We illustrate their use on a sythetic dataset.
 x <- rmix(3, 200, 20, markers=5)
 m <- getMarkers(x)
 
-# deconvolve using KL divergence metric
-kl <- ged(x, m, 'ssKL')
+# deconvolve using KL-divergence metric
+kl <- ged(x, m, 'ssKL', log=FALSE, rng=1234, nrun=10)
 
 # plot against known proportions
 profplot(x, kl)
@@ -504,10 +527,12 @@ Its original implementation is very slow.
 The \Rpkg{CellMix} implements a faster version of this algorithm, which uses the
 fast combinatorial nonnegative least-squares algorithm (FCNNLS) from
 \citet{VanBenthem2004}, as provided by the \Rpkg{NMF} package.
+Similarly to \emph{DSection}, the algorithm is expected to
+perform very well on the toy simulated data.
 
 <<deconf, cache=TRUE, fig.show='hold', out.width="0.5\\textwidth">>=
 # deconvolve using KL divergence metric
-dec <- ged(x, m, 'deconf', rng=12345, nrun=20)
+dec <- ged(x, m, 'deconf', rng=1234, nrun=10)
 
 # plot against known proportions
 profplot(x, dec)
@@ -522,6 +547,12 @@ basiscor(x, dec)
 The \Rpkg{CellMix} provides a comprehensive framework for researchers working with gene expression deconvolution, whether to apply algorithms or develop new methods.
 Its objective is to gather in one place as many relevant components as possible, so as to facilitate gene expression deconvolution, and extract as much as possible from gene expression data, despite sample heterogeneity.
 We plan to develop further the package, along with our own research in the area, and contribute towards the improvment and the popularisation of deconvolution techniques.
+
+\section{R session details}
+
+<<sessionInfo, echo=FALSE, results='asis'>>=
+utils::toLatex(sessionInfo())
+@
 
 \pagebreak
 \printbibliography[heading=bibintoc]

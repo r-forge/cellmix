@@ -53,10 +53,10 @@
 
   Moreover, this function installs GEOquery if necessary.
 
-  This function calls \code{\link[GEOquery]{getGEO}} in a
-  special environment, where a custom modified version of
-  \code{\link{getAndParseGSEMatrices}} is defined to cope
-  with the annoying proxy case.
+  This function is a wrapper to
+  \code{\link[GEOquery]{getGEO}}, which unlist the result
+  list in the common case of a single dataset, and installs
+  the \pkg{GEOquery} package if necessary.
 }
 \examples{
 \dontrun{

@@ -396,6 +396,7 @@ markerScoreMethod <- function(method, object, ...){
 #'  
 #' @family markerScore
 #' @importFrom genefilter rowttests
+#' @importFrom matrixStats rowMins rowMaxs
 #' @export
 markerScoreAbbas <- markerScoreMethod('Abbas', object='matrix', 
 	function(object, data, statistic='p.value', ntop=2, log=!is_logscale(object), lbase=2, vsall=FALSE){
@@ -676,6 +677,7 @@ markerScoreScorem <- markerScoreMethod('scorem', object='MarkerList', decreasing
 #' groups.
 #' 
 #' @S3method selectMarkers markerScore_scorem
+#' @importFrom matrixStats colSds
 #' @rdname markerScoreScorem
 selectMarkers.markerScore_scorem <- function(x, data, mscore='pearson'
 											, statistic=c('size', 'score'), ..., .object=NULL){

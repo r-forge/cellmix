@@ -4,7 +4,8 @@
 \usage{
   .gedlab(target, x, data = NULL, maxIter = 1000L,
     markers = c("prior+semi", "prior", "semi", "post"),
-    cscale = FALSE, sscale = FALSE, ratio = 2, ...)
+    cscale = FALSE, sscale = FALSE, ratio = 2, log = NULL,
+    ...)
 }
 \arguments{
   \item{v}{target matrix}
@@ -54,6 +55,19 @@
   to zero.}
 
   \item{...}{extra parameters currently not used}
+
+  \item{log}{indicates if the data are in log-scale or
+  should be converted to linear-scale. This is relevant
+  because the DSA algorithm assumes that the input mixed
+  data are in linear scale (i.e. not log-trasnformed).
+
+  If \code{NULL}, then data's scale is detected by
+  \code{link{is_logscale}} and conversion to linear-scale
+  is performed if necessary. If \code{TRUE} the data is
+  exponentialised (using log base 2). If \code{FALSE} the
+  data is left unchanged (the detected log scale is
+  displayed in verbose mode). If a number, then it is used
+  as the log base to exponentialise the data.}
 }
 \description{
   \code{.gedlab} is an internal function of \pkg{CellMix}

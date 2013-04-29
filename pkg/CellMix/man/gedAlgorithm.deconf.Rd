@@ -72,6 +72,14 @@
   \code{install.extras('CellMix', 'deconf')}
 }
 \references{
+  Kim H and Park H (2007). "Sparse non-negative matrix
+  factorizations via alternating non-negativity-constrained
+  least squares for microarray data analysis."
+  _Bioinformatics (Oxford, England)_, *23*(12), pp.
+  1495-502. ISSN 1460-2059, <URL:
+  http://dx.doi.org/10.1093/bioinformatics/btm134>, <URL:
+  http://www.ncbi.nlm.nih.gov/pubmed/17483501>.
+
   Repsilber D, Kern S, Telaar A, Walzl G, Black GF, Selbig
   J, Parida SK, Kaufmann SHE and Jacobsen M (2010).
   "Biomarker discovery in heterogeneous tissue samples
@@ -86,13 +94,5 @@
   *18*(10), pp. 441-450. ISSN 0886-9383, <URL:
   http://dx.doi.org/10.1002/cem.889>, <URL:
   http://doi.wiley.com/10.1002/cem.889>.
-
-  Kim H and Park H (2007). "Sparse non-negative matrix
-  factorizations via alternating non-negativity-constrained
-  least squares for microarray data analysis."
-  _Bioinformatics (Oxford, England)_, *23*(12), pp.
-  1495-502. ISSN 1460-2059, <URL:
-  http://dx.doi.org/10.1093/bioinformatics/btm134>, <URL:
-  http://www.ncbi.nlm.nih.gov/pubmed/17483501>.
 }
 

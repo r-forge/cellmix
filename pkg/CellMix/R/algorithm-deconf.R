@@ -118,7 +118,7 @@ nmfAlgorithm._deconf <- setNMFMethod('.deconf', 'deconf'
 #' @inheritParams .gedlab
 #' @inheritParams deconf::deconfounding
 gedAlgorithm.deconf <- setGEDMethod(key='deconf'
-		, description = "Alternate least-square NMF method, using heuristic constraints [fast]"
+		, description = "Alternate least-square NMF method, using heuristic constraints [fcnnls]"
 		, algorithm = 'deconf'
 		, reqBasis = FALSE
 		, reqCoef= FALSE
@@ -196,13 +196,14 @@ gedAlgorithm._deconf <- setGEDMethod(key='.deconf'
 #' If \code{NULL}, then marker expression on cell types other than their own is 
 #' forced to zero.
 #' @param ... extra parameters currently not used
+#' @inheritParams DSAproportions
 #' 
 #' @keywords internal
 #' @export
 .gedlab <- function(target, x, data=NULL, maxIter=1000L
 					, markers=c('prior+semi', 'prior', 'semi', 'post')
 					, cscale=FALSE, sscale=FALSE
-					, ratio=2, ...){
+					, ratio=2, log = NULL, ...){
 
 	verbose <- nmf.getOption('verbose')
 	
@@ -245,7 +246,7 @@ gedAlgorithm._deconf <- setGEDMethod(key='.deconf'
 	if( doSeed ){# seed from markers: DSA + fcnnls
 		doAssign <- FALSE
 		if( verbose ) message("Seeding proportions using DSA method ... ", appendLF=FALSE)
-		coef(x) <- .DSAproportions(v, M)
+		coef(x) <- DSAproportions(v, M, log = log, match.names = FALSE, verbose = verbose - 1)
 		if( verbose ) message("OK")
 	}else{
 		r <- NULL

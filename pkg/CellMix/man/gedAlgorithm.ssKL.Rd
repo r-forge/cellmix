@@ -7,16 +7,16 @@
 \usage{
   gedAlgorithm.ssKL(..., maxIter = 3000L, seed = "rprop",
     eps = 2.22044604925031e-16, .stop = NULL, data = NULL,
-    markers = c("prior+semi", "semi"), ratio = NULL,
-    copy = FALSE, sscale = FALSE, alpha = 0,
+    markers = c("prior+semi", "semi"), log = NULL,
+    ratio = NULL, copy = FALSE, sscale = FALSE, alpha = 0,
     stationary.th = .Machine$double.eps,
     check.interval = 5 * check.niter, check.niter = 10L)
 
   gedAlgorithm.ssFrobenius(..., maxIter = 3000L,
     seed = "rprop", .stop = NULL, data = NULL,
-    markers = c("prior+semi", "semi"), ratio = NULL,
-    eps = NULL, sscale = TRUE, copy = FALSE, alpha = 0,
-    stationary.th = .Machine$double.eps,
+    markers = c("prior+semi", "semi"), log = NULL,
+    ratio = NULL, eps = NULL, sscale = TRUE, copy = FALSE,
+    alpha = 0, stationary.th = .Machine$double.eps,
     check.interval = 5 * check.niter, check.niter = 10L)
 }
 \arguments{
@@ -95,6 +95,19 @@
   \item{sQuote{post}}{\emph{a posteriori} assigns estimated
   signatures;} }}
 
+  \item{log}{indicates if the data are in log-scale or
+  should be converted to linear-scale. This is relevant
+  because the DSA algorithm assumes that the input mixed
+  data are in linear scale (i.e. not log-trasnformed).
+
+  If \code{NULL}, then data's scale is detected by
+  \code{link{is_logscale}} and conversion to linear-scale
+  is performed if necessary. If \code{TRUE} the data is
+  exponentialised (using log base 2). If \code{FALSE} the
+  data is left unchanged (the detected log scale is
+  displayed in verbose mode). If a number, then it is used
+  as the log base to exponentialise the data.}
+
   \item{ratio}{expression ratio of markers between its cell
   type and other cell types.}
 }
@@ -131,11 +144,6 @@
   http://dx.doi.org/10.1073/pnas.0308531101>, <URL:
   http://www.ncbi.nlm.nih.gov/pubmed/15016911>.
 
-  Lee DD and Seung H (2001). "Algorithms for non-negative
-  matrix factorization." _Advances in neural information
-  processing systems_. <URL:
-  http://scholar.google.com/scholar?q=intitle:Algorithms+for+non-negative+matrix+factorization\#0>.
-
   Gaujoux R and Seoighe C (2011). "Semi-supervised
   Nonnegative Matrix Factorization for gene expression
   deconvolution: A case study." _Infection, genetics and
@@ -144,5 +152,10 @@
   1567-7257, <URL:
   http://dx.doi.org/10.1016/j.meegid.2011.08.014>, <URL:
   http://www.ncbi.nlm.nih.gov/pubmed/21930246>.
+
+  Lee DD and Seung H (2001). "Algorithms for non-negative
+  matrix factorization." _Advances in neural information
+  processing systems_. <URL:
+  http://scholar.google.com/scholar?q=intitle:Algorithms+for+non-negative+matrix+factorization\#0>.
 }
 

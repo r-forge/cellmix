@@ -301,7 +301,10 @@ setOldClass('GEDdata_entry')
 #' in the local GED cache, for fast future loading -- possibly in a different 
 #' R session.
 #' @param cache logical that indicates if the data should be retrieved from the 
-#' local cache if present, or re-downloaded.
+#' local cache if present, or re-(down)loaded.
+#' If some remote data has been downloaded by a previous call to \code{eset}, 
+#' these data are generally loaded from disk and not re-downloaded by the relevant 
+#' package (e.g., \pkg{GEOquery} or \pkg{ArrayExpress}).
 #' If \code{save=TRUE} (as default), the new data will replace any previously 
 #' downloaded data.
 #' 
@@ -354,9 +357,9 @@ setMethod('eset', 'GEDdata_entry',
 						vmessage("OK")
 					}
 				}
-				# download from GEO if not already loaded from disk
-				if( is.null(env$eset) ){ 
-					vmessage("Downloading data ", key, " from GEO '", GEDurl(object), "' ... ", appendLF = FALSE)
+				# download from remote repository if necessary
+				if( is.null(env$eset) || isFALSE(cache) ){ 
+					vmessage("Downloading data ", key, " from remote repository '", GEDurl(object), "' ... ", appendLF = FALSE)
 					env$eset <- GEDdownload(object, destdir = GEDtmp())
 					vmessage("DONE")					
 					if( save ){

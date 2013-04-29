@@ -4,18 +4,25 @@
 # Creation: 23 Jan 2012
 ###############################################################################
 
-library(matrixStats)
+#library(matrixStats)
+
+.applyBy_BY <- pkgmaker::sVariable(NULL)
 
 #' Group Apply
 #' 
-#' Applies a function to rows or columns of a matrix-like object, separately 
-#' within groups defined by a factor.
+#' \code{appplyBy} is an S3 generic function that applies a given function 
+#' to sub-matrices of a matrix-like object, which are generated according to 
+#' a factor that defines groups rows or columns.
 #' 
-#' \code{applyBy} is the work horse function that is called by other more 
-#' user-friendly functions.
+#' @export
+applyBy <- function(x, ...){
+	UseMethod('applyBy')
+}
+
+#' The method \code{applyBy.matrix} is the work horse function 
+#' that is called by other more user-friendly functions.
 #' 
-#' @details
-#' \code{applyBy} is a wrapper around \code{\link[matrixStats]{colAvgsPerRowSet}}, 
+#' \code{applyBy.matrix} is a wrapper around \code{\link[matrixStats]{colAvgsPerRowSet}}, 
 #' which make the computation really fast, but requires somehow cumbersome matrix 
 #' specifications for the groups of columns or rows.
 #' The wrapper builds the arguments for the particular case where 
@@ -24,6 +31,10 @@ library(matrixStats)
 #' @param x matrix-like object on which \code{\link{apply}} can be called.
 #' @param BY factor or object coerced to a factor, that defines the groups within 
 #' which the function \code{FUN} is applied.
+#' 
+#' If \code{x} is an ExpressionSet object, then \code{BY} can be the names of a
+#' sample (resp. feature) annotation variable if \code{MARGIN=1} (resp. \code{MARGIN=2L}) 
+#' (see examples).
 #' @param MARGIN margin along which the function \code{FUN} is applied: 
 #' 1L for rows, 2L for columns. 
 #' @param FUN function to apply to each sub-matrix that contains the rows/columns 
@@ -35,12 +46,15 @@ library(matrixStats)
 #' @param DROP logical that indicates if absent levels should be removed 
 #' from the result matrix, or appear as 0-filled rows/columns.
 #' 
-#' @return The result is a matrix whose margin's dimension \code{MARGIN} is equal 
-#' the same margin's dimension in \code{x}, and the other to the number of levels 
-#' in \code{BY}. 
-#' 
-#' @export
-#' 
+#' @return The result is a matrix or an \code{ExpressionSet} object 
+#' whose margin's dimension \code{MARGIN} is equal the same margin's 
+#' dimension in \code{x}, and the other to the number of levels 
+#' in \code{BY}.
+#'
+#' @S3method applyBy matrix 
+#' @importFrom matrixStats colAvgsPerRowSet rowAvgsPerColSet
+#' @importFrom matrixStats colAvgsPerRowSet.matrix rowAvgsPerColSet.matrix
+#' @rdname applyBy 
 #' @examples
 #' 
 #' # random data matrix
@@ -61,7 +75,7 @@ library(matrixStats)
 #' balt <- colApplyBy(x, fr, colSums)
 #' identical(b, balt)
 #'  
-applyBy <- function(x, BY, MARGIN, FUN, W=NULL, ..., DROP=FALSE){
+applyBy.matrix <- function(x, BY, MARGIN, FUN, W=NULL, ..., DROP=FALSE){
 	
 	BYMARGIN <- 3L-MARGIN
 	# check arguments
@@ -84,7 +98,7 @@ applyBy <- function(x, BY, MARGIN, FUN, W=NULL, ..., DROP=FALSE){
 		# use names as levels
 		if( is.null(names(BY)) ) names(BY) <- seq_along(BY)		
 		# subset to the given indexes
-		x <- x[idx, ]
+		x <- if( BYMARGIN == 1L ) x[idx, ,drop=FALSE] else x[, idx, drop=FALSE]
 		# convert into a factor
 		v <- unlist(mapply(rep, names(BY), sapply(BY, length)))
 		BY <- factor(v, levels=names(BY))
@@ -92,19 +106,13 @@ applyBy <- function(x, BY, MARGIN, FUN, W=NULL, ..., DROP=FALSE){
 	
 	bydim <- dim(x)[BYMARGIN]
 	if( length(BY) != bydim )
-		stop("Invalid value for argument `by`: length [",length(BY),"] is not equal to the dimension [", bydim, "] of the by margin [", BYMARGIN, ']')
+		stop("Invalid value for argument `BY`: length [",length(BY),"] is not equal to the dimension [", bydim, "] of the BY margin [", BYMARGIN, ']')
 	
 	# coerce to factor if necessary
 	if( !is.factor(BY) ) BY <- factor(BY, levels=unique(BY))	
 	
-	# special case for ExpressionSet object
-  	x.orig <- x
-	if( is(x, 'ExpressionSet') ){
-    	x <- exprs(x)
-	}
-  
 	# build subset matrix
-	s <- split(1:dim(x)[3-MARGIN], BY)
+	s <- split(1:bydim, BY)
 	nm <- max(sapply(s, length))
 	S <- matrix(0, nm, length(s))
 	colnames(S) <- names(s)
@@ -112,16 +120,24 @@ applyBy <- function(x, BY, MARGIN, FUN, W=NULL, ..., DROP=FALSE){
 		idx <- s[[i]]
 		if( length(idx) > 0L ) S[1:length(idx),i] <<- idx
 	})
+	# store idx in static variable if requested
+	if( isTRUE(.applyBy_BY()) ){
+		.applyBy_BY(BY)
+	}
 	
 	# call relevant function from matrixStats
   res <- 
 	if( MARGIN == 1L ) rowAvgsPerColSet(X=x, S=S, FUN=FUN, W=W, ...)
 	else colAvgsPerRowSet(X=x, S=S, FUN=FUN, W=W, ...)
 
-  # complete absent levels with NAs if requested
+  # drop absent levels if requested
   if( DROP ){
 	  lv <- levels(BY)
 	  if( length(w <- which(!lv %in% unique(as.character(BY)))) ){
+		# update stored factor if necessary
+		if( !is.null(.applyBy_BY()) ){
+		  .applyBy_BY(droplevels(BY))
+		}
 		if( MARGIN == 1L ){
 			res <- res[,-w,drop=FALSE]
 #			tmp <- cbind(res, NA_Matrix(nrow(res), length(w)))
@@ -130,18 +146,147 @@ applyBy <- function(x, BY, MARGIN, FUN, W=NULL, ..., DROP=FALSE){
 			res <- res[-w,,drop=FALSE]
 #			tmp <- rbind(res, NA_Matrix(length(w), ncol(res)))
 #			rownames(tmp)[(nrow(res)+1):nrow(tmp)] <- lv[w]
+		   }
 		}
-	  }
-  }
-  #
-  
-  # re-wrap ExpressionSet objects
-	if( isExpressionSet(x.orig) ){
-	  res <- ExpressionSet(res, annotation=annotation(x.orig))
 	}
-  
-  # return result
-  res
+
+	#
+	
+	# return result
+	res
+}
+
+#' A method is provided for \code{\link{ExpressionSet}} objects, 
+#' which preserve sample and feature annotations.
+#' Moreover it allows directly passing names of feature/sample annotation -- factor -- variables 
+#' in argument \code{BY} (see examples).
+#' 
+#' @param ANNOTATIONS logical that indicates if samples/feature annotations should 
+#' be kept, when the input data is an \code{\link{ExpressionSet}} object.
+#' Currently, if \code{TRUE}:
+#' \itemize{
+#' \item if code{MARGIN=1L}, then feature annotations are kept unchanged, and 
+#' phenotypic sample annotations are discarded. 
+#' \item if code{MARGIN=2L}, then phenotypic sample annotations are kept unchanged, and 
+#' feature annotations are discarded.
+#' } 
+#' 
+#' In any case, the value of slot \code{annotation} (i.e. the annotation package), 
+#' is passed on to the result object.
+#'  
+#' @S3method applyBy ExpressionSet 
+#' @rdname applyBy
+#' @examples
+#' 
+#' ## Method for ExpressionSet objects
+#' 
+#' x <- ExpressionSet(x, annotation='abcd.db')
+#' y <- rowMinsBy(x, fc)
+#' \dontshow{ 
+#' 	stopifnot( is(y, 'ExpressionSet') )
+#'  stopifnot( identical(nrow(y), nrow(x)) )
+#'  stopifnot( ncol(y) == nlevels(fc) )
+#'  stopifnot( identical(annotation(y), 'abcd.db') )
+#' }
+#' y <- colMinsBy(x, fr)
+#' \dontshow{ 
+#' 	stopifnot( is(y, 'ExpressionSet') )
+#'  stopifnot( identical(ncol(y), ncol(x)) )
+#'  stopifnot( nrow(y) == nlevels(fr) ) 
+#'  stopifnot( identical(annotation(y), 'abcd.db') )
+#' }
+#' 
+#' ## annotations are conserved/collapsed
+#' pData(x) <- data.frame(Group=fc, Sample=letters[1:ncol(x)])
+#' pData(x)
+#' fData(x) <- data.frame(ENTREZID=fr, Gene=letters[nrow(x):1])
+#' fData(x)
+#' 
+#' # keep feature annotations, collapse sample annotations
+#' y <- rowMinsBy(x, 'Group')
+#' pData(y)
+#' fData(y)
+#' \dontshow{ 
+#' 	stopifnot( is(y, 'ExpressionSet') ) 
+#'  stopifnot( identical(nrow(y), nrow(x)) )
+#'  stopifnot( ncol(y) == nlevels(fc) )
+#'  stopifnot( identical(annotation(y), 'abcd.db') )
+#'  stopifnot( identical(fData(y), fData(x)) )
+#'  stopifnot( nrow(pData(y)) == nlevels(fc) )
+#' }
+#' 
+#' # keep sample annotations, collapse feature annotations 
+#' y <- colMinsBy(x, 'ENTREZID')
+#' pData(y)
+#' fData(y)
+#' \dontshow{ 
+#' 	stopifnot( is(y, 'ExpressionSet') ) 
+#'  stopifnot( identical(annotation(y), 'abcd.db') )
+#'  stopifnot( identical(ncol(y), ncol(x)) )
+#'  stopifnot( nrow(y) == nlevels(fr) ) 
+#'  stopifnot( identical(pData(y), pData(x)) )
+#'  stopifnot( nrow(fData(y)) == nlevels(fr) )
+#' }
+applyBy.ExpressionSet <- function(x, BY, MARGIN, ..., ANNOTATIONS=TRUE){
+	
+	# convert single character string into annotation variable
+	if( isString(BY) ){
+		if( MARGIN == 1L ){ # phenotypic variable
+			if( !BY %in% varLabels(x) ){
+				stop("Invalid string argument BY: there is no phenotypic/sample annotation variable called '", BY, "'.\n"
+					, "  Defined variable are: ", str_out(varLabels(x), Inf))
+			}
+			BY <- pData(x)[[BY]]
+		}else{ # feature annotation variable
+			if( !BY %in% names(fData(x)) ){
+				stop("Invalid string argument BY: there is no feature annotation variable called '", BY, "'.\n"
+						, "  Defined variable are: ", str_out(names(fData(x)), Inf))
+			}
+			BY <- fData(x)[[BY]]
+		}
+	}
+		
+	# apply to expression matrix
+	.applyBy_BY(TRUE)
+	on.exit( .applyBy_BY(NULL) )
+	res <- applyBy(exprs(x), BY=BY, MARGIN=MARGIN, ...)
+	
+	# re-wrap into an ExpressionSet objects
+	library(Biobase)
+	# pass on annotations whenever possible
+	fd <- pd <- NULL
+	if( ANNOTATIONS ){
+		if( MARGIN == 1L ){
+			if( nrow(ad <- featureData(x)) > 0L ) fd <- ad # keep feature annotations
+			# collapse sample annotation for non-list BY arguments
+			if( !is.list(BY) && nrow(ad <- phenoData(x)) > 0L ){
+				# get used BY factor
+				fBY <- .applyBy_BY()
+				# extract annotation for first representative of each level
+				df <- pData(x)[!duplicated(as.character(fBY)) & !is.na(fBY), ]
+				rownames(df) <- sampleNames(res)
+				pd <- AnnotatedDataFrame(df)
+			}
+		}else if( MARGIN == 2L ){
+			if( nrow(ad <- phenoData(x)) > 0L ) pd <- ad # keep sample annotations
+			# collapse feature annotation for non-list BY arguments
+			if( !is.list(BY) && nrow(ad <- featureData(x)) > 0L ){
+				# get used BY factor
+				fBY <- .applyBy_BY()
+				# extract annotation for first representative of each level
+				df <- fData(x)[!duplicated(as.character(fBY)) & !is.na(fBY), ]
+				rownames(df) <- featureNames(res)
+				fd <- AnnotatedDataFrame(df)
+			}
+		}
+	}
+	# no sample/feature annotation
+	ca <- call('ExpressionSet', res, annotation=annotation(x))
+	if( !is.null(pd) ) ca$phenoData <- pd
+	if( !is.null(fd) ) ca$featureData <- fd
+	res <- eval(ca)
+	
+	res
 }
 
 #' \code{rowApplyBy} applies a function to rows of sub-matrices whose columns 
@@ -204,3 +349,10 @@ rowMaxsBy <- .rowApplyByFunction(rowMaxs)
 #' @export
 #' @rdname applyBy
 colMaxsBy <- .colApplyByFunction(colMaxs)
+
+#' @export
+#' @rdname applyBy
+rowMinsBy <- .rowApplyByFunction(matrixStats::rowMins)
+#' @export
+#' @rdname applyBy
+colMinsBy <- .colApplyByFunction(matrixStats::colMins)

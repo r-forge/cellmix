@@ -12,7 +12,7 @@
     log = NULL)
 }
 \arguments{
-  \item{...}{extra parameters passed to
+  \item{...}{extra parameters DSAproportionspassed to
   \code{\link{mlsei}}.}
 
   \item{data}{markers as \code{\link{MarkerList}} object.}
@@ -21,12 +21,18 @@
   a sum-to-one (\code{TRUE}) or sum-to-less-than-one
   (\code{FALSE}) constraint on the proportions.}
 
-  \item{log}{indicates if the data should be converted to
-  linear scale (not log-trasnformed). If \code{TRUE} the
-  data is exponentialised (using base 2). If \code{FALSE}
-  the data is left unchanged (the detected log scale is
+  \item{log}{indicates if the data are in log-scale or
+  should be converted to linear-scale. This is relevant
+  because the DSA algorithm assumes that the input mixed
+  data are in linear scale (i.e. not log-trasnformed).
+
+  If \code{NULL}, then data's scale is detected by
+  \code{link{is_logscale}} and conversion to linear-scale
+  is performed if necessary. If \code{TRUE} the data is
+  exponentialised (using log base 2). If \code{FALSE} the
+  data is left unchanged (the detected log scale is
   displayed in verbose mode). If a number, then it is used
-  as the base to exponentialise the data.}
+  as the log base to exponentialise the data.}
 }
 \description{
   The GED method \dQuote{qprog} estimates cell/tissue

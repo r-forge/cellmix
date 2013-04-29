@@ -71,6 +71,9 @@
 
   nmf(x, rank, method, ...)
 
+  \S4method{annotation}{MarkerList,character}(object, ...,
+    check = TRUE) <- value
+
   \S4method{show}{MarkerList}(object)
 
   \S4method{details}{MarkerList}(object)
@@ -92,6 +95,15 @@
 
   \item{...}{extra arguments to allow extension. See each
   method's description for more details.}
+
+  \item{check}{logical that indicates if the validity of
+  the new value should be checked for consistency with the
+  currrent type of identifiers used in the marker list. If
+  \code{TRUE}, and the marker list already has associated
+  annotation package(s), then the new annotation package(s)
+  are required to be installed, and the user will be asked
+  for permission to install them if they are not
+  (interactive mode only).}
 
   \item{verbose}{logical not used.}
 

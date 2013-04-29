@@ -1,6 +1,6 @@
 \documentclass[10pt]{article}
 %\VignetteIndexEntry{An introduction to gene expression deconvolution and the CellMix package}
-%\VignetteDepends{CellMix,knitr}
+%\VignetteDepends{CellMix,knitr,GEOquery,hgu133plus2.db,hgu133a.db,hgu133a.db,illuminaHumanv2.db}
 %\VignetteCompiler{knitr}
 \usepackage{url}
 \usepackage[colorlinks]{hyperref}

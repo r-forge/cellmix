@@ -1,12 +1,15 @@
 Package: CellMix
 Type: Package
 Title: A Comprehensive Toolbox for Gene Expression Deconvolution
-Version: 1.4.3
+Version: 1.5.1
 Date: 2013-03-31
-Authors@R: c( person("Renaud", "Gaujoux", role=c('aut', 'cre'), email='renaud@mancala.cbio.uct.ac.za') , person("Cathal",
-              "Seoighe", role='ths') , person("S.", "Schneider", role = "ctb", comment='SCOREM code') , person("D.",
-              "Repsilber", role = "ctb", comment='method: deconf') , person("Shai", "Shen-Orr", role='ctb', comment='method:
-              csSAM + discussion/testing') , person("T.", "Gong", role = "ctb", comment='method: quadratic programming'))
+Authors@R: c( person("Renaud", "Gaujoux", role=c('aut', 'cre'),
+    email='renaud@mancala.cbio.uct.ac.za') , person("Cathal", "Seoighe",
+    role='ths') , person("S.", "Schneider", role = "ctb", comment='SCOREM
+    code') , person("D.", "Repsilber", role = "ctb", comment='method: deconf')
+    , person("Shai", "Shen-Orr", role='ctb', comment='method: csSAM +
+    discussion/testing') , person("T.", "Gong", role = "ctb", comment='method:
+    quadratic programming'))
 Author: Renaud Gaujoux, Cathal Seoighe
 Maintainer: Renaud Gaujoux <renaud@mancala.cbio.uct.ac.za>
 Description: This package contains methods and utilities for performing gene
@@ -18,12 +21,12 @@ Description: This package contains methods and utilities for performing gene
 License: GPL (>=2)
 URL: http://web.cbio.uct.ac.za/~renaud/CRAN/web/CellMix
 BugReports: https://bitbucket.org/renozao/cellmix/issues
-Depends: R (>= 2.15.2), methods, pkgmaker (>= 0.14), NMF (>= 0.14), csSAM (>= 1.2.2), registry, stats, stringr, GSEABase,
-              Biobase, matrixStats
-Imports: graphics, BiocGenerics, annotate, genefilter, AnnotationDbi, RSQLite, DBI, GEOquery, preprocessCore, limSolve,
-              quadprog, corpcor, xtable, gtools, csSAM, beeswarm, graph
+Depends: R (>= 3.0), methods, pkgmaker (>= 0.15.4), NMF (>= 0.14), csSAM (>= 1.2.2), registry, stats, stringr, GSEABase,
+              Biobase
+Imports: graphics, BiocGenerics, annotate, matrixStats, genefilter, AnnotationDbi, RSQLite, DBI, preprocessCore, limSolve,
+              quadprog, corpcor, xtable, gtools, csSAM, beeswarm, graph, BiocInstaller
 Suggests: limSolve, RcppOctave, RUnit, lumi, hgu133a.db, hgu133b.db, hgu133plus2.db, illuminaHumanv2.db, rat2302.db,
-              hom.Hs.inp.db, GEOmetadb, xlsx, ArrayExpress
+              hom.Hs.inp.db, GEOmetadb, xlsx, GEOquery (>= 2.26.1), ArrayExpress (>= 1.20.0), biomaRt, knitr
 Collate: 'options.R' 'devutils.R' 'utils.R' 'GEOquery.R' 'log.R' 'stats.R' 'constraints.R' 'registry.R' 'AllClasses.R'
               'AllGenerics.R' 'MarkerSetCollection-class.R' 'MarkerList-class.R' 'MarkerList-factory.R' 'bioc-extra.R'
               'Bioc.R' 'markers.R' 'extractMarkers.R' 'ExpressionMix-class.R' 'ExpressionMix-methods.R' 'data-utils.R'
@@ -32,3 +35,4 @@ Collate: 'options.R' 'devutils.R' 'utils.R' 'GEOquery.R' 'log.R' 'stats.R' 'cons
               'algorithm-csSAM.R' 'algorithm-dsection.R' 'simulations.R' 'algorithm-semi.R' 'algorithm-meanProfile.R'
               'algorithm-deconf.R' 'tests.R' 'assign.R' 'package.R' 'csstats.R' 'scorem.R'
 BuildVignettes: no
+Packaged: 2013-04-29 12:24:44 UTC; renaud

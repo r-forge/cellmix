@@ -50,23 +50,22 @@ setMethod('annotation', 'MarkerList',
 	}
 )
 #' Sets the name of the annotation package associated to a marker list.
+#' 
+#' @param check logical that indicates if the validity of the new value 
+#' should be checked for consistency with the currrent type of identifiers
+#' used in the marker list. 
+#' If \code{TRUE}, and the marker list already has associated annotation package(s), 
+#' then the new annotation package(s) are required to be installed, and
+#' the user will be asked for permission to install them if they are not (interactive mode only).
+#'  
 setReplaceMethod('annotation', signature('MarkerList', value='character'), 
-	function(object, value){
+	function(object, ..., check=TRUE, value){
 		
 		value <- .split_anndb(value)
 		old_ann <- annotation(object)
 		
 		# early exit if nothing changes
 		if( identical(value, old_ann) ) return(object)
-		
-		# check consistency if more than one map is passed 
-		if( length(value) > 1L ){
-			t <- sapply(value, function(m) idtype(biocann_object(m)))
-			if( length(w <- which(t!=t[1L])) ){
-				stop("Invalid annotation maps: their primary identifier should be of the same type"
-								, " [", t[1L], ' != ', str_out(t[w], Inf), ']')
-			}
-		}
 		
 		# deal with the simple cases
 		if( identical(value, '') || identical(old_ann, '') ){
@@ -76,12 +75,23 @@ setReplaceMethod('annotation', signature('MarkerList', value='character'),
 			return( object )
 		}
 		
-		# the annotations must share the same primary key
-		newT <- idtype(biocann_object(value[1L]))
-		oldT <- idtype(biocann_object(old_ann[1L]))
-		if( !identical(newT, oldT) )
-			stop("Primary annotation identifier types do not match: new type [", newT, " (", value[1L], ")]",
-				" must be the same as the current type [", oldT, " (", old_ann[1L], ")].")
+		if( check ){
+			# check consistency if more than one map is passed 
+			if( length(value) > 1L ){
+				t <- sapply(value, function(m) idtype(biocann_object(m)))
+				if( length(w <- which(t!=t[1L])) ){
+					stop("Invalid annotation maps: their primary identifier should be of the same type"
+									, " [", t[1L], ' != ', str_out(t[w], Inf), ']')
+				}
+			}
+		
+			# the annotations must share the same primary key
+			newT <- idtype(biocann_object(value[1L]))
+			oldT <- idtype(biocann_object(old_ann[1L]))
+			if( !identical(newT, oldT) )
+				stop("Primary annotation identifier types do not match: new type [", newT, " (", value[1L], ")]",
+					" must be the same as the current type [", oldT, " (", old_ann[1L], ")].")
+		}
 		
 		# set new annotation
 		annotation(object@geneIdType) <- .glue_anndb(value)

@@ -3,8 +3,8 @@
 \title{Initialisation Method for semi-NMF Algorithms}
 \usage{
   markerInit(method, v, x, data = NULL,
-    markers = c("prior+semi", "semi"), ratio = NULL,
-    eps = NULL, ...)
+    markers = c("prior+semi", "semi"), log = NULL,
+    ratio = NULL, eps = NULL, ...)
 }
 \arguments{
   \item{method}{method name, used in case of error only}
@@ -35,6 +35,19 @@
   signatures;} }}
 
   \item{...}{extra parameters currently not used}
+
+  \item{log}{indicates if the data are in log-scale or
+  should be converted to linear-scale. This is relevant
+  because the DSA algorithm assumes that the input mixed
+  data are in linear scale (i.e. not log-trasnformed).
+
+  If \code{NULL}, then data's scale is detected by
+  \code{link{is_logscale}} and conversion to linear-scale
+  is performed if necessary. If \code{TRUE} the data is
+  exponentialised (using log base 2). If \code{FALSE} the
+  data is left unchanged (the detected log scale is
+  displayed in verbose mode). If a number, then it is used
+  as the log base to exponentialise the data.}
 }
 \value{
   the modified NMF model.

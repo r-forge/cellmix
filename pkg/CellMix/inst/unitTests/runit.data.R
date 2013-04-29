@@ -166,9 +166,9 @@ test.HaemAtlas <- function(){
 	
 	# modify check for buggy ArrayExpress package
 	d <- c(46693L, 50L, 8L)
-	if( compareVersion(as.character(packageVersion('ArrayExpress')), "1.19.1") < 0 ){
-		d <- c(46692L, 50L, 8L)
-	}
+#	if( compareVersion(as.character(packageVersion('ArrayExpress')), "1.19.1") < 0 ){
+#		d <- c(46692L, 50L, 8L)
+#	}
 	# check dataset
 	e <- checkDataset('HaemAtlas', c(46693L, 50L, 8L), 50, TRUE, TRUE, edim_eset=d)
 	

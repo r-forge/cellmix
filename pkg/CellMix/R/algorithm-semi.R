@@ -34,12 +34,14 @@ name <- NMF:::name
 #' This is used to avoid null values that might be problematic for some deconvolution algorithm, 
 #' e.g., for the method \sQuote{ssKL} that is based on the KL-divergence, which computes logs.
 #' @inheritParams .gedlab
+#' @inheritParams DSAproportions
 #' 
 #' @return the modified NMF model. 
 #' 
 #' @keywords internal
 markerInit <- function(method, v, x, data=NULL
 						, markers=c('prior+semi', 'semi')
+						, log = NULL
 						, ratio=NULL, eps=NULL, ...){
 
 	nm <- if( !is.null(method) ) name(method)
@@ -82,7 +84,7 @@ markerInit <- function(method, v, x, data=NULL
 	
 	# seed proportions using method from DSA [Zhong et al. (2013)]
 	if( doSeed || !hasCoef(x) ){
-		p <- .DSAproportions(v, M, verbose=verbose)
+		p <- DSAproportions(v, M, log = log, match.names = FALSE, verbose=verbose)
 		if( !is.null(eps) ){ # shunt small values
 			p <- pmax(p, eps)
 		}

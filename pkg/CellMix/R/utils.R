@@ -339,13 +339,17 @@ setSlots <- function(object, values, skip=NULL, all=TRUE){
 #' @keywords internal
 askUser <- function (msg, allowed = c("y", "n"), idefault = "n", default = "n", case.sensitive = FALSE) 
 {
-	if ( !interactive())  return(default ) 
+	if ( !interactive())  return(default )
 	fallowed <- allowed
+	# add extra info on answer options
+	if( !is.null(nm <- names(allowed)) ){
+		allowed[nm != ''] <- nm[nm != '']  
+	}
 	if( !isFALSE(idefault) )
 		fallowed[fallowed == idefault] <- toupper(idefault)
 	repeat {
 		allowMsg <- paste("[", paste(fallowed, collapse = "/"), 
-				"] ", sep = "")
+				"]: ", sep = "")
 		outMsg <- paste(msg, allowMsg)
 		cat("\n", outMsg, sep='')
 		if (case.sensitive) 
@@ -379,20 +383,27 @@ askUser <- function (msg, allowed = c("y", "n"), idefault = "n", default = "n", 
 #' @param quiet logical that indicates if loading a package should be done quietly 
 #' with \code{\link{require.quiet}} or normally with \code{\link{require}}.
 #' @param prependLF logical that indicates if the message should start at a new line.
+#' @param ptype type of package: from CRAN-like repositories, Bioconductor, Bioconductor software, Bioconductor annotation.
+#' Bioconductor packages are installed using \code{\link{biocLite}}
 #' 
 #' @return \code{TRUE} if the package was successfully loaded/found (installed), 
 #' \code{FALSE} otherwise.  
 #'  
+#' @import BiocInstaller
 #' @keywords internal
-uq_requirePackage <- function(package, lib=NULL, ..., load=TRUE, msg=NULL, quiet=TRUE, prependLF=FALSE){
+uq_requirePackage <- function(package, lib=NULL, ..., load=TRUE, msg=NULL, quiet=TRUE, prependLF=FALSE
+							, ptype=c('CRAN-like', 'BioC', 'BioCSoft', 'BioCann')){
 	
-	reqpkg <- if( quiet ) require.quiet else{
+	.reqpkg <- if( quiet ) require.quiet else{
 				if( prependLF ) message()
 				require
 			}
+	reqpkg <- function(...){
+		.reqpkg(..., lib=lib, character.only=TRUE)
+	}
 	
 	# try loading it
-	if( load && reqpkg(package, lib=lib, character.only=TRUE) ) return( TRUE )
+	if( load && reqpkg(package) ) return( TRUE )
 	# try finding it without loading
 	else if( length(find.package(package, lib.loc=lib, quiet=TRUE)) ) return( TRUE )
 	
@@ -403,15 +414,64 @@ uq_requirePackage <- function(package, lib=NULL, ..., load=TRUE, msg=NULL, quiet
 	# stop if not interactive
 	if( !interactive() ) stop(msg)
 	
-	msg <- str_c(msg, "\nDo you want to install it?"
-					, " [library: '", if(is.null(lib) ) .libPaths()[1L] else lib, "']\n")
-	if( quiet && prependLF ) message()
-	ans <- askUser(msg, idefault='y')
-	if( ans == 'n' ) return( FALSE )
+	# detect annotation packages
+	if( missing(ptype) && is.annpkg(package) ) ptype <- 'BioCann'
+	ptype <- match.arg(ptype)
 	
-	install.packages(package, lib=lib, ...)
-	if( load ) reqpkg(package, lib=lib, character.only=TRUE)
+	msg <- str_c(msg, "\nDo you want to install it from known repositories [", ptype, "]?\n"
+					, " Package(s) will be installed in '", if(is.null(lib) ) .libPaths()[1L] else lib, "'")
+	if( quiet && prependLF ) message()
+	repeat{
+		ans <- askUser(msg, allowed = c('y', 'n', r='(r)etry'), idefault='y')
+		if( ans == 'n' ) return( FALSE )
+		if( ans == 'y' ) break
+		if( ans == 'r' && reqpkg(package) ) return(TRUE)
+	}
+	
+	## install
+	# check Bioconductor repositories
+	hasRepo <- function(p){ any(grepl(p, getOption('repos'))) } 
+	if( ptype == 'CRAN-like' 
+		|| ( ptype == 'BioC' && hasRepo('/((bioc)|(data/annotation))/?$') )
+		|| ( ptype == 'BioCsoft' && hasRepo('/bioc/?$') )
+		|| ( ptype == 'BioCann' && hasRepo('/data/annotation/?$') )
+		){
+		install_type <- 'CRAN'
+	}
+	
+	if( install_type == 'CRAN' ){
+		pkginstall <- install.packages
+	}else{ # Bioconductor 
+		if( !reqpkg('BiocInstaller') ){ # get biocLite from bioconductor.org
+			# use internal sourceURL to avoid issues with proxies
+			sourceURL("http://www.bioconductor.org/biocLite.R")
+		}
+		# use biocLite wrapper to disable (auto-)updates
+		pkginstall <- function(pkgs, ...){
+			biocLite(pkgs, ..., suppressUpdates=TRUE, suppressAutoUpdate=TRUE)
+		}
+	}
+	pkginstall(package, lib=lib, ...)
+	#
+	
+	# try  reloading
+	if( load ) reqpkg(package)
 	else length(find.package(package, lib.loc=lib, quiet=TRUE))
+}
+
+# internal source function to play well with CNTLM proxies
+sourceURL <- function(url){
+	
+	file <- url
+	if( grepl("^http", url) ){
+		dest <- tempfile(basename(url), fileext='.R')
+		download.file(url, dest)
+		if( file.exists(dest) ){
+			file <- dest
+			on.exit( file.remove(file) )
+		}else stop("Failed to download file '", url, "'")
+	}
+	source(file)
 }
 
 # caching feature adapted from memoise 0.1
@@ -458,6 +518,20 @@ add_suffix <- function(x, suffix){
 	x
 }
 
+comparePackageVersion <- function(pkg, version, ...){
+	utils::compareVersion(as.character(packageVersion(pkg, ...)), version)
+}
+
+silenceF <- function(f, verbose=TRUE){
+	
+	if( verbose ) f
+	else{
+		function(...){
+			capture.output(suppressMessages(res <- f(...))); 
+			res
+		}
+	}
+}
 
 # force using some -- hidden -- functions from pkgmaker
 packageReference <- local({

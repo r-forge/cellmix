@@ -3,7 +3,8 @@
 \title{Require a Package with User Interaction}
 \usage{
   uq_requirePackage(package, lib = NULL, ..., load = TRUE,
-    msg = NULL, quiet = TRUE, prependLF = FALSE)
+    msg = NULL, quiet = TRUE, prependLF = FALSE,
+    ptype = c("CRAN-like", "BioC", "BioCSoft", "BioCann"))
 }
 \arguments{
   \item{package}{name of the package}
@@ -29,6 +30,11 @@
 
   \item{prependLF}{logical that indicates if the message
   should start at a new line.}
+
+  \item{ptype}{type of package: from CRAN-like
+  repositories, Bioconductor, Bioconductor software,
+  Bioconductor annotation. Bioconductor packages are
+  installed using \code{\link{biocLite}}}
 }
 \value{
   \code{TRUE} if the package was successfully loaded/found
