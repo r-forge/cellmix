@@ -1187,6 +1187,7 @@ We will eventually submit the package to Bioconductor\footurl{http://www.biocond
 utils::toLatex(sessionInfo())
 @
 
+\pagebreak
 \section{Hematopoietic tree}
 \label{sec:hemato}
 \begin{figure}[h!tb]

@@ -151,23 +151,11 @@ b <- applyBy(x, fr, 2L, colSums)
 # or
 balt <- colApplyBy(x, fr, colSums)
 identical(b, balt)
-## Method for ExpressionSet objects
+## Method for apply directly to ExpressionSet objects
 
 x <- ExpressionSet(x, annotation='abcd.db')
 y <- rowMinsBy(x, fc)
-\dontshow{
-	stopifnot( is(y, 'ExpressionSet') )
- stopifnot( identical(nrow(y), nrow(x)) )
- stopifnot( ncol(y) == nlevels(fc) )
- stopifnot( identical(annotation(y), 'abcd.db') )
-}
 y <- colMinsBy(x, fr)
-\dontshow{
-	stopifnot( is(y, 'ExpressionSet') )
- stopifnot( identical(ncol(y), ncol(x)) )
- stopifnot( nrow(y) == nlevels(fr) )
- stopifnot( identical(annotation(y), 'abcd.db') )
-}
 
 ## annotations are conserved/collapsed
 pData(x) <- data.frame(Group=fc, Sample=letters[1:ncol(x)])
@@ -179,26 +167,10 @@ fData(x)
 y <- rowMinsBy(x, 'Group')
 pData(y)
 fData(y)
-\dontshow{
-	stopifnot( is(y, 'ExpressionSet') )
- stopifnot( identical(nrow(y), nrow(x)) )
- stopifnot( ncol(y) == nlevels(fc) )
- stopifnot( identical(annotation(y), 'abcd.db') )
- stopifnot( identical(fData(y), fData(x)) )
- stopifnot( nrow(pData(y)) == nlevels(fc) )
-}
 
 # keep sample annotations, collapse feature annotations
 y <- colMinsBy(x, 'ENTREZID')
 pData(y)
 fData(y)
-\dontshow{
-	stopifnot( is(y, 'ExpressionSet') )
- stopifnot( identical(annotation(y), 'abcd.db') )
- stopifnot( identical(ncol(y), ncol(x)) )
- stopifnot( nrow(y) == nlevels(fr) )
- stopifnot( identical(pData(y), pData(x)) )
- stopifnot( nrow(fData(y)) == nlevels(fr) )
-}
 }
 

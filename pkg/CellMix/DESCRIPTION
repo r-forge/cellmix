@@ -1,7 +1,7 @@
 Package: CellMix
 Type: Package
 Title: A Comprehensive Toolbox for Gene Expression Deconvolution
-Version: 1.5.1
+Version: 1.5.2
 Date: 2013-03-31
 Authors@R: c( person("Renaud", "Gaujoux", role=c('aut', 'cre'),
     email='renaud@mancala.cbio.uct.ac.za') , person("Cathal", "Seoighe",
@@ -35,4 +35,4 @@ Collate: 'options.R' 'devutils.R' 'utils.R' 'GEOquery.R' 'log.R' 'stats.R' 'cons
               'algorithm-csSAM.R' 'algorithm-dsection.R' 'simulations.R' 'algorithm-semi.R' 'algorithm-meanProfile.R'
               'algorithm-deconf.R' 'tests.R' 'assign.R' 'package.R' 'csstats.R' 'scorem.R'
 BuildVignettes: no
-Packaged: 2013-04-29 12:24:44 UTC; renaud
+Packaged: 2013-04-30 11:25:25 UTC; renaud

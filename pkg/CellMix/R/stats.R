@@ -77,6 +77,9 @@ applyBy <- function(x, ...){
 #'  
 applyBy.matrix <- function(x, BY, MARGIN, FUN, W=NULL, ..., DROP=FALSE){
 	
+	if( !isNumber(MARGIN) ){
+		stop("Invalid value for argument 'MARGIN' of class '", class(MARGIN), "': must be a single number (e.g. 1 or 2)")
+	}
 	BYMARGIN <- 3L-MARGIN
 	# check arguments
 	mdim <- length(dim(x))
@@ -106,7 +109,7 @@ applyBy.matrix <- function(x, BY, MARGIN, FUN, W=NULL, ..., DROP=FALSE){
 	
 	bydim <- dim(x)[BYMARGIN]
 	if( length(BY) != bydim )
-		stop("Invalid value for argument `BY`: length [",length(BY),"] is not equal to the dimension [", bydim, "] of the BY margin [", BYMARGIN, ']')
+		stop("Invalid value for argument `BY`: length [", length(BY), "] is not equal to the dimension [", bydim, "] of the BY margin [", BYMARGIN, ']')
 	
 	# coerce to factor if necessary
 	if( !is.factor(BY) ) BY <- factor(BY, levels=unique(BY))	
@@ -178,23 +181,11 @@ applyBy.matrix <- function(x, BY, MARGIN, FUN, W=NULL, ..., DROP=FALSE){
 #' @rdname applyBy
 #' @examples
 #' 
-#' ## Method for ExpressionSet objects
+#' ## Method for apply directly to ExpressionSet objects
 #' 
 #' x <- ExpressionSet(x, annotation='abcd.db')
 #' y <- rowMinsBy(x, fc)
-#' \dontshow{ 
-#' 	stopifnot( is(y, 'ExpressionSet') )
-#'  stopifnot( identical(nrow(y), nrow(x)) )
-#'  stopifnot( ncol(y) == nlevels(fc) )
-#'  stopifnot( identical(annotation(y), 'abcd.db') )
-#' }
 #' y <- colMinsBy(x, fr)
-#' \dontshow{ 
-#' 	stopifnot( is(y, 'ExpressionSet') )
-#'  stopifnot( identical(ncol(y), ncol(x)) )
-#'  stopifnot( nrow(y) == nlevels(fr) ) 
-#'  stopifnot( identical(annotation(y), 'abcd.db') )
-#' }
 #' 
 #' ## annotations are conserved/collapsed
 #' pData(x) <- data.frame(Group=fc, Sample=letters[1:ncol(x)])
@@ -206,27 +197,11 @@ applyBy.matrix <- function(x, BY, MARGIN, FUN, W=NULL, ..., DROP=FALSE){
 #' y <- rowMinsBy(x, 'Group')
 #' pData(y)
 #' fData(y)
-#' \dontshow{ 
-#' 	stopifnot( is(y, 'ExpressionSet') ) 
-#'  stopifnot( identical(nrow(y), nrow(x)) )
-#'  stopifnot( ncol(y) == nlevels(fc) )
-#'  stopifnot( identical(annotation(y), 'abcd.db') )
-#'  stopifnot( identical(fData(y), fData(x)) )
-#'  stopifnot( nrow(pData(y)) == nlevels(fc) )
-#' }
 #' 
 #' # keep sample annotations, collapse feature annotations 
 #' y <- colMinsBy(x, 'ENTREZID')
 #' pData(y)
 #' fData(y)
-#' \dontshow{ 
-#' 	stopifnot( is(y, 'ExpressionSet') ) 
-#'  stopifnot( identical(annotation(y), 'abcd.db') )
-#'  stopifnot( identical(ncol(y), ncol(x)) )
-#'  stopifnot( nrow(y) == nlevels(fr) ) 
-#'  stopifnot( identical(pData(y), pData(x)) )
-#'  stopifnot( nrow(fData(y)) == nlevels(fr) )
-#' }
 applyBy.ExpressionSet <- function(x, BY, MARGIN, ..., ANNOTATIONS=TRUE){
 	
 	# convert single character string into annotation variable
@@ -263,9 +238,15 @@ applyBy.ExpressionSet <- function(x, BY, MARGIN, ..., ANNOTATIONS=TRUE){
 				# get used BY factor
 				fBY <- .applyBy_BY()
 				# extract annotation for first representative of each level
-				df <- pData(x)[!duplicated(as.character(fBY)) & !is.na(fBY), ]
-				rownames(df) <- sampleNames(res)
-				pd <- AnnotatedDataFrame(df)
+				irep <- match(sampleNames(res), as.character(fBY)) # order must match the item names
+				irep <- irep[!is.na(irep)]
+				if( length(irep) != ncol(res) ){
+					warning("Could not collapse sample annotations: some level did not match the aggregated sample names")
+				}else{
+					df <- pData(x)[irep, ]
+					rownames(df) <- sampleNames(res)
+					pd <- AnnotatedDataFrame(df)	
+				}
 			}
 		}else if( MARGIN == 2L ){
 			if( nrow(ad <- phenoData(x)) > 0L ) pd <- ad # keep sample annotations
@@ -274,13 +255,20 @@ applyBy.ExpressionSet <- function(x, BY, MARGIN, ..., ANNOTATIONS=TRUE){
 				# get used BY factor
 				fBY <- .applyBy_BY()
 				# extract annotation for first representative of each level
-				df <- fData(x)[!duplicated(as.character(fBY)) & !is.na(fBY), ]
-				rownames(df) <- featureNames(res)
-				fd <- AnnotatedDataFrame(df)
+				irep <- match(featureNames(res), as.character(fBY)) # order must match the item names
+				irep <- irep[!is.na(irep)]
+				if( length(irep) != nrow(res) ){
+					warning("Could not collapse feature annotations: some level did not match the aggregated feature names")
+				}else{
+					df <- fData(x)[irep, ]
+					rownames(df) <- featureNames(res)
+					fd <- AnnotatedDataFrame(df)
+				}
 			}
 		}
 	}
-	# no sample/feature annotation
+	
+	# do wrap
 	ca <- call('ExpressionSet', res, annotation=annotation(x))
 	if( !is.null(pd) ) ca$phenoData <- pd
 	if( !is.null(fd) ) ca$featureData <- fd
