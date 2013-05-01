@@ -7,6 +7,6 @@ else
 RSCRIPT=`which R`script
 endif
 
-MK=$(shell $(RSCRIPT) --vanilla -e "pkgmaker::vignetteMakefile('CellMix')")
+MK=$(shell $(RSCRIPT) --vanilla -e "pkgmaker::vignetteMakefile('CellMix', skip='CellMix_appnote.Rnw')")
 
 include $(MK)

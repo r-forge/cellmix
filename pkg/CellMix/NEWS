@@ -1,4 +1,19 @@
 *****************************
+Changes in version 1.5.3
+*****************************
+
+CHANGES
+    o Remove the application note's vignette until it is 
+    reviewed/accepted/published. 
+
+*****************************
+Changes in version 1.5.2
+***************************** 
+BUG FIXES
+    o Fix bug in applyBy.ExpressionSet: collapsed feature/sample 
+    annotations were not correctly ordered.
+    
+*****************************
 Changes in version 1.5.1
 ***************************** 
 
