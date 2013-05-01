@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>applyBy. CellMix 1.5.1</title>
+<title>applyBy. CellMix 1.5.3</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -30,7 +30,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class = "container">
-      <a class="brand" href="index.html">CellMix 1.5.1</a>
+      <a class="brand" href="index.html">CellMix 1.5.3</a>
       <div class="nav">
         <ul class="nav">
         <li><a href="_MAN.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -188,19 +188,19 @@ colMinsBy(x, BY, ...)</pre>
 </div><div class='input'>b <- applyBy(x, fc, 1L, rowSums)
 </div><div class='input'>b
 </div>
-<div class='output'>              1         2
- [1,] 1.6063100 2.2079148
- [2,] 2.2565705 1.2183286
- [3,] 2.3212810 0.9869661
- [4,] 1.3572888 1.7199242
- [5,] 1.4835356 2.5008653
- [6,] 1.2504324 0.9475977
- [7,] 1.0860375 1.0451921
- [8,] 1.7885476 0.5793109
- [9,] 2.5603957 1.0439766
-[10,] 1.1338770 1.0669209
-[11,] 1.0981482 1.5040171
-[12,] 0.6850369 0.6957557
+<div class='output'>              1        2
+ [1,] 1.0501945 1.102261
+ [2,] 1.8107569 1.677798
+ [3,] 1.4358178 1.719032
+ [4,] 0.5132839 1.578178
+ [5,] 1.9354130 1.313849
+ [6,] 0.7364792 0.833596
+ [7,] 1.6940310 1.138665
+ [8,] 1.6262188 1.986699
+ [9,] 1.3822853 2.395945
+[10,] 2.1004914 1.710964
+[11,] 0.8540784 0.904344
+[12,] 0.9278464 1.700363
 </div><div class='input'># or</div><div class='input'>balt <- rowApplyBy(x, fc, rowSums)
 </div><div class='input'>identical(b, balt)
 </div>
@@ -211,10 +211,10 @@ colMinsBy(x, BY, ...)</pre>
 </div><div class='input'>identical(b, balt)
 </div>
 <div class='output'>[1] TRUE
-</div><div class='input'>## Method for ExpressionSet objects</div><div class='input'></div><div class='input'>x <- ExpressionSet(x, annotation='abcd.db')
+</div><div class='input'>## Method for apply directly to ExpressionSet objects</div><div class='input'></div><div class='input'>x <- ExpressionSet(x, annotation='abcd.db')
 </div><div class='input'>y <- rowMinsBy(x, fc)
-</div><div class='input'></div><div class='input'>y <- colMinsBy(x, fr)
-</div><div class='input'></div><div class='input'></div><div class='input'>## annotations are conserved/collapsed</div><div class='input'>pData(x) <- data.frame(Group=fc, Sample=letters[1:ncol(x)])
+</div><div class='input'>y <- colMinsBy(x, fr)
+</div><div class='input'></div><div class='input'>## annotations are conserved/collapsed</div><div class='input'>pData(x) <- data.frame(Group=fc, Sample=letters[1:ncol(x)])
 </div><div class='input'>pData(x)
 </div>
 <div class='output'>  Group Sample
@@ -261,7 +261,7 @@ colMinsBy(x, BY, ...)</pre>
 10        3    c
 11        3    b
 12        3    a
-</div><div class='input'></div><div class='input'></div><div class='input'># keep sample annotations, collapse feature annotations</div><div class='input'>y <- colMinsBy(x, 'ENTREZID')
+</div><div class='input'></div><div class='input'># keep sample annotations, collapse feature annotations</div><div class='input'>y <- colMinsBy(x, 'ENTREZID')
 </div><div class='input'>pData(y)
 </div>
 <div class='output'>  Group Sample
@@ -277,7 +277,7 @@ colMinsBy(x, BY, ...)</pre>
 1        1    l
 2        2    h
 3        3    d
-</div><div class='input'></div></pre>
+</div></pre>
   </div>
   <div class="span4">
     <!-- <ul>
