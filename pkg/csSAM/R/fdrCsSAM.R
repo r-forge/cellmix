@@ -74,7 +74,9 @@ function (G,cc,y,n,numcell,numgene,rhat,nperms,alternative='two.sided',standardi
 			ncall.g[curcell,i]=sum(rhat[curcell,]>cutp.g[curcell,i])
 		}
 		if(alternative == 'less') {
-			fdr.g[curcell,i]=sum(rhatperm[,curcell,]< -cutp.g[curcell,i])/nperms /sum(rhat[curcell,]>cutp.g[curcell,i])
+			# FIXME: should be < - cutp.g[curcell,i]
+#			fdr.g[curcell,i]=sum(rhatperm[,curcell,]< -cutp.g[curcell,i])/nperms /sum(rhat[curcell,]>cutp.g[curcell,i])
+			fdr.g[curcell,i]=sum(rhatperm[,curcell,]< -cutp.g[curcell,i])/nperms /sum(rhat[curcell,] < -cutp.g[curcell,i])
 			ncall.g[curcell,i]=sum(rhat[curcell,]< -cutp.g[curcell,i])
 		}		
     }

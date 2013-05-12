@@ -1,0 +1,11 @@
+*******************
+Changes in 1.2.4
+*******************
+CHANGES
+    o Some speed-up have been obtained using byte-compiled 
+    functions
+
+BUG FIXES
+    o Fixes bug in computation of the fdr for alternative "less",
+    for which the fdr values were incorrect.
+     

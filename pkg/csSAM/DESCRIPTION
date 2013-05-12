@@ -4,16 +4,29 @@ Title: csSAM - cell-specific Significance Analysis of Microarrays
 Version: 1.2.4
 Date: 2011-10-08
 Author: Shai Shen-Orr, Rob Tibshirani, Narasimhan Balasubramanian, David Wang
-Authors@R: c( person("Shai", "Shen-Orr", role=c("aut", "cre"), email="shenorr@technion.ac.il") , person("Rob", "Tibshirani",
-              role="aut") , person("Narasimhan", "Balasubramanian", role="aut") , person("David", "Wang", role="aut") ,
-              person("Renaud Gaujoux", role="ctb", comment="roxygen/debug/CRAN-compliance") )
+Authors@R: c( person("Shai", "Shen-Orr", role=c("aut", "cre"),
+    email="shenorr@technion.ac.il") , person("Rob", "Tibshirani", role="aut") ,
+    person("Narasimhan", "Balasubramanian", role="aut") , person("David",
+    "Wang", role="aut") , person("Renaud Gaujoux", role="ctb",
+    comment="roxygen/debug/CRAN-compliance") )
 Maintainer: Shai Shen-Orr <shenorr@technion.ac.il>
 Description: Cell-type specific differential expression of a microarray
     experiment of heterogeneous tissue samples, using SAM.
 License: LGPL
 LazyLoad: yes
-Depends: R (>= 2.15), Rcpp (>= 0.10.3)
-Collate: 'csfit.R' 'csSAM-package.R' 'csSAM.R' 'csSamWrapper.R' 'fdrCsSAM.R' 'fdrSAM.R' 'findSigGene.R' 'make.monotone.R'
-              'plotCsSAM.R' 'runSAM.R' 'ttest.func.R' 'varr.R'
-LinkingTo: Rcpp
-Packaged: 2013-04-09 17:08:43 UTC; renaud
+Depends:
+    R (>= 2.15),
+    compiler
+Collate:
+    'csfit.R'
+    'csSAM-package.R'
+    'csSAM.R'
+    'csSamWrapper.R'
+    'fdrCsSAM.R'
+    'fdrSAM.R'
+    'findSigGene.R'
+    'make.monotone.R'
+    'plotCsSAM.R'
+    'runSAM.R'
+    'ttest.func.R'
+    'varr.R'

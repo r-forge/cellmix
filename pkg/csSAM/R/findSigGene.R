@@ -14,16 +14,15 @@
 #' for a difference in a given cell-type.
 #' @author Shai Shen-Orr, Rob Tibshirani, Narasimhan Balasubramanian, David Wang
 #' @cite Shen-Orr2010
-#' @useDynLib csSAM
 findSigGene <- function(G,cc,y,rhat,csSAMData) {
-	.Call('findSigGenes', rhat, csSAMData$cutp.g, csSAMData$fdr.g, PACKAGE='csSAM')
-}
-
+# @useDynLib csSAM
+#	.Call('findSigGenes', rhat, csSAMData$cutp.g, csSAMData$fdr.g, PACKAGE='csSAM')
 # old plain R version
-.findSigGene <- function(G,cc,y,rhat,csSAMData) {
+#.findSigGene <- function(G,cc,y,rhat,csSAMData) {
   numgene=ncol(G)
   numcell = ncol(cc)
   thresholdVec = csSAMData$fdr.g
+  cutoff <- csSAMData$cutp.g
   thresholdLen = length(thresholdVec[numcell,])
   sigGene <- array(dim = c(numcell, numgene))
   sigGene[,] = 1
@@ -31,8 +30,8 @@ findSigGene <- function(G,cc,y,rhat,csSAMData) {
   for (curThresh in 1:thresholdLen) {
     for (curcell in 1:numcell) {
       for (curgene in 1:numgene) {
-        if(abs(rhat[curcell,curgene]) >= abs(csSAMData$cutp.g[curcell,curThresh])) {
-          sigGene[curcell,curgene] = csSAMData$fdr.g[curcell,curThresh]
+        if(abs(rhat[curcell,curgene]) >= abs(cutoff[curcell,curThresh])) {
+          sigGene[curcell,curgene] = thresholdVec[curcell,curThresh]
         }
       }
     }
@@ -41,3 +40,4 @@ findSigGene <- function(G,cc,y,rhat,csSAMData) {
   return (sigGene)
 }
 
+findSigGene <- compiler::cmpfun(findSigGene) 
